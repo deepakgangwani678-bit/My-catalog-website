@@ -1,651 +1,591 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Catalog - Digital Dukaan</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Catalog | Digital Store</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #172033;
-    }
-
-    header {
-      background: #116149;
-      color: white;
-      padding: 20px 16px;
-      text-align: center;
-    }
-
-    header h1 { margin: 0 0 8px; }
-    header p { margin: 0; }
-
-    main {
-      width: min(950px, 94%);
-      margin: 20px auto;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      box-shadow: 0 3px 15px #0000000b;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 7px 0;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    input {
-      border: 1px solid #ccd4df;
-      background: white;
-    }
-
-    button {
-      background: #116149;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button.secondary { background: #334155; }
-    button.danger { background: #b42318; }
-
-    .hidden { display: none; }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-      gap: 14px;
-    }
-
-    .product {
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      overflow: hidden;
-      padding-bottom: 12px;
-      background: white;
-    }
-
-    .product img {
-      width: 100%;
-      height: 145px;
-      object-fit: cover;
-      background: #edf2f7;
-    }
-
-    .product h3, .product p {
-      margin: 9px 10px;
-      overflow-wrap: anywhere;
-    }
-
-    .product button {
-      width: calc(100% - 20px);
-      margin: 5px 10px;
-      font-size: 14px;
-    }
-
-    .muted { color: #64748b; }
-    #message { white-space: pre-wrap; overflow-wrap: anywhere; }
-    .price { color: #116149; font-weight: bold; }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#182230}
+header{background:#123b32;color:white;padding:25px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:28px}
+header p{margin:0;color:#d9eee7}
+main{max-width:1000px;width:94%;margin:24px auto}
+.card{background:white;padding:20px;border-radius:16px;margin-bottom:18px;box-shadow:0 4px 20px #14251b0c}
+h2{font-size:20px;margin-top:0}
+input,button{width:100%;padding:13px;margin:7px 0;border-radius:9px;font-size:15px}
+input{border:1px solid #d5dce5;background:white}
+button{border:0;background:#14775b;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#344256}
+button.danger{background:#bd3434}
+button:disabled{opacity:.6}
+.hidden{display:none!important}
+.muted{color:#657286;font-size:14px}
+#message{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:14px}
+.product{border:1px solid #e2e7ee;border-radius:12px;overflow:hidden;padding-bottom:10px}
+.product img{width:100%;height:155px;object-fit:cover;background:#edf0f4}
+.product h3{font-size:16px;margin:10px;overflow-wrap:anywhere}
+.product p{margin:8px 10px;overflow-wrap:anywhere}
+.price{font-weight:bold;color:#14775b;font-size:18px}
+.product button{width:calc(100% - 20px);margin:5px 10px;font-size:13px}
+#shopLink{overflow-wrap:anywhere;line-height:1.6}
+#qrBox img{max-width:180px;margin-top:12px}
+footer{text-align:center;color:#657286;padding:22px}
+.status{padding:12px;background:#f1f5f9;border-radius:9px}
+</style>
 </head>
 
 <body>
 <header>
-  <h1>🛍️ Smart Catalog</h1>
-  <p>आपकी दुकान, आपका डिजिटल कैटलॉग</p>
+  <h1>Smart Catalog</h1>
+  <p>Your Store. Your Digital Catalog.</p>
 </header>
 
 <main>
-  <div class="card">
-    <h2>🔎 प्रोडक्ट खोजें</h2>
-    <input id="search" placeholder="प्रोडक्ट का नाम या नंबर लिखें">
-    <div id="catalogInfo" class="muted"></div>
-  </div>
 
-  <div id="publicCatalog" class="card">
-    <h2 id="catalogTitle">प्रोडक्ट कैटलॉग</h2>
-    <div id="publicProducts" class="products"></div>
-  </div>
+<section class="card">
+  <h2>Find Products</h2>
+  <input id="search" placeholder="Search by product name or number">
+  <p id="catalogInfo" class="muted">Open a store catalog link to browse its products.</p>
+</section>
 
-  <div class="card" id="authCard">
-    <h2>दुकानदार लॉगिन / रजिस्ट्रेशन</h2>
-    <p class="muted">अपना अकाउंट बनाएँ या पहले से बने अकाउंट से लॉगिन करें।</p>
+<section class="card">
+  <h2 id="catalogTitle">Product Catalog</h2>
+  <div id="publicProducts" class="products"></div>
+</section>
 
-    <input id="email" type="email" placeholder="ईमेल एड्रेस">
-    <input id="password" type="password" placeholder="पासवर्ड (कम से कम 6 अक्षर)">
+<section class="card" id="authCard">
+  <h2>Store Owner Login</h2>
+  <p class="muted">Create your account or sign in to manage your store.</p>
 
-    <button id="signupBtn">नया अकाउंट बनाएँ</button>
-    <button id="loginBtn" class="secondary">लॉगिन करें</button>
-  </div>
+  <input id="email" type="email" autocomplete="email" placeholder="Email address">
+  <input id="password" type="password" autocomplete="current-password" placeholder="Password (minimum 6 characters)">
 
-  <div id="dashboard" class="hidden">
-    <div class="card">
-      <h2>🏪 आपकी दुकान</h2>
-      <p id="accountInfo" class="muted"></p>
+  <button id="signupBtn" type="button">Create Account</button>
+  <button id="loginBtn" type="button" class="secondary">Sign In</button>
+</section>
 
-      <input id="shopName" placeholder="दुकान का नाम">
-      <input id="shopContact" placeholder="दुकान का फोन नंबर">
-      <input id="shopDescription" placeholder="दुकान के बारे में">
-      <button id="saveShopBtn">दुकान बनाएँ / जानकारी अपडेट करें</button>
+<section id="dashboard" class="hidden">
 
-      <div id="shopLink" class="muted"></div>
-      <button id="copyLinkBtn" class="secondary hidden">कैटलॉग लिंक कॉपी करें</button>
-      <div id="qrBox"></div>
-    </div>
+  <section class="card">
+    <h2>Your Store</h2>
+    <p id="accountInfo" class="muted"></p>
 
-    <div class="card">
-      <h2>➕ नया प्रोडक्ट जोड़ें</h2>
+    <input id="shopName" placeholder="Store name">
+    <input id="shopContact" type="tel" placeholder="Contact number">
+    <input id="shopDescription" placeholder="Store description">
 
-      <input id="productName" placeholder="प्रोडक्ट का नाम">
-      <input id="productNumber" placeholder="प्रोडक्ट नंबर, जैसे 101">
-      <input id="productPrice" type="number" min="0" step="0.01" placeholder="कीमत ₹">
-      <input id="productImage" type="url" placeholder="प्रोडक्ट फोटो का URL (वैकल्पिक)">
+    <button id="saveShopBtn" type="button">Save Store Details</button>
 
-      <button id="addProductBtn">प्रोडक्ट जोड़ें</button>
-    </div>
+    <p id="shopLink"></p>
+    <button id="copyLinkBtn" type="button" class="secondary hidden">Copy Catalog Link</button>
+    <div id="qrBox"></div>
+  </section>
 
-    <div class="card">
-      <h2>📦 आपके प्रोडक्ट</h2>
-      <div id="myProducts" class="products"></div>
-    </div>
+  <section class="card">
+    <h2>Add a Product</h2>
 
-    <div class="card">
-      <button id="logoutBtn" class="danger">लॉगआउट</button>
-    </div>
-  </div>
+    <input id="productName" placeholder="Product name">
+    <input id="productNumber" placeholder="Product number (e.g. 101)">
+    <input id="productPrice" type="number" min="0" step="0.01" placeholder="Price">
+    <input id="productImage" type="url" placeholder="Product image URL (optional)">
 
-  <div class="card">
-    <p id="message" role="status">वेबसाइट शुरू हो रही है...</p>
-  </div>
+    <button id="addProductBtn" type="button">Add Product</button>
+  </section>
+
+  <section class="card">
+    <h2>Your Products</h2>
+    <div id="myProducts" class="products"></div>
+  </section>
+
+  <section class="card">
+    <button id="logoutBtn" type="button" class="danger">Sign Out</button>
+  </section>
+
+</section>
+
+<section class="card">
+  <p id="message" class="status" role="status" aria-live="polite">Connecting to the service...</p>
+</section>
+
 </main>
 
-<footer>Smart Catalog · आपकी डिजिटल दुकान</footer>
+<footer>Smart Catalog · Digital Store Platform</footer>
 
 <script>
-  // अपनी Supabase Project URL और Publishable Key यहाँ डालें।
-  const SUPABASE_URL = “https://dfuqgijfkbaykgshvlxd.supabase.co”;
-  const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_"
+"use strict";
 
+/* Supabase connection */
+const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
 
-  const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-  let db = null;
-  let currentUser = null;
-  let currentShop = null;
-  let allProducts = [];
+let db = null;
+let currentUser = null;
+let currentShop = null;
+let allProducts = [];
 
-  function message(text) {
-    $("message").textContent = text;
+function message(text) {
+  $("message").textContent = text;
+}
+
+function errorText(error) {
+  return error?.message || String(error || "Unknown error");
+}
+
+function safeImage(value) {
+  try {
+    const u = new URL(value);
+    return ["https:", "http:"].includes(u.protocol) ? u.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function makeSlug(name) {
+  const base = name.toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 35) || "store";
+
+  return base + "-" + crypto.randomUUID().slice(0, 8);
+}
+
+function catalogURL(slug) {
+  const url = new URL(location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("shop", slug);
+  return url.href;
+}
+
+function showQR(url) {
+  $("qrBox").replaceChildren();
+
+  const img = document.createElement("img");
+  img.alt = "Store catalog QR code";
+  img.width = 180;
+  img.height = 180;
+  img.src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="
+    + encodeURIComponent(url);
+
+  $("qrBox").appendChild(img);
+}
+
+function renderProducts(products, editable) {
+  const container = $(editable ? "myProducts" : "publicProducts");
+  container.replaceChildren();
+
+  if (!products.length) {
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = "No products found.";
+    container.appendChild(p);
+    return;
   }
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, c => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[c]);
-  }
-
-  function safeImage(url) {
-    try {
-      const u = new URL(url);
-      return ["https:", "http:"].includes(u.protocol) ? u.href : "";
-    } catch {
-      return "";
-    }
-  }
-
-  function makeSlug(name) {
-    const base = String(name)
-      .toLowerCase()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 35);
-
-    return (base || "shop") + "-" +
-      crypto.randomUUID().slice(0, 8);
-  }
-
-  function catalogURL(slug) {
-    const url = new URL(location.href);
-    url.search = "";
-    url.hash = "";
-    url.searchParams.set("shop", slug);
-    return url.href;
-  }
-
-  function qrImage(url) {
-    const box = $("qrBox");
-    box.replaceChildren();
+  products.forEach(product => {
+    const card = document.createElement("article");
+    card.className = "product";
 
     const img = document.createElement("img");
-    img.alt = "दुकान के कैटलॉग का QR कोड";
-    img.width = 180;
-    img.height = 180;
+    img.src = safeImage(product.image_url)
+      || "https://placehold.co/300x220?text=Product";
+    img.alt = product.product_name || "Product";
     img.loading = "lazy";
-    img.src =
-      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
-      encodeURIComponent(url);
-
-    box.appendChild(img);
-  }
-
-  async function loadCatalog() {
-    const slug = new URLSearchParams(location.search).get("shop");
-
-    if (!slug) {
-      $("catalogTitle").textContent = "प्रोडक्ट कैटलॉग";
-      $("catalogInfo").textContent =
-        "किसी दुकान का कैटलॉग खोलने के लिए उसका लिंक इस्तेमाल करें।";
-      $("publicProducts").replaceChildren();
-      return;
-    }
-
-    const { data: shop, error } = await db
-      .from("Shops")
-      .select("id, shop_name, description, is_active")
-      .eq("slug", slug)
-      .maybeSingle();
-
-    if (error || !shop || !shop.is_active) {
-      $("catalogTitle").textContent = "दुकान नहीं मिली";
-      $("catalogInfo").textContent =
-        "कैटलॉग का लिंक गलत हो सकता है या दुकान उपलब्ध नहीं है।";
-      $("publicProducts").replaceChildren();
-      return;
-    }
-
-    $("catalogTitle").textContent = shop.shop_name;
-    $("catalogInfo").textContent = shop.description || "";
-
-    const { data: products, error: productError } = await db
-      .from("Products")
-      .select("id, product_name, product_number, price, image_url")
-      .eq("shop_id", shop.id)
-      .eq("is_available", true)
-      .order("product_name");
-
-    if (productError) {
-      $("catalogInfo").textContent =
-        "प्रोडक्ट लोड नहीं हुए। डेटाबेस की policies जाँचनी होंगी।";
-      return;
-    }
-
-    allProducts = products || [];
-    renderProducts(allProducts, false);
-  }
-
-  function renderProducts(products, editable) {
-    const container = editable ? $("myProducts") : $("publicProducts");
-    container.replaceChildren();
-
-    if (!products.length) {
-      const p = document.createElement("p");
-      p.textContent = "अभी कोई प्रोडक्ट उपलब्ध नहीं है।";
-      container.appendChild(p);
-      return;
-    }
-
-    products.forEach(product => {
-      const card = document.createElement("div");
-      card.className = "product";
-
-      const img = document.createElement("img");
-      img.src = safeImage(product.image_url) ||
-        "https://placehold.co/300x220?text=Product";
-      img.alt = product.product_name || "Product";
-      img.loading = "lazy";
-      img.onerror = () => {
-        img.onerror = null;
-        img.src = "https://placehold.co/300x220?text=Product";
-      };
-
-      const title = document.createElement("h3");
-      title.textContent = product.product_name;
-
-      const number = document.createElement("p");
-      number.textContent = "नंबर: " + (product.product_number || "-");
-
-      const price = document.createElement("p");
-      price.className = "price";
-      price.textContent = "₹" + Number(product.price).toLocaleString("en-IN");
-
-      card.append(img, title, number, price);
-
-      if (editable) {
-        const edit = document.createElement("button");
-        edit.textContent = "कीमत / जानकारी बदलें";
-        edit.onclick = () => editProduct(product);
-
-        const remove = document.createElement("button");
-        remove.textContent = "डिलीट";
-        remove.className = "danger";
-        remove.onclick = () => deleteProduct(product.id);
-
-        card.append(edit, remove);
-      }
-
-      container.appendChild(card);
-    });
-  }
-
-  async function loadMyShop() {
-    if (!currentUser) return;
-
-    const { data: shop, error } = await db
-      .from("Shops")
-      .select("*")
-      .eq("owner_id", currentUser.id)
-      .maybeSingle();
-
-    if (error) {
-      message("दुकान लोड नहीं हुई: " + error.message);
-      return;
-    }
-
-    currentShop = shop;
-
-    if (shop) {
-      $("shopName").value = shop.shop_name || "";
-      $("shopContact").value = shop.contact || "";
-      $("shopDescription").value = shop.description || "";
-
-      const url = catalogURL(shop.slug);
-      $("shopLink").textContent = "कैटलॉग लिंक: " + url;
-      $("copyLinkBtn").classList.remove("hidden");
-      qrImage(url);
-
-      await loadMyProducts();
-    } else {
-      $("shopLink").textContent = "पहले अपनी दुकान बनाएँ।";
-      $("copyLinkBtn").classList.add("hidden");
-      $("qrBox").replaceChildren();
-      $("myProducts").replaceChildren();
-    }
-  }
-
-  async function loadMyProducts() {
-    if (!currentShop) return;
-
-    const { data, error } = await db
-      .from("Products")
-      .select("*")
-      .eq("shop_id", currentShop.id)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      message("प्रोडक्ट लोड नहीं हुए: " + error.message);
-      return;
-    }
-
-    renderProducts(data || [], true);
-  }
-
-  async function saveShop() {
-    const name = $("shopName").value.trim();
-
-    if (!name) {
-      message("पहले दुकान का नाम लिखें।");
-      return;
-    }
-
-    const values = {
-      shop_name: name,
-      contact: $("shopContact").value.trim(),
-      description: $("shopDescription").value.trim()
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = "https://placehold.co/300x220?text=Product";
     };
 
-    let result;
+    const name = document.createElement("h3");
+    name.textContent = product.product_name || "Product";
 
-    if (currentShop) {
-      result = await db
-        .from("Shops")
-        .update(values)
-        .eq("id", currentShop.id)
-        .select()
-        .single();
-    } else {
-      result = await db
-        .from("Shops")
-        .insert({
-          ...values,
-          owner_id: currentUser.id,
-          slug: makeSlug(name),
-          is_active: true
-        })
-        .select()
-        .single();
+    const number = document.createElement("p");
+    number.className = "muted";
+    number.textContent = "Product No.: " + (product.product_number || "-");
+
+    const price = document.createElement("p");
+    price.className = "price";
+    price.textContent = "₹" + Number(product.price).toLocaleString("en-IN");
+
+    card.append(img, name, number, price);
+
+    if (editable) {
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.textContent = "Edit Product";
+      edit.onclick = () => editProduct(product);
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "danger";
+      remove.textContent = "Delete Product";
+      remove.onclick = () => deleteProduct(product.id);
+
+      card.append(edit, remove);
     }
 
-    if (result.error) {
-      message("दुकान सेव नहीं हुई: " + result.error.message);
-      return;
-    }
+    container.appendChild(card);
+  });
+}
 
-    currentShop = result.data;
-    message("दुकान सेव हो गई!");
+async function loadCatalog() {
+  const slug = new URLSearchParams(location.search).get("shop");
+
+  if (!slug) {
+    $("catalogTitle").textContent = "Product Catalog";
+    $("catalogInfo").textContent =
+      "Open a store's unique catalog link to view its products.";
+    $("publicProducts").replaceChildren();
+    return;
+  }
+
+  const { data: shop, error } = await db
+    .from("Shops")
+    .select("id, shop_name, description, is_active")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw new Error("Store loading failed: " + error.message);
+
+  if (!shop || shop.is_active === false) {
+    $("catalogTitle").textContent = "Store Not Found";
+    $("catalogInfo").textContent = "This catalog link is invalid or unavailable.";
+    $("publicProducts").replaceChildren();
+    return;
+  }
+
+  $("catalogTitle").textContent = shop.shop_name;
+  $("catalogInfo").textContent = shop.description || "";
+
+  const { data: products, error: productError } = await db
+    .from("Products")
+    .select("id, product_name, product_number, price, image_url")
+    .eq("shop_id", shop.id)
+    .eq("is_available", true)
+    .order("product_name");
+
+  if (productError) {
+    throw new Error("Products loading failed: " + productError.message);
+  }
+
+  allProducts = products || [];
+  renderProducts(allProducts, false);
+}
+
+async function loadMyProducts() {
+  if (!currentShop) return;
+
+  const { data, error } = await db
+    .from("Products")
+    .select("*")
+    .eq("shop_id", currentShop.id)
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error("Your products could not load: " + error.message);
+
+  renderProducts(data || [], true);
+}
+
+async function loadMyShop() {
+  if (!currentUser) return;
+
+  const { data: shop, error } = await db
+    .from("Shops")
+    .select("*")
+    .eq("owner_id", currentUser.id)
+    .maybeSingle();
+
+  if (error) throw new Error("Your store could not load: " + error.message);
+
+  currentShop = shop;
+
+  if (!shop) {
+    $("shopName").value = "";
+    $("shopContact").value = "";
+    $("shopDescription").value = "";
+    $("shopLink").textContent = "Save your store details to generate your catalog link.";
+    $("copyLinkBtn").classList.add("hidden");
+    $("qrBox").replaceChildren();
+    $("myProducts").replaceChildren();
+    return;
+  }
+
+  $("shopName").value = shop.shop_name || "";
+  $("shopContact").value = shop.contact || "";
+  $("shopDescription").value = shop.description || "";
+
+  const url = catalogURL(shop.slug);
+  $("shopLink").textContent = "Your catalog link: " + url;
+  $("copyLinkBtn").classList.remove("hidden");
+  showQR(url);
+
+  await loadMyProducts();
+}
+
+async function saveShop() {
+  if (!currentUser) return message("Please sign in first.");
+
+  const name = $("shopName").value.trim();
+
+  if (!name) return message("Enter your store name.");
+
+  const values = {
+    shop_name: name,
+    contact: $("shopContact").value.trim(),
+    description: $("shopDescription").value.trim()
+  };
+
+  let result;
+
+  if (currentShop) {
+    result = await db.from("Shops")
+      .update(values)
+      .eq("id", currentShop.id)
+      .select()
+      .single();
+  } else {
+    result = await db.from("Shops")
+      .insert({
+        ...values,
+        owner_id: currentUser.id,
+        slug: makeSlug(name),
+        is_active: true
+      })
+      .select()
+      .single();
+  }
+
+  if (result.error) {
+    throw new Error("Store could not be saved: " + result.error.message);
+  }
+
+  currentShop = result.data;
+  await loadMyShop();
+  message("Store details saved successfully.");
+}
+
+async function addProduct() {
+  if (!currentShop) return message("Save your store details first.");
+
+  const name = $("productName").value.trim();
+  const number = $("productNumber").value.trim();
+  const rawPrice = $("productPrice").value;
+  const image = $("productImage").value.trim();
+
+  if (!name || rawPrice === "" || !Number.isFinite(Number(rawPrice))
+      || Number(rawPrice) < 0) {
+    return message("Enter a product name and a valid price.");
+  }
+
+  if (image && !safeImage(image)) {
+    return message("Enter a valid image URL beginning with https:// or http://.");
+  }
+
+  const { error } = await db.from("Products").insert({
+    product_name: name,
+    product_number: number || null,
+    price: Number(rawPrice),
+    image_url: image || null,
+    shop_id: currentShop.id,
+    is_available: true
+  });
+
+  if (error) throw new Error("Product could not be added: " + error.message);
+
+  $("productName").value = "";
+  $("productNumber").value = "";
+  $("productPrice").value = "";
+  $("productImage").value = "";
+
+  await loadMyProducts();
+  message("Product added successfully.");
+}
+
+async function editProduct(product) {
+  const name = prompt("Product name:", product.product_name);
+  if (name === null) return;
+
+  const price = prompt("Product price:", product.price);
+  if (price === null) return;
+
+  const number = prompt("Product number:", product.product_number || "");
+  if (number === null) return;
+
+  if (!name.trim() || price.trim() === ""
+      || !Number.isFinite(Number(price)) || Number(price) < 0) {
+    return message("Enter a valid product name and price.");
+  }
+
+  const { error } = await db.from("Products")
+    .update({
+      product_name: name.trim(),
+      price: Number(price),
+      product_number: number.trim() || null
+    })
+    .eq("id", product.id)
+    .eq("shop_id", currentShop.id);
+
+  if (error) throw new Error("Product update failed: " + error.message);
+
+  await loadMyProducts();
+  message("Product updated successfully.");
+}
+
+async function deleteProduct(id) {
+  if (!confirm("Are you sure you want to delete this product?")) return;
+
+  const { error } = await db.from("Products")
+    .delete()
+    .eq("id", id)
+    .eq("shop_id", currentShop.id);
+
+  if (error) throw new Error("Product deletion failed: " + error.message);
+
+  await loadMyProducts();
+  message("Product deleted successfully.");
+}
+
+async function updateUI() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error) throw error;
+
+  currentUser = data.session?.user || null;
+
+  $("dashboard").classList.toggle("hidden", !currentUser);
+  $("authCard").classList.toggle("hidden", !!currentUser);
+
+  if (currentUser) {
+    $("accountInfo").textContent = "Signed in as " + currentUser.email;
     await loadMyShop();
   }
+}
 
-  async function addProduct() {
-    if (!currentShop) {
-      message("पहले अपनी दुकान बनाएँ।");
-      return;
+function safeAction(action) {
+  return async function () {
+    try {
+      message("Please wait...");
+      await action();
+    } catch (error) {
+      console.error(error);
+      message("Error: " + errorText(error));
     }
+  };
+}
 
-    const name = $("productName").value.trim();
-    const number = $("productNumber").value.trim();
-    const price = $("productPrice").value;
-    const image = $("productImage").value.trim();
-
-    if (!name || price === "" || !Number.isFinite(Number(price)) ||
-        Number(price) < 0) {
-      message("प्रोडक्ट का नाम और सही कीमत भरें।");
-      return;
-    }
-
-    const result = await db.from("Products").insert({
-      product_name: name,
-      product_number: number || null,
-      price: Number(price),
-      image_url: image || null,
-      shop_id: currentShop.id,
-      is_available: true
-    });
-
-    if (result.error) {
-      message("प्रोडक्ट सेव नहीं हुआ: " + result.error.message);
-      return;
-    }
-
-    $("productName").value = "";
-    $("productNumber").value = "";
-    $("productPrice").value = "";
-    $("productImage").value = "";
-
-    message("प्रोडक्ट जोड़ दिया गया!");
-    await loadMyProducts();
+async function startApp() {
+  if (!window.supabase) {
+    throw new Error("The Supabase library did not load. Check your internet connection and refresh.");
   }
 
-  async function editProduct(product) {
-    const name = prompt("प्रोडक्ट का नाम:", product.product_name);
-    if (name === null) return;
-
-    const price = prompt("नई कीमत:", product.price);
-    if (price === null) return;
-
-    if (!name.trim() || price.trim() === "" ||
-        !Number.isFinite(Number(price)) || Number(price) < 0) {
-      message("नाम या कीमत सही नहीं है।");
-      return;
-    }
-
-    const number = prompt("प्रोडक्ट नंबर:", product.product_number || "");
-    if (number === null) return;
-
-    const result = await db
-      .from("Products")
-      .update({
-        product_name: name.trim(),
-        price: Number(price),
-        product_number: number.trim() || null
-      })
-      .eq("id", product.id)
-      .eq("shop_id", currentShop.id);
-
-    if (result.error) {
-      message("अपडेट नहीं हुआ: " + result.error.message);
-      return;
-    }
-
-    message("प्रोडक्ट अपडेट हो गया!");
-    await loadMyProducts();
+  if (!SUPABASE_URL.startsWith("https://")
+      || !SUPABASE_KEY.startsWith("sb_publishable_")) {
+    throw new Error("Check your Supabase Project URL and Publishable Key.");
   }
 
-  async function deleteProduct(id) {
-    if (!confirm("क्या यह प्रोडक्ट डिलीट करना है?")) return;
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const result = await db
-      .from("Products")
-      .delete()
-      .eq("id", id)
-      .eq("shop_id", currentShop.id);
+  $("signupBtn").onclick = safeAction(async () => {
+    const email = $("email").value.trim();
+    const password = $("password").value;
 
-    if (result.error) {
-      message("डिलीट नहीं हुआ: " + result.error.message);
-      return;
+    if (!email || password.length < 6) {
+      throw new Error("Enter a valid email and a password of at least 6 characters.");
     }
 
-    message("प्रोडक्ट डिलीट हो गया!");
-    await loadMyProducts();
-  }
+    const { data, error } = await db.auth.signUp({ email, password });
 
-  async function updateUI() {
-    const { data } = await db.auth.getSession();
-    currentUser = data.session?.user || null;
+    if (error) throw error;
 
-    $("dashboard").classList.toggle("hidden", !currentUser);
-    $("authCard").classList.toggle("hidden", !!currentUser);
-
-    if (currentUser) {
-      $("accountInfo").textContent = "लॉगिन: " + currentUser.email;
-      await loadMyShop();
+    if (data.session) {
+      currentUser = data.user;
+      await updateUI();
+      message("Account created successfully.");
+    } else {
+      message("Registration request accepted. Check your email for a confirmation link if email confirmation is enabled.");
     }
-  }
+  });
 
-  async function init() {
-    if (SUPABASE_URL.includes("YOUR_") ||
-        SUPABASE_KEY.includes("YOUR_")) {
-      message("पहले कोड में अपनी Supabase Project URL और Publishable Key डालें।");
-      return;
-    }
+  $("loginBtn").onclick = safeAction(async () => {
+    const email = $("email").value.trim();
+    const password = $("password").value;
+
+    if (!email || !password) throw new Error("Enter your email and password.");
+
+    const { error } = await db.auth.signInWithPassword({ email, password });
+
+    if (error) throw error;
+
+    await updateUI();
+    message("Signed in successfully.");
+  });
+
+  $("saveShopBtn").onclick = safeAction(saveShop);
+  $("addProductBtn").onclick = safeAction(addProduct);
+
+  $("logoutBtn").onclick = safeAction(async () => {
+    const { error } = await db.auth.signOut();
+    if (error) throw error;
+
+    currentUser = null;
+    currentShop = null;
+    $("dashboard").classList.add("hidden");
+    $("authCard").classList.remove("hidden");
+    message("Signed out successfully.");
+  });
+
+  $("copyLinkBtn").onclick = safeAction(async () => {
+    if (!currentShop) return;
+
+    const url = catalogURL(currentShop.slug);
 
     try {
-      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      $("signupBtn").onclick = async () => {
-        const email = $("email").value.trim();
-        const password = $("password").value;
-
-        if (!email || password.length < 6) {
-          message("सही ईमेल और कम से कम 6 अक्षर का पासवर्ड भरें।");
-          return;
-        }
-
-        const { error } = await db.auth.signUp({ email, password });
-
-        if (error) {
-          message("रजिस्ट्रेशन नहीं हुआ: " + error.message);
-        } else {
-          message("रजिस्ट्रेशन का अनुरोध सफल! अगर ईमेल पुष्टि माँगी जाए, तो अपने ईमेल में लिंक खोलें।");
-          await updateUI();
-        }
-      };
-
-      $("loginBtn").onclick = async () => {
-        const { error } = await db.auth.signInWithPassword({
-          email: $("email").value.trim(),
-          password: $("password").value
-        });
-
-        if (error) {
-          message("लॉगिन नहीं हुआ: " + error.message);
-        } else {
-          message("लॉगिन सफल!");
-          await updateUI();
-        }
-      };
-
-      $("saveShopBtn").onclick = saveShop;
-      $("addProductBtn").onclick = addProduct;
-
-      $("logoutBtn").onclick = async () => {
-        await db.auth.signOut();
-        currentUser = null;
-        currentShop = null;
-        message("लॉगआउट हो गया।");
-        await updateUI();
-      };
-
-      $("copyLinkBtn").onclick = async () => {
-        if (!currentShop) return;
-
-        try {
-          await navigator.clipboard.writeText(catalogURL(currentShop.slug));
-          message("कैटलॉग लिंक कॉपी हो गया!");
-        } catch {
-          message("कैटलॉग लिंक को दबाकर कॉपी करें: " +
-            catalogURL(currentShop.slug));
-        }
-      };
-
-      $("search").addEventListener("input", () => {
-        const query = $("search").value.trim().toLowerCase();
-        const filtered = allProducts.filter(p =>
-          String(p.product_name || "").toLowerCase().includes(query) ||
-          String(p.product_number || "").toLowerCase().includes(query)
-        );
-        renderProducts(filtered, false);
-      });
-
-      db.auth.onAuthStateChange(() => {
-        setTimeout(() => updateUI(), 0);
-      });
-
-      await loadCatalog();
-      await updateUI();
-
-    } catch (error) {
-      message("वेबसाइट शुरू नहीं हुई: " + error.message);
+      await navigator.clipboard.writeText(url);
+      message("Catalog link copied.");
+    } catch {
+      message("Copy this catalog link: " + url);
     }
-  }
+  });
 
-  init();
+  $("search").addEventListener("input", () => {
+    const query = $("search").value.trim().toLowerCase();
+
+    const filtered = allProducts.filter(product =>
+      String(product.product_name || "").toLowerCase().includes(query)
+      || String(product.product_number || "").toLowerCase().includes(query)
+    );
+
+    renderProducts(filtered, false);
+  });
+
+  await loadCatalog();
+  await updateUI();
+
+  db.auth.onAuthStateChange(() => {
+    setTimeout(() => {
+      updateUI().catch(error => {
+        console.error(error);
+        message("Error: " + errorText(error));
+      });
+    }, 0);
+  });
+
+  message("Smart Catalog is ready.");
+}
+
+startApp().catch(error => {
+  console.error(error);
+  message("Website startup failed: " + errorText(error));
+});
 </script>
 </body>
 </html>

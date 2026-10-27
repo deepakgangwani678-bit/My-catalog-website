@@ -92,6 +92,7 @@ footer{text-align:center;color:#657286;padding:22px}
     <input id="productName" placeholder="Product name">
     <input id="productNumber" placeholder="Product number (e.g. 101)">
     <input id="productPrice" type="number" min="0" step="0.01" placeholder="Price">
+    <label for="productImage" class="muted">Choose product photo from your phone</label>
     <input id="productImage" type="file" accept="image/*">
 
     <button id="addProductBtn" type="button">Add Product</button>
@@ -200,6 +201,7 @@ function renderProducts(products, editable) {
       || "https://placehold.co/300x220?text=Product";
     img.alt = product.product_name || "Product";
     img.loading = "lazy";
+
     img.onerror = () => {
       img.onerror = null;
       img.src = "https://placehold.co/300x220?text=Product";
@@ -222,13 +224,13 @@ function renderProducts(products, editable) {
       const edit = document.createElement("button");
       edit.type = "button";
       edit.textContent = "Edit Product";
-      edit.onclick = () => editProduct(product);
+      edit.onclick = () => safeAction(() => editProduct(product))();
 
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "danger";
       remove.textContent = "Delete Product";
-      remove.onclick = () => deleteProduct(product.id);
+      remove.onclick = () => safeAction(() => deleteProduct(product.id))();
 
       card.append(edit, remove);
     }
@@ -335,7 +337,6 @@ async function saveShop() {
   if (!currentUser) return message("Please sign in first.");
 
   const name = $("shopName").value.trim();
-
   if (!name) return message("Enter your store name.");
 
   const values = {
@@ -374,56 +375,78 @@ async function saveShop() {
 }
 
 async function addProduct() {
-if (!currentShop) return message(“Save your store details first.”);
+  if (!currentShop) {
+    return message("Save your store details first.");
+  }
 
-const name = $(“productName”).value.trim();
-const number = $(“productNumber”).value.trim();
-const rawPrice = $(“productPrice”).value;
-const file = $(“productImage”).files[0];
+  const name = $("productName").value.trim();
+  const number = $("productNumber").value.trim();
+  const rawPrice = $("productPrice").value;
+  const file = $("productImage").files[0];
 
-if (!name || rawPrice === “” || !Number.isFinite(Number(rawPrice)) || Number(rawPrice) < 0) {
-return message(“Enter a product name and a valid price.”);
+  if (!name || rawPrice === "" ||
+      !Number.isFinite(Number(rawPrice)) || Number(rawPrice) < 0) {
+    return message("Enter a product name and a valid price.");
+  }
+
+  let imageUrl = null;
+
+  if (file) {
+    if (!file.type.startsWith("image/")) {
+      return message("Please select an image file.");
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      return message("Please select an image smaller than 5 MB.");
+    }
+
+    const extension = (file.name.split(".").pop() || "jpg")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "") || "jpg";
+
+    const path = currentShop.id + "/" + crypto.randomUUID() + "." + extension;
+
+    const { error: uploadError } = await db.storage
+      .from("product-images")
+      .upload(path, file, {
+        contentType: file.type,
+        upsert: false
+      });
+
+    if (uploadError) {
+      throw new Error("Image upload failed: " + uploadError.message);
+    }
+
+    const { data } = db.storage
+      .from("product-images")
+      .getPublicUrl(path);
+
+    imageUrl = data.publicUrl;
+  }
+
+  const { error } = await db.from("Products").insert({
+    product_name: name,
+    product_number: number || null,
+    price: Number(rawPrice),
+    image_url: imageUrl,
+    shop_id: currentShop.id,
+    is_available: true
+  });
+
+  if (error) {
+    throw new Error("Product could not be added: " + error.message);
+  }
+
+  $("productName").value = "";
+  $("productNumber").value = "";
+  $("productPrice").value = "";
+  $("productImage").value = "";
+
+  await loadMyProducts();
+  message("Product added successfully.");
 }
 
-let imageUrl = null;
-
-if (file) {
-if (!file.type.startsWith(“image/”)) {
-return message(“Please select an image file.”);
-}
-
-const extension = file.name.split(".").pop().toLowerCase();
-const path = currentShop.id + "/" + crypto.randomUUID() + "." + extension;
-const { error: uploadError } = await db.storage
-  .from("product-images")
-  .upload(path, file, { contentType: file.type });
-if (uploadError) {
-  throw new Error("Image upload failed: " + uploadError.message);
-}
-const { data } = db.storage.from("product-images").getPublicUrl(path);
-imageUrl = data.publicUrl;
-
-}
-
-const { error } = await db.from(“Products”).insert({
-product_name: name,
-product_number: number || null,
-price: Number(rawPrice),
-image_url: imageUrl,
-shop_id: currentShop.id,
-is_available: true
-});
-
-if (error) throw new Error(“Product could not be added: “ + error.message);
-
-$(“productName”).value = “”;
-$(“productNumber”).value = “”;
-$(“productPrice”).value = “”;
-$(“productImage”).value = “”;
-
-await loadMyProducts();
-message(“Product added successfully.”);
-} {
+async function editProduct(product) {
   const name = prompt("Product name:", product.product_name);
   if (name === null) return;
 
@@ -433,8 +456,8 @@ message(“Product added successfully.”);
   const number = prompt("Product number:", product.product_number || "");
   if (number === null) return;
 
-  if (!name.trim() || price.trim() === ""
-      || !Number.isFinite(Number(price)) || Number(price) < 0) {
+  if (!name.trim() || price.trim() === "" ||
+      !Number.isFinite(Number(price)) || Number(price) < 0) {
     return message("Enter a valid product name and price.");
   }
 
@@ -447,7 +470,9 @@ message(“Product added successfully.”);
     .eq("id", product.id)
     .eq("shop_id", currentShop.id);
 
-  if (error) throw new Error("Product update failed: " + error.message);
+  if (error) {
+    throw new Error("Product update failed: " + error.message);
+  }
 
   await loadMyProducts();
   message("Product updated successfully.");
@@ -461,7 +486,9 @@ async function deleteProduct(id) {
     .eq("id", id)
     .eq("shop_id", currentShop.id);
 
-  if (error) throw new Error("Product deletion failed: " + error.message);
+  if (error) {
+    throw new Error("Product deletion failed: " + error.message);
+  }
 
   await loadMyProducts();
   message("Product deleted successfully.");
@@ -480,6 +507,8 @@ async function updateUI() {
   if (currentUser) {
     $("accountInfo").textContent = "Signed in as " + currentUser.email;
     await loadMyShop();
+  } else {
+    currentShop = null;
   }
 }
 
@@ -500,8 +529,8 @@ async function startApp() {
     throw new Error("The Supabase library did not load. Check your internet connection and refresh.");
   }
 
-  if (!SUPABASE_URL.startsWith("https://")
-      || !SUPABASE_KEY.startsWith("sb_publishable_")) {
+  if (!SUPABASE_URL.startsWith("https://") ||
+      !SUPABASE_KEY.startsWith("sb_publishable_")) {
     throw new Error("Check your Supabase Project URL and Publishable Key.");
   }
 
@@ -515,7 +544,13 @@ async function startApp() {
       throw new Error("Enter a valid email and a password of at least 6 characters.");
     }
 
-    const { data, error } = await db.auth.signUp({ email, password });
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: location.origin + location.pathname
+      }
+    });
 
     if (error) throw error;
 
@@ -532,7 +567,9 @@ async function startApp() {
     const email = $("email").value.trim();
     const password = $("password").value;
 
-    if (!email || !password) throw new Error("Enter your email and password.");
+    if (!email || !password) {
+      throw new Error("Enter your email and password.");
+    }
 
     const { error } = await db.auth.signInWithPassword({ email, password });
 
@@ -573,8 +610,8 @@ async function startApp() {
     const query = $("search").value.trim().toLowerCase();
 
     const filtered = allProducts.filter(product =>
-      String(product.product_name || "").toLowerCase().includes(query)
-      || String(product.product_number || "").toLowerCase().includes(query)
+      String(product.product_name || "").toLowerCase().includes(query) ||
+      String(product.product_number || "").toLowerCase().includes(query)
     );
 
     renderProducts(filtered, false);

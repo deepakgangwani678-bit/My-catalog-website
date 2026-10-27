@@ -374,43 +374,56 @@ async function saveShop() {
 }
 
 async function addProduct() {
-  if (!currentShop) return message("Save your store details first.");
+if (!currentShop) return message(“Save your store details first.”);
 
-  const name = $("productName").value.trim();
-  const number = $("productNumber").value.trim();
-  const rawPrice = $("productPrice").value;
-  const image = $("productImage").value.trim();
+const name = $(“productName”).value.trim();
+const number = $(“productNumber”).value.trim();
+const rawPrice = $(“productPrice”).value;
+const file = $(“productImage”).files[0];
 
-  if (!name || rawPrice === "" || !Number.isFinite(Number(rawPrice))
-      || Number(rawPrice) < 0) {
-    return message("Enter a product name and a valid price.");
-  }
-
-  if (image && !safeImage(image)) {
-    return message("Enter a valid image URL beginning with https:// or http://.");
-  }
-
-  const { error } = await db.from("Products").insert({
-    product_name: name,
-    product_number: number || null,
-    price: Number(rawPrice),
-    image_url: image || null,
-    shop_id: currentShop.id,
-    is_available: true
-  });
-
-  if (error) throw new Error("Product could not be added: " + error.message);
-
-  $("productName").value = "";
-  $("productNumber").value = "";
-  $("productPrice").value = "";
-  $("productImage").value = "";
-
-  await loadMyProducts();
-  message("Product added successfully.");
+if (!name || rawPrice === “” || !Number.isFinite(Number(rawPrice)) || Number(rawPrice) < 0) {
+return message(“Enter a product name and a valid price.”);
 }
 
-async function editProduct(product) {
+let imageUrl = null;
+
+if (file) {
+if (!file.type.startsWith(“image/”)) {
+return message(“Please select an image file.”);
+}
+
+const extension = file.name.split(".").pop().toLowerCase();
+const path = currentShop.id + "/" + crypto.randomUUID() + "." + extension;
+const { error: uploadError } = await db.storage
+  .from("product-images")
+  .upload(path, file, { contentType: file.type });
+if (uploadError) {
+  throw new Error("Image upload failed: " + uploadError.message);
+}
+const { data } = db.storage.from("product-images").getPublicUrl(path);
+imageUrl = data.publicUrl;
+
+}
+
+const { error } = await db.from(“Products”).insert({
+product_name: name,
+product_number: number || null,
+price: Number(rawPrice),
+image_url: imageUrl,
+shop_id: currentShop.id,
+is_available: true
+});
+
+if (error) throw new Error(“Product could not be added: “ + error.message);
+
+$(“productName”).value = “”;
+$(“productNumber”).value = “”;
+$(“productPrice”).value = “”;
+$(“productImage”).value = “”;
+
+await loadMyProducts();
+message(“Product added successfully.”);
+} {
   const name = prompt("Product name:", product.product_name);
   if (name === null) return;
 

@@ -1,168 +1,651 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smart Product Catalog</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Catalog - Digital Dukaan</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fff9e9;
-  color: #292929;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-header {
-  background: #8b2020;
-  color: white;
-  text-align: center;
-  padding: 25px 12px;
-}
+  <style>
+    * { box-sizing: border-box; }
 
-header h1 { margin: 0 0 8px; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 16px;
-}
+    header {
+      background: #116149;
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
 
-input {
-  width: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  border: 2px solid #e6b93d;
-  border-radius: 12px;
-  font-size: 16px;
-  margin-bottom: 15px;
-}
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; }
 
-.products {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
+    main {
+      width: min(950px, 94%);
+      margin: 20px auto;
+    }
 
-.card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px #0001;
-}
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 15px #0000000b;
+    }
 
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-}
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
 
-.details { padding: 12px; }
+    input {
+      border: 1px solid #ccd4df;
+      background: white;
+    }
 
-.number { color: #8b2020; font-size: 12px; }
+    button {
+      background: #116149;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-.price {
-  color: #168344;
-  font-weight: bold;
-  font-size: 20px;
-}
+    button.secondary { background: #334155; }
+    button.danger { background: #b42318; }
 
-@media(min-width:650px) {
-  .products { grid-template-columns: repeat(3, 1fr); }
-}
-</style>
+    .hidden { display: none; }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 14px;
+    }
+
+    .product {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      padding-bottom: 12px;
+      background: white;
+    }
+
+    .product img {
+      width: 100%;
+      height: 145px;
+      object-fit: cover;
+      background: #edf2f7;
+    }
+
+    .product h3, .product p {
+      margin: 9px 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .product button {
+      width: calc(100% - 20px);
+      margin: 5px 10px;
+      font-size: 14px;
+    }
+
+    .muted { color: #64748b; }
+    #message { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .price { color: #116149; font-weight: bold; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+    }
+  </style>
 </head>
 
 <body>
 <header>
-  <h1>SMART PRODUCT CATALOG</h1>
-  <p>Find Your Product Instantly</p>
+  <h1>🛍️ Smart Catalog</h1>
+  <p>आपकी दुकान, आपका डिजिटल कैटलॉग</p>
 </header>
 
-<div class="container">
-  <input id="search" placeholder="🔍 Search product name or number...">
-  <p id="count"></p>
-  <div id="products" class="products"></div>
-</div>
+<main>
+  <div class="card">
+    <h2>🔎 प्रोडक्ट खोजें</h2>
+    <input id="search" placeholder="प्रोडक्ट का नाम या नंबर लिखें">
+    <div id="catalogInfo" class="muted"></div>
+  </div>
+
+  <div id="publicCatalog" class="card">
+    <h2 id="catalogTitle">प्रोडक्ट कैटलॉग</h2>
+    <div id="publicProducts" class="products"></div>
+  </div>
+
+  <div class="card" id="authCard">
+    <h2>दुकानदार लॉगिन / रजिस्ट्रेशन</h2>
+    <p class="muted">अपना अकाउंट बनाएँ या पहले से बने अकाउंट से लॉगिन करें।</p>
+
+    <input id="email" type="email" placeholder="ईमेल एड्रेस">
+    <input id="password" type="password" placeholder="पासवर्ड (कम से कम 6 अक्षर)">
+
+    <button id="signupBtn">नया अकाउंट बनाएँ</button>
+    <button id="loginBtn" class="secondary">लॉगिन करें</button>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <div class="card">
+      <h2>🏪 आपकी दुकान</h2>
+      <p id="accountInfo" class="muted"></p>
+
+      <input id="shopName" placeholder="दुकान का नाम">
+      <input id="shopContact" placeholder="दुकान का फोन नंबर">
+      <input id="shopDescription" placeholder="दुकान के बारे में">
+      <button id="saveShopBtn">दुकान बनाएँ / जानकारी अपडेट करें</button>
+
+      <div id="shopLink" class="muted"></div>
+      <button id="copyLinkBtn" class="secondary hidden">कैटलॉग लिंक कॉपी करें</button>
+      <div id="qrBox"></div>
+    </div>
+
+    <div class="card">
+      <h2>➕ नया प्रोडक्ट जोड़ें</h2>
+
+      <input id="productName" placeholder="प्रोडक्ट का नाम">
+      <input id="productNumber" placeholder="प्रोडक्ट नंबर, जैसे 101">
+      <input id="productPrice" type="number" min="0" step="0.01" placeholder="कीमत ₹">
+      <input id="productImage" type="url" placeholder="प्रोडक्ट फोटो का URL (वैकल्पिक)">
+
+      <button id="addProductBtn">प्रोडक्ट जोड़ें</button>
+    </div>
+
+    <div class="card">
+      <h2>📦 आपके प्रोडक्ट</h2>
+      <div id="myProducts" class="products"></div>
+    </div>
+
+    <div class="card">
+      <button id="logoutBtn" class="danger">लॉगआउट</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <p id="message" role="status">वेबसाइट शुरू हो रही है...</p>
+  </div>
+</main>
+
+<footer>Smart Catalog · आपकी डिजिटल दुकान</footer>
 
 <script>
-const items = [
-  {
-    number: "85",
-    name: "Tomato",
-    price: "₹40",
-    image: "https://placehold.co/400x300?text=Tomato"
-  },
-  {
-    number: "86",
-    name: "Potato",
-    price: "₹30",
-    image: "https://placehold.co/400x300?text=Potato"
-  },
-  {
-    number: "87",
-    name: "Onion",
-    price: "₹35",
-    image: "https://placehold.co/400x300?text=Onion"
-  },
-  {
-    number: "88",
-    name: "Green Chilli",
-    price: "₹25",
-    image: "https://placehold.co/400x300?text=Green+Chilli"
-  }
-];
+  // अपनी Supabase Project URL और Publishable Key यहाँ डालें।
+  const SUPABASE_URL = https://dfuqgijfkbaykgshvlxd.supabase.co/rest/v1/
+  const SUPABASE_KEY = sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_
 
-const search = document.getElementById("search");
-const products = document.getElementById("products");
-const count = document.getElementById("count");
 
-function showProducts() {
-  const q = search.value.trim().toLowerCase();
+  const $ = (id) => document.getElementById(id);
 
-  const results = items.filter(item =>
-    item.name.toLowerCase().includes(q) ||
-    item.number.toLowerCase().includes(q)
-  );
+  let db = null;
+  let currentUser = null;
+  let currentShop = null;
+  let allProducts = [];
 
-  count.textContent = results.length + " products found";
-  products.innerHTML = "";
-
-  if (!results.length) {
-    products.textContent = "No products found.";
-    return;
+  function message(text) {
+    $("message").textContent = text;
   }
 
-  results.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[c]);
+  }
+
+  function safeImage(url) {
+    try {
+      const u = new URL(url);
+      return ["https:", "http:"].includes(u.protocol) ? u.href : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function makeSlug(name) {
+    const base = String(name)
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 35);
+
+    return (base || "shop") + "-" +
+      crypto.randomUUID().slice(0, 8);
+  }
+
+  function catalogURL(slug) {
+    const url = new URL(location.href);
+    url.search = "";
+    url.hash = "";
+    url.searchParams.set("shop", slug);
+    return url.href;
+  }
+
+  function qrImage(url) {
+    const box = $("qrBox");
+    box.replaceChildren();
 
     const img = document.createElement("img");
-    img.src = item.image;
-    img.alt = item.name;
+    img.alt = "दुकान के कैटलॉग का QR कोड";
+    img.width = 180;
+    img.height = 180;
+    img.loading = "lazy";
+    img.src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+      encodeURIComponent(url);
 
-    const details = document.createElement("div");
-    details.className = "details";
+    box.appendChild(img);
+  }
 
-    const number = document.createElement("p");
-    number.className = "number";
-    number.textContent = "PRODUCT NO. " + item.number;
+  async function loadCatalog() {
+    const slug = new URLSearchParams(location.search).get("shop");
 
-    const name = document.createElement("h3");
-    name.textContent = item.name;
+    if (!slug) {
+      $("catalogTitle").textContent = "प्रोडक्ट कैटलॉग";
+      $("catalogInfo").textContent =
+        "किसी दुकान का कैटलॉग खोलने के लिए उसका लिंक इस्तेमाल करें।";
+      $("publicProducts").replaceChildren();
+      return;
+    }
 
-    const price = document.createElement("div");
-    price.className = "price";
-    price.textContent = item.price;
+    const { data: shop, error } = await db
+      .from("Shops")
+      .select("id, shop_name, description, is_active")
+      .eq("slug", slug)
+      .maybeSingle();
 
-    details.append(number, name, price);
-    card.append(img, details);
-    products.appendChild(card);
-  });
-}
+    if (error || !shop || !shop.is_active) {
+      $("catalogTitle").textContent = "दुकान नहीं मिली";
+      $("catalogInfo").textContent =
+        "कैटलॉग का लिंक गलत हो सकता है या दुकान उपलब्ध नहीं है।";
+      $("publicProducts").replaceChildren();
+      return;
+    }
 
-search.addEventListener("input", showProducts);
-showProducts();
+    $("catalogTitle").textContent = shop.shop_name;
+    $("catalogInfo").textContent = shop.description || "";
+
+    const { data: products, error: productError } = await db
+      .from("Products")
+      .select("id, product_name, product_number, price, image_url")
+      .eq("shop_id", shop.id)
+      .eq("is_available", true)
+      .order("product_name");
+
+    if (productError) {
+      $("catalogInfo").textContent =
+        "प्रोडक्ट लोड नहीं हुए। डेटाबेस की policies जाँचनी होंगी।";
+      return;
+    }
+
+    allProducts = products || [];
+    renderProducts(allProducts, false);
+  }
+
+  function renderProducts(products, editable) {
+    const container = editable ? $("myProducts") : $("publicProducts");
+    container.replaceChildren();
+
+    if (!products.length) {
+      const p = document.createElement("p");
+      p.textContent = "अभी कोई प्रोडक्ट उपलब्ध नहीं है।";
+      container.appendChild(p);
+      return;
+    }
+
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "product";
+
+      const img = document.createElement("img");
+      img.src = safeImage(product.image_url) ||
+        "https://placehold.co/300x220?text=Product";
+      img.alt = product.product_name || "Product";
+      img.loading = "lazy";
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = "https://placehold.co/300x220?text=Product";
+      };
+
+      const title = document.createElement("h3");
+      title.textContent = product.product_name;
+
+      const number = document.createElement("p");
+      number.textContent = "नंबर: " + (product.product_number || "-");
+
+      const price = document.createElement("p");
+      price.className = "price";
+      price.textContent = "₹" + Number(product.price).toLocaleString("en-IN");
+
+      card.append(img, title, number, price);
+
+      if (editable) {
+        const edit = document.createElement("button");
+        edit.textContent = "कीमत / जानकारी बदलें";
+        edit.onclick = () => editProduct(product);
+
+        const remove = document.createElement("button");
+        remove.textContent = "डिलीट";
+        remove.className = "danger";
+        remove.onclick = () => deleteProduct(product.id);
+
+        card.append(edit, remove);
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  async function loadMyShop() {
+    if (!currentUser) return;
+
+    const { data: shop, error } = await db
+      .from("Shops")
+      .select("*")
+      .eq("owner_id", currentUser.id)
+      .maybeSingle();
+
+    if (error) {
+      message("दुकान लोड नहीं हुई: " + error.message);
+      return;
+    }
+
+    currentShop = shop;
+
+    if (shop) {
+      $("shopName").value = shop.shop_name || "";
+      $("shopContact").value = shop.contact || "";
+      $("shopDescription").value = shop.description || "";
+
+      const url = catalogURL(shop.slug);
+      $("shopLink").textContent = "कैटलॉग लिंक: " + url;
+      $("copyLinkBtn").classList.remove("hidden");
+      qrImage(url);
+
+      await loadMyProducts();
+    } else {
+      $("shopLink").textContent = "पहले अपनी दुकान बनाएँ।";
+      $("copyLinkBtn").classList.add("hidden");
+      $("qrBox").replaceChildren();
+      $("myProducts").replaceChildren();
+    }
+  }
+
+  async function loadMyProducts() {
+    if (!currentShop) return;
+
+    const { data, error } = await db
+      .from("Products")
+      .select("*")
+      .eq("shop_id", currentShop.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      message("प्रोडक्ट लोड नहीं हुए: " + error.message);
+      return;
+    }
+
+    renderProducts(data || [], true);
+  }
+
+  async function saveShop() {
+    const name = $("shopName").value.trim();
+
+    if (!name) {
+      message("पहले दुकान का नाम लिखें।");
+      return;
+    }
+
+    const values = {
+      shop_name: name,
+      contact: $("shopContact").value.trim(),
+      description: $("shopDescription").value.trim()
+    };
+
+    let result;
+
+    if (currentShop) {
+      result = await db
+        .from("Shops")
+        .update(values)
+        .eq("id", currentShop.id)
+        .select()
+        .single();
+    } else {
+      result = await db
+        .from("Shops")
+        .insert({
+          ...values,
+          owner_id: currentUser.id,
+          slug: makeSlug(name),
+          is_active: true
+        })
+        .select()
+        .single();
+    }
+
+    if (result.error) {
+      message("दुकान सेव नहीं हुई: " + result.error.message);
+      return;
+    }
+
+    currentShop = result.data;
+    message("दुकान सेव हो गई!");
+    await loadMyShop();
+  }
+
+  async function addProduct() {
+    if (!currentShop) {
+      message("पहले अपनी दुकान बनाएँ।");
+      return;
+    }
+
+    const name = $("productName").value.trim();
+    const number = $("productNumber").value.trim();
+    const price = $("productPrice").value;
+    const image = $("productImage").value.trim();
+
+    if (!name || price === "" || !Number.isFinite(Number(price)) ||
+        Number(price) < 0) {
+      message("प्रोडक्ट का नाम और सही कीमत भरें।");
+      return;
+    }
+
+    const result = await db.from("Products").insert({
+      product_name: name,
+      product_number: number || null,
+      price: Number(price),
+      image_url: image || null,
+      shop_id: currentShop.id,
+      is_available: true
+    });
+
+    if (result.error) {
+      message("प्रोडक्ट सेव नहीं हुआ: " + result.error.message);
+      return;
+    }
+
+    $("productName").value = "";
+    $("productNumber").value = "";
+    $("productPrice").value = "";
+    $("productImage").value = "";
+
+    message("प्रोडक्ट जोड़ दिया गया!");
+    await loadMyProducts();
+  }
+
+  async function editProduct(product) {
+    const name = prompt("प्रोडक्ट का नाम:", product.product_name);
+    if (name === null) return;
+
+    const price = prompt("नई कीमत:", product.price);
+    if (price === null) return;
+
+    if (!name.trim() || price.trim() === "" ||
+        !Number.isFinite(Number(price)) || Number(price) < 0) {
+      message("नाम या कीमत सही नहीं है।");
+      return;
+    }
+
+    const number = prompt("प्रोडक्ट नंबर:", product.product_number || "");
+    if (number === null) return;
+
+    const result = await db
+      .from("Products")
+      .update({
+        product_name: name.trim(),
+        price: Number(price),
+        product_number: number.trim() || null
+      })
+      .eq("id", product.id)
+      .eq("shop_id", currentShop.id);
+
+    if (result.error) {
+      message("अपडेट नहीं हुआ: " + result.error.message);
+      return;
+    }
+
+    message("प्रोडक्ट अपडेट हो गया!");
+    await loadMyProducts();
+  }
+
+  async function deleteProduct(id) {
+    if (!confirm("क्या यह प्रोडक्ट डिलीट करना है?")) return;
+
+    const result = await db
+      .from("Products")
+      .delete()
+      .eq("id", id)
+      .eq("shop_id", currentShop.id);
+
+    if (result.error) {
+      message("डिलीट नहीं हुआ: " + result.error.message);
+      return;
+    }
+
+    message("प्रोडक्ट डिलीट हो गया!");
+    await loadMyProducts();
+  }
+
+  async function updateUI() {
+    const { data } = await db.auth.getSession();
+    currentUser = data.session?.user || null;
+
+    $("dashboard").classList.toggle("hidden", !currentUser);
+    $("authCard").classList.toggle("hidden", !!currentUser);
+
+    if (currentUser) {
+      $("accountInfo").textContent = "लॉगिन: " + currentUser.email;
+      await loadMyShop();
+    }
+  }
+
+  async function init() {
+    if (SUPABASE_URL.includes("YOUR_") ||
+        SUPABASE_KEY.includes("YOUR_")) {
+      message("पहले कोड में अपनी Supabase Project URL और Publishable Key डालें।");
+      return;
+    }
+
+    try {
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      $("signupBtn").onclick = async () => {
+        const email = $("email").value.trim();
+        const password = $("password").value;
+
+        if (!email || password.length < 6) {
+          message("सही ईमेल और कम से कम 6 अक्षर का पासवर्ड भरें।");
+          return;
+        }
+
+        const { error } = await db.auth.signUp({ email, password });
+
+        if (error) {
+          message("रजिस्ट्रेशन नहीं हुआ: " + error.message);
+        } else {
+          message("रजिस्ट्रेशन का अनुरोध सफल! अगर ईमेल पुष्टि माँगी जाए, तो अपने ईमेल में लिंक खोलें।");
+          await updateUI();
+        }
+      };
+
+      $("loginBtn").onclick = async () => {
+        const { error } = await db.auth.signInWithPassword({
+          email: $("email").value.trim(),
+          password: $("password").value
+        });
+
+        if (error) {
+          message("लॉगिन नहीं हुआ: " + error.message);
+        } else {
+          message("लॉगिन सफल!");
+          await updateUI();
+        }
+      };
+
+      $("saveShopBtn").onclick = saveShop;
+      $("addProductBtn").onclick = addProduct;
+
+      $("logoutBtn").onclick = async () => {
+        await db.auth.signOut();
+        currentUser = null;
+        currentShop = null;
+        message("लॉगआउट हो गया।");
+        await updateUI();
+      };
+
+      $("copyLinkBtn").onclick = async () => {
+        if (!currentShop) return;
+
+        try {
+          await navigator.clipboard.writeText(catalogURL(currentShop.slug));
+          message("कैटलॉग लिंक कॉपी हो गया!");
+        } catch {
+          message("कैटलॉग लिंक को दबाकर कॉपी करें: " +
+            catalogURL(currentShop.slug));
+        }
+      };
+
+      $("search").addEventListener("input", () => {
+        const query = $("search").value.trim().toLowerCase();
+        const filtered = allProducts.filter(p =>
+          String(p.product_name || "").toLowerCase().includes(query) ||
+          String(p.product_number || "").toLowerCase().includes(query)
+        );
+        renderProducts(filtered, false);
+      });
+
+      db.auth.onAuthStateChange(() => {
+        setTimeout(() => updateUI(), 0);
+      });
+
+      await loadCatalog();
+      await updateUI();
+
+    } catch (error) {
+      message("वेबसाइट शुरू नहीं हुई: " + error.message);
+    }
+  }
+
+  init();
 </script>
 </body>
 </html>

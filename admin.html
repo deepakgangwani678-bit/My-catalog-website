@@ -76,6 +76,8 @@ const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
 
 const ADMIN_UID = "4471cdf9-38b9-4a1d-b267-67f5c34e70b3";
 
+const SITE_URL = "https://deepakgangwani678-bit.github.io/My-catalog-website";
+
 const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -201,6 +203,14 @@ async function createShop(){
   }
 }
 
+function getCatalogURL(shop){
+  if(!shop.slug){
+    throw new Error("Shop slug is missing for "+shop.shop_name);
+  }
+
+  return SITE_URL+"/catalog.html?shop="+encodeURIComponent(shop.slug);
+}
+
 async function loadShops(){
   const box = document.getElementById("shopList");
   box.innerHTML="Loading shops...";
@@ -234,7 +244,12 @@ async function loadShops(){
 
       const url = document.createElement("div");
       url.className="small";
-      url.textContent=shop.catalog_url;
+
+      try{
+        url.textContent=getCatalogURL(shop);
+      }catch(error){
+        url.textContent=error.message;
+      }
 
       const qrButton = document.createElement("button");
       qrButton.textContent="Show QR";
@@ -348,9 +363,21 @@ async function deleteShop(shop){
 }
 
 function showQR(shop){
-  const url = shop.catalog_url;
+  let url;
+
+  try{
+    url=getCatalogURL(shop);
+  }catch(error){
+    msg(error.message);
+    return;
+  }
 
   const w = window.open("","_blank");
+
+  if(!w){
+    msg("Please allow pop-ups to open the QR code.");
+    return;
+  }
 
   w.document.write(`
     <html>

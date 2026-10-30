@@ -1,1 +1,192 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Catalog | Admin Panel</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f3f5f9;color:#172033;font-family:Arial,sans-serif}
+    .wrap{max-width:850px;margin:35px auto;padding:16px}
+    .card{background:white;padding:24px;border-radius:14px;margin-bottom:18px;box-shadow:0 3px 15px #0000000b}
+    h1{margin:0 0 8px;color:#14213d}
+    h2{font-size:20px;margin-top:0}
+    p{color:#657085}
+    label{display:block;font-weight:600;margin:14px 0 6px}
+    input,textarea{width:100%;padding:13px;border:1px solid #d8deea;border-radius:8px;font-size:16px}
+    button{border:0;border-radius:8px;padding:13px 18px;background:#173b70;color:white;font-size:15px;font-weight:bold;cursor:pointer;margin-top:15px}
+    button:disabled{opacity:.5}
+    .secondary{background:#64748b}
+    .hidden{display:none}
+    .status{padding:12px;border-radius:8px;background:#eef3fa;margin-top:12px;overflow-wrap:anywhere}
+    .success{background:#e8f8ed;color:#176b35}
+    .error{background:#fff0f0;color:#a32020}
+    a{color:#1456a0;overflow-wrap:anywhere}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>Smart Catalog</h1>
+    <p>Admin Control Panel</p>
+  </div>
+  <section class="card" id="loginCard">
+    <h2>Admin Login</h2>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="Admin email">
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="Admin password">
+    <button id="loginBtn">Login</button>
+    <div id="loginMsg" class="status hidden"></div>
+  </section>
+  <section id="dashboard" class="hidden">
+    <div class="card">
+      <div class="top">
+        <div>
+          <h2>Welcome, Admin</h2>
+          <p>Create a shop and its shopkeeper login.</p>
+        </div>
+        <button id="logoutBtn" class="secondary">Logout</button>
+      </div>
+    </div>
+<div class="card">
+  <h2>Create New Shop</h2>
+  <label>Shop Name</label>
+  <input id="shopName" placeholder="Example: Sharma Furniture">
+  <label>Shopkeeper Email</label>
+  <input id="ownerEmail" type="email" placeholder="shopkeeper@example.com">
+  <label>Shopkeeper Password</label>
+  <input id="ownerPassword" type="password" minlength="6" placeholder="Minimum 6 characters">
+  <label>Contact Number</label>
+  <input id="contact" type="tel" placeholder="Mobile number">
+  <label>Shop Description</label>
+  <textarea id="description" rows="3" placeholder="About this shop"></textarea>
+  <button id="createBtn">Create Shop & Owner Login</button>
+  <div id="createMsg" class="status hidden"></div>
+  <div id="result" class="status hidden"></div>
+</div>
+  </section>
+</div>
+<script>
+(() => {
+  const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+  const ADMIN_UID = "4471cdf9-38b9-4a1d-b267-67f5c34e70b3";
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = id => document.getElementById(id);
+  function message(id, text, type = "") {
+    const el = $(id);
+    el.textContent = text;
+    el.className = "status " + type;
+    el.classList.remove("hidden");
+  }
+  function showDashboard() {
+    $("loginCard").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+  }
+  async function checkSession() {
+    const { data } = await client.auth.getSession();
+    const user = data.session?.user;
+    if (user && user.id === ADMIN_UID) {
+      showDashboard();
+    } else {
+      $("dashboard").classList.add("hidden");
+      $("loginCard").classList.remove("hidden");
+      if (user) {
+        await client.auth.signOut();
+        message("loginMsg", "This account is not authorized as Admin.", "error");
+      }
+    }
+  }
+  $("loginBtn").addEventListener("click", async () => {
+    const email = $("loginEmail").value.trim();
+    const password = $("loginPassword").value;
+    if (!email || !password) {
+      return message("loginMsg", "Enter email and password.", "error");
+    }
+    $("loginBtn").disabled = true;
+    message("loginMsg", "Signing in...");
+    const { data, error } = await client.auth.signInWithPassword({
+      email, password
+    });
+    $("loginBtn").disabled = false;
+    if (error) {
+      return message("loginMsg", error.message, "error");
+    }
+    if (data.user.id !== ADMIN_UID) {
+      await client.auth.signOut();
+      return message("loginMsg", "Admin access denied.", "error");
+    }
+    message("loginMsg", "Login successful.", "success");
+    showDashboard();
+  });
+  $("createBtn").addEventListener("click", async () => {
+    const shop_name = $("shopName").value.trim();
+    const email = $("ownerEmail").value.trim();
+    const password = $("ownerPassword").value;
+    const contact = $("contact").value.trim();
+    const description = $("description").value.trim();
+    if (!shop_name || !email || password.length < 6) {
+      return message("createMsg", "Enter shop name, valid email and password of at least 6 characters.", "error");
+    }
+    const { data: sessionData } = await client.auth.getSession();
+    const user = sessionData.session?.user;
+    if (!user || user.id !== ADMIN_UID) {
+      await client.auth.signOut();
+      $("dashboard").classList.add("hidden");
+      $("loginCard").classList.remove("hidden");
+      return message("loginMsg", "Please login again with the Admin account.", "error");
+    }
+    $("createBtn").disabled = true;
+    $("result").classList.add("hidden");
+    message("createMsg", "Creating shop and owner account...");
+    const { data, error } = await client.functions.invoke("create-shop-owner", {
+      body: { shop_name, email, password, contact, description }
+    });
+    $("createBtn").disabled = false;
+    if (error || !data?.success) {
+      return message("createMsg", data?.error || error?.message || "Could not create shop.", "error");
+    }
+    message("createMsg", "Shop and owner account created successfully.", "success");
+    const result = $("result");
+    result.className = "status success";
+    result.innerHTML = "";
+    const title = document.createElement("strong");
+    title.textContent = "Shop created successfully!";
+    result.appendChild(title);
+    const details = [
+      "Shop: " + data.shop.shop_name,
+      "Owner Login: " + data.owner_email,
+      "Catalog Link: " + data.catalog_url
+    ];
+    details.forEach(text => {
+      const p = document.createElement("p");
+      p.textContent = text;
+      result.appendChild(p);
+    });
+    const link = document.createElement("a");
+    link.href = data.catalog_url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open Customer Catalog";
+    result.appendChild(link);
+    $("shopName").value = "";
+    $("ownerEmail").value = "";
+    $("ownerPassword").value = "";
+    $("contact").value = "";
+    $("description").value = "";
+  });
+  $("logoutBtn").addEventListener("click", async () => {
+    await client.auth.signOut();
+    $("dashboard").classList.add("hidden");
+    $("loginCard").classList.remove("hidden");
+    $("loginPassword").value = "";
+    message("loginMsg", "You have been logged out.", "success");
+  });
+  checkSession();
+})();
+</script>
+</body>
+</html>

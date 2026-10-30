@@ -1,192 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Catalog | Admin Panel</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;background:#f3f5f9;color:#172033;font-family:Arial,sans-serif}
-    .wrap{max-width:850px;margin:35px auto;padding:16px}
-    .card{background:white;padding:24px;border-radius:14px;margin-bottom:18px;box-shadow:0 3px 15px #0000000b}
-    h1{margin:0 0 8px;color:#14213d}
-    h2{font-size:20px;margin-top:0}
-    p{color:#657085}
-    label{display:block;font-weight:600;margin:14px 0 6px}
-    input,textarea{width:100%;padding:13px;border:1px solid #d8deea;border-radius:8px;font-size:16px}
-    button{border:0;border-radius:8px;padding:13px 18px;background:#173b70;color:white;font-size:15px;font-weight:bold;cursor:pointer;margin-top:15px}
-    button:disabled{opacity:.5}
-    .secondary{background:#64748b}
-    .hidden{display:none}
-    .status{padding:12px;border-radius:8px;background:#eef3fa;margin-top:12px;overflow-wrap:anywhere}
-    .success{background:#e8f8ed;color:#176b35}
-    .error{background:#fff0f0;color:#a32020}
-    a{color:#1456a0;overflow-wrap:anywhere}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Catalog Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f5f9;font-family:Arial,sans-serif;color:#172033}
+header{background:#101c35;color:white;padding:20px}
+header h2{margin:0}
+.container{max-width:1000px;margin:auto;padding:16px}
+.card{background:white;padding:18px;border-radius:13px;margin-bottom:16px;box-shadow:0 2px 10px #0000000b}
+input,textarea{width:100%;padding:13px;margin:7px 0 13px;border:1px solid #ccd3df;border-radius:8px;font-size:15px}
+button{border:0;padding:11px 14px;border-radius:8px;background:#173d78;color:white;font-weight:bold;margin:4px;cursor:pointer}
+.red{background:#c62828}
+.green{background:#16834b}
+.gray{background:#596579}
+.hidden{display:none}
+.shop{border:1px solid #e0e5ed;padding:14px;border-radius:10px;margin:12px 0}
+.shop h3{margin:3px 0 10px}
+.small{font-size:13px;color:#667085;word-break:break-all}
+#message{padding:10px;color:#173d78}
+.qr{max-width:230px;width:100%;display:block;margin:12px auto}
+</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>Smart Catalog</h1>
-    <p>Admin Control Panel</p>
-  </div>
-  <section class="card" id="loginCard">
-    <h2>Admin Login</h2>
-    <label>Email</label>
-    <input id="loginEmail" type="email" placeholder="Admin email">
-    <label>Password</label>
-    <input id="loginPassword" type="password" placeholder="Admin password">
-    <button id="loginBtn">Login</button>
-    <div id="loginMsg" class="status hidden"></div>
-  </section>
-  <section id="dashboard" class="hidden">
-    <div class="card">
-      <div class="top">
-        <div>
-          <h2>Welcome, Admin</h2>
-          <p>Create a shop and its shopkeeper login.</p>
-        </div>
-        <button id="logoutBtn" class="secondary">Logout</button>
-      </div>
-    </div>
+
+<header>
+<h2>Smart Catalog – Admin Panel</h2>
+<p>Manage all your shops</p>
+</header>
+
+<div class="container">
+
+<div id="loginBox" class="card">
+<h2>Admin Login</h2>
+<input id="email" type="email" placeholder="Admin Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div id="dashboard" class="hidden">
+
 <div class="card">
-  <h2>Create New Shop</h2>
-  <label>Shop Name</label>
-  <input id="shopName" placeholder="Example: Sharma Furniture">
-  <label>Shopkeeper Email</label>
-  <input id="ownerEmail" type="email" placeholder="shopkeeper@example.com">
-  <label>Shopkeeper Password</label>
-  <input id="ownerPassword" type="password" minlength="6" placeholder="Minimum 6 characters">
-  <label>Contact Number</label>
-  <input id="contact" type="tel" placeholder="Mobile number">
-  <label>Shop Description</label>
-  <textarea id="description" rows="3" placeholder="About this shop"></textarea>
-  <button id="createBtn">Create Shop & Owner Login</button>
-  <div id="createMsg" class="status hidden"></div>
-  <div id="result" class="status hidden"></div>
+<h2>Welcome Admin</h2>
+<button class="gray" onclick="logout()">Logout</button>
+<button onclick="loadShops()">Refresh Shops</button>
 </div>
-  </section>
+
+<div class="card">
+<h2>Create New Shop</h2>
+<input id="shopName" placeholder="Shop Name">
+<input id="ownerEmail" type="email" placeholder="Owner Email">
+<input id="ownerPassword" type="password" placeholder="Owner Password (minimum 6 characters)">
+<input id="contact" placeholder="Mobile Number">
+<textarea id="description" placeholder="Shop Description"></textarea>
+<button onclick="createShop()">Create Shop</button>
 </div>
+
+<div class="card">
+<h2>All Shops</h2>
+<div id="shopList">Loading shops...</div>
+</div>
+
+</div>
+
+<div id="message"></div>
+
+</div>
+
 <script>
-(() => {
-  const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
-  const ADMIN_UID = "4471cdf9-38b9-4a1d-b267-67f5c34e70b3";
-  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  const $ = id => document.getElementById(id);
-  function message(id, text, type = "") {
-    const el = $(id);
-    el.textContent = text;
-    el.className = "status " + type;
-    el.classList.remove("hidden");
-  }
-  function showDashboard() {
-    $("loginCard").classList.add("hidden");
-    $("dashboard").classList.remove("hidden");
-  }
-  async function checkSession() {
-    const { data } = await client.auth.getSession();
-    const user = data.session?.user;
-    if (user && user.id === ADMIN_UID) {
-      showDashboard();
-    } else {
-      $("dashboard").classList.add("hidden");
-      $("loginCard").classList.remove("hidden");
-      if (user) {
-        await client.auth.signOut();
-        message("loginMsg", "This account is not authorized as Admin.", "error");
-      }
-    }
-  }
-  $("loginBtn").addEventListener("click", async () => {
-    const email = $("loginEmail").value.trim();
-    const password = $("loginPassword").value;
-    if (!email || !password) {
-      return message("loginMsg", "Enter email and password.", "error");
-    }
-    $("loginBtn").disabled = true;
-    message("loginMsg", "Signing in...");
-    const { data, error } = await client.auth.signInWithPassword({
-      email, password
-    });
-    $("loginBtn").disabled = false;
-    if (error) {
-      return message("loginMsg", error.message, "error");
-    }
-    if (data.user.id !== ADMIN_UID) {
-      await client.auth.signOut();
-      return message("loginMsg", "Admin access denied.", "error");
-    }
-    message("loginMsg", "Login successful.", "success");
+const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+
+const ADMIN_UID = "4471cdf9-38b9-4a1d-b267-67f5c34e70b3";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+function msg(text){
+  document.getElementById("message").textContent = text;
+}
+
+function showDashboard(){
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+}
+
+function showLogin(){
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+}
+
+async function checkAdmin(){
+  const {data:{session}} = await db.auth.getSession();
+
+  if(session && session.user.id === ADMIN_UID){
     showDashboard();
+    loadShops();
+  }else{
+    showLogin();
+  }
+}
+
+async function login(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  msg("Logging in...");
+
+  const {data,error} = await db.auth.signInWithPassword({
+    email,password
   });
-  $("createBtn").addEventListener("click", async () => {
-    const shop_name = $("shopName").value.trim();
-    const email = $("ownerEmail").value.trim();
-    const password = $("ownerPassword").value;
-    const contact = $("contact").value.trim();
-    const description = $("description").value.trim();
-    if (!shop_name || !email || password.length < 6) {
-      return message("createMsg", "Enter shop name, valid email and password of at least 6 characters.", "error");
+
+  if(error){
+    msg(error.message);
+    return;
+  }
+
+  if(data.user.id !== ADMIN_UID){
+    await db.auth.signOut();
+    msg("Admin access denied.");
+    return;
+  }
+
+  msg("Login successful.");
+  showDashboard();
+  loadShops();
+}
+
+async function logout(){
+  await db.auth.signOut();
+  showLogin();
+  msg("Logged out.");
+}
+
+async function callFunction(actionData){
+  const {data,error} = await db.functions.invoke(
+    "admin-manage-shops",
+    {body:actionData}
+  );
+
+  if(error){
+    throw new Error(error.message);
+  }
+
+  if(data && data.error){
+    throw new Error(data.error);
+  }
+
+  return data;
+}
+
+async function createShop(){
+  const shop_name = document.getElementById("shopName").value.trim();
+  const email = document.getElementById("ownerEmail").value.trim();
+  const password = document.getElementById("ownerPassword").value;
+  const contact = document.getElementById("contact").value.trim();
+  const description = document.getElementById("description").value.trim();
+
+  if(!shop_name || !email || password.length < 6){
+    msg("Shop name, email and password are required.");
+    return;
+  }
+
+  msg("Creating shop...");
+
+  try{
+    const {data,error} = await db.functions.invoke(
+      "create-shop-owner",
+      {
+        body:{
+          shop_name,
+          email,
+          password,
+          contact,
+          description
+        }
+      }
+    );
+
+    if(error) throw new Error(error.message);
+    if(data.error) throw new Error(data.error);
+
+    msg("Shop created successfully!");
+
+    document.getElementById("shopName").value="";
+    document.getElementById("ownerEmail").value="";
+    document.getElementById("ownerPassword").value="";
+    document.getElementById("contact").value="";
+    document.getElementById("description").value="";
+
+    loadShops();
+
+  }catch(error){
+    msg("Error: "+error.message);
+  }
+}
+
+async function loadShops(){
+  const box = document.getElementById("shopList");
+  box.innerHTML="Loading shops...";
+
+  try{
+    const result = await callFunction({action:"list"});
+    const shops = result.shops || [];
+
+    if(!shops.length){
+      box.innerHTML="No shops found.";
+      return;
     }
-    const { data: sessionData } = await client.auth.getSession();
-    const user = sessionData.session?.user;
-    if (!user || user.id !== ADMIN_UID) {
-      await client.auth.signOut();
-      $("dashboard").classList.add("hidden");
-      $("loginCard").classList.remove("hidden");
-      return message("loginMsg", "Please login again with the Admin account.", "error");
-    }
-    $("createBtn").disabled = true;
-    $("result").classList.add("hidden");
-    message("createMsg", "Creating shop and owner account...");
-    const { data, error } = await client.functions.invoke("create-shop-owner", {
-      body: { shop_name, email, password, contact, description }
+
+    box.innerHTML="";
+
+    shops.forEach(shop=>{
+      const active = shop.is_active;
+      const div = document.createElement("div");
+      div.className="shop";
+
+      const title = document.createElement("h3");
+      title.textContent=shop.shop_name;
+
+      const details = document.createElement("div");
+      details.className="small";
+      details.textContent =
+        "Owner: "+shop.owner_email+
+        " | Products: "+shop.product_count+
+        " | Contact: "+(shop.contact || "-")+
+        " | Status: "+(active?"Active":"Inactive");
+
+      const url = document.createElement("div");
+      url.className="small";
+      url.textContent=shop.catalog_url;
+
+      const qrButton = document.createElement("button");
+      qrButton.textContent="Show QR";
+      qrButton.onclick=()=>showQR(shop);
+
+      const editButton = document.createElement("button");
+      editButton.textContent="Edit Shop";
+      editButton.onclick=()=>editShop(shop);
+
+      const statusButton = document.createElement("button");
+      statusButton.className=active?"gray":"green";
+      statusButton.textContent=active?"Deactivate":"Activate";
+      statusButton.onclick=()=>toggleShop(shop);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className="red";
+      deleteButton.textContent="Delete Shop";
+      deleteButton.onclick=()=>deleteShop(shop);
+
+      const ownerButton = document.createElement("button");
+      ownerButton.className="gray";
+      ownerButton.textContent="Owner Dashboard";
+      ownerButton.onclick=()=>{
+        window.open("owner.html","_blank");
+      };
+
+      div.append(
+        title,details,url,qrButton,editButton,
+        statusButton,deleteButton,ownerButton
+      );
+
+      box.appendChild(div);
     });
-    $("createBtn").disabled = false;
-    if (error || !data?.success) {
-      return message("createMsg", data?.error || error?.message || "Could not create shop.", "error");
-    }
-    message("createMsg", "Shop and owner account created successfully.", "success");
-    const result = $("result");
-    result.className = "status success";
-    result.innerHTML = "";
-    const title = document.createElement("strong");
-    title.textContent = "Shop created successfully!";
-    result.appendChild(title);
-    const details = [
-      "Shop: " + data.shop.shop_name,
-      "Owner Login: " + data.owner_email,
-      "Catalog Link: " + data.catalog_url
-    ];
-    details.forEach(text => {
-      const p = document.createElement("p");
-      p.textContent = text;
-      result.appendChild(p);
+
+  }catch(error){
+    box.textContent="Error loading shops: "+error.message;
+  }
+}
+
+async function toggleShop(shop){
+  const next = !shop.is_active;
+
+  if(!confirm("Change shop status?")) return;
+
+  try{
+    await callFunction({
+      action:"toggle",
+      shop_id:shop.id,
+      is_active:next
     });
-    const link = document.createElement("a");
-    link.href = data.catalog_url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    link.textContent = "Open Customer Catalog";
-    result.appendChild(link);
-    $("shopName").value = "";
-    $("ownerEmail").value = "";
-    $("ownerPassword").value = "";
-    $("contact").value = "";
-    $("description").value = "";
-  });
-  $("logoutBtn").addEventListener("click", async () => {
-    await client.auth.signOut();
-    $("dashboard").classList.add("hidden");
-    $("loginCard").classList.remove("hidden");
-    $("loginPassword").value = "";
-    message("loginMsg", "You have been logged out.", "success");
-  });
-  checkSession();
-})();
+
+    msg("Shop status updated.");
+    loadShops();
+
+  }catch(error){
+    msg(error.message);
+  }
+}
+
+async function editShop(shop){
+  const name = prompt("Shop Name:",shop.shop_name);
+  if(name===null) return;
+
+  const contact = prompt("Contact:",shop.contact || "");
+  if(contact===null) return;
+
+  const description = prompt(
+    "Description:",
+    shop.description || ""
+  );
+  if(description===null) return;
+
+  try{
+    await callFunction({
+      action:"edit",
+      shop_id:shop.id,
+      shop_name:name,
+      contact,
+      description
+    });
+
+    msg("Shop updated successfully.");
+    loadShops();
+
+  }catch(error){
+    msg(error.message);
+  }
+}
+
+async function deleteShop(shop){
+  const answer = prompt(
+    "Type DELETE to permanently delete "+shop.shop_name
+  );
+
+  if(answer!=="DELETE") return;
+
+  try{
+    msg("Deleting shop...");
+
+    const result = await callFunction({
+      action:"delete",
+      shop_id:shop.id
+    });
+
+    msg(result.message || result.warning || "Delete completed.");
+    loadShops();
+
+  }catch(error){
+    msg("Delete error: "+error.message);
+  }
+}
+
+function showQR(shop){
+  const url = shop.catalog_url;
+
+  const w = window.open("","_blank");
+
+  w.document.write(`
+    <html>
+    <head><title>Shop QR Code</title></head>
+    <body style="font-family:Arial;text-align:center;padding:20px">
+    <h2>${escapeHTML(shop.shop_name)}</h2>
+    <img style="width:250px;max-width:90%"
+    src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}">
+    <p>${escapeHTML(url)}</p>
+    <button onclick="window.print()">Print QR</button>
+    </body>
+    </html>
+  `);
+  w.document.close();
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+checkAdmin();
 </script>
+
 </body>
 </html>

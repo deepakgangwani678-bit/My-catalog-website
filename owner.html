@@ -115,8 +115,6 @@ async function login(){
 }
 
 async function openDashboard(){
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
 
   const {data,error} = await db.from("Shops")
     .select("*")
@@ -124,17 +122,21 @@ async function openDashboard(){
     .limit(1)
     .maybeSingle();
 
-  if(error){
-    message("shopMessage",error.message);
-    return;
-  }
+  if(error || !data){
+    await db.auth.signOut();
+    currentUser = null;
 
-  if(!data){
-    message("shopMessage","No store found for this account. Contact your administrator.");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+
+    message("loginMessage","Please login with your store owner account.");
     return;
   }
 
   currentShop = data;
+
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
 
   document.getElementById("shopName").value = data.shop_name || "";
   document.getElementById("shopDescription").value = data.description || "";
@@ -429,6 +431,11 @@ async function checkSession(){
   const {data} = await db.auth.getSession();
 
   if(data.session){
+    if(data.session.user.id === "4471cdf9-38b9-4a1d-b267-67f5c34e70b3"){
+      await db.auth.signOut();
+      return;
+    }
+
     currentUser = data.session.user;
     await openDashboard();
   }

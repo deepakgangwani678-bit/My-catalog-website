@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Owner Dashboard | Smart Catalog</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f5f7;font-family:Arial,sans-serif;color:#172b25}
@@ -21,9 +20,9 @@ button.secondary{background:#455a64}
 .product{border:1px solid #ddd;padding:12px;border-radius:10px;margin:12px 0}
 .product img{width:100%;max-height:180px;object-fit:contain}
 .muted{color:#667085;font-size:13px;overflow-wrap:anywhere}
+#imagePreview{display:none;width:100%;max-height:220px;object-fit:contain;margin:10px 0;border-radius:10px}
 </style>
 </head>
-
 <body>
 <header>
 <h2>Smart Catalog</h2>
@@ -31,7 +30,6 @@ button.secondary{background:#455a64}
 </header>
 
 <main>
-
 <section id="loginBox" class="card">
 <h2>Owner Login</h2>
 <input id="email" type="email" placeholder="Email address">
@@ -41,7 +39,6 @@ button.secondary{background:#455a64}
 </section>
 
 <section id="dashboard" class="hidden">
-
 <div class="card">
 <h2>Your Store</h2>
 <input id="shopName" placeholder="Shop Name">
@@ -63,7 +60,12 @@ button.secondary{background:#455a64}
 <input id="productName" placeholder="Product Name">
 <input id="productNumber" placeholder="Product Number">
 <input id="productPrice" type="number" min="0" step="0.01" placeholder="Price">
-<input id="productImage" placeholder="Product Image URL">
+
+<label for="productFile"><b>Choose Product Photo</b></label>
+<input id="productFile" type="file" accept="image/*" onchange="previewImage(event)">
+<img id="imagePreview" alt="Selected product preview">
+<p class="muted">Image size: maximum 5 MB.</p>
+
 <button onclick="saveProduct()">Save Product</button>
 <button class="secondary hidden" id="cancelEdit" onclick="cancelEdit()">Cancel Edit</button>
 <p id="productMessage" class="muted"></p>
@@ -76,26 +78,20 @@ button.secondary{background:#455a64}
 
 <button class="danger" onclick="logout()">Sign Out</button>
 </section>
-
 </main>
 
 <script>
 "use strict";
 
-/* Use the same Supabase URL and publishable key
-   as your existing index.html. */
-
 const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser = null;
 let currentShop = null;
 let editingProductId = null;
+let existingImageUrl = "";
 
 function message(id,text){
   document.getElementById(id).textContent = text;
@@ -107,9 +103,7 @@ async function login(){
 
   message("loginMessage","Signing in...");
 
-  const {data,error} = await db.auth.signInWithPassword({
-    email,password
-  });
+  const {data,error} = await db.auth.signInWithPassword({email,password});
 
   if(error){
     message("loginMessage",error.message);
@@ -124,8 +118,7 @@ async function openDashboard(){
   document.getElementById("loginBox").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
 
-  const {data,error} = await db
-    .from("Shops")
+  const {data,error} = await db.from("Shops")
     .select("*")
     .eq("owner_id",currentUser.id)
     .limit(1)
@@ -187,8 +180,7 @@ async function saveShop(){
     contact:document.getElementById("shopContact").value.trim()
   };
 
-  const {data,error} = await db
-    .from("Shops")
+  const {data,error} = await db.from("Shops")
     .update(updates)
     .eq("id",currentShop.id)
     .select()
@@ -204,55 +196,126 @@ async function saveShop(){
   showCatalogLink();
 }
 
+function previewImage(event){
+  const file = event.target.files[0];
+  const preview = document.getElementById("imagePreview");
+
+  if(!file){
+    preview.style.display = "none";
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+    alert("Please choose an image file.");
+    event.target.value = "";
+    preview.style.display = "none";
+    return;
+  }
+
+  if(file.size > 5 * 1024 * 1024){
+    alert("Image must be smaller than 5 MB.");
+    event.target.value = "";
+    preview.style.display = "none";
+    return;
+  }
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+}
+
+async function uploadProductImage(file){
+  const extension = file.name.split(".").pop().toLowerCase();
+  const safeExtension = /^[a-z0-9]+$/.test(extension) ? extension : "jpg";
+  const filePath = currentShop.id + "/" + crypto.randomUUID() + "." + safeExtension;
+
+  const {error} = await db.storage
+    .from("product-images")
+    .upload(filePath,file,{
+      contentType:file.type,
+      upsert:false
+    });
+
+  if(error) throw error;
+
+  const {data} = db.storage
+    .from("product-images")
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+}
+
 async function saveProduct(){
   if(!currentShop) return;
 
   const name = document.getElementById("productName").value.trim();
   const number = document.getElementById("productNumber").value.trim();
-  const price = Number(document.getElementById("productPrice").value);
-  const image = document.getElementById("productImage").value.trim();
+  const priceValue = document.getElementById("productPrice").value;
+  const price = Number(priceValue);
+  const file = document.getElementById("productFile").files[0];
 
-  if(!name || !Number.isFinite(price) || price < 0){
+  if(!name || priceValue === "" || !Number.isFinite(price) || price < 0){
     message("productMessage","Enter a valid product name and price.");
     return;
   }
 
-  const product = {
-    product_name:name,
-    product_number:number,
-    price:price,
-    image_url:image,
-    shop_id:currentShop.id,
-    is_available:true
-  };
-
-  let result;
-
-  if(editingProductId){
-    result = await db.from("Products")
-      .update(product)
-      .eq("id",editingProductId)
-      .eq("shop_id",currentShop.id);
-  }else{
-    result = await db.from("Products").insert(product);
-  }
-
-  if(result.error){
-    message("productMessage",result.error.message);
+  if(file && (!file.type.startsWith("image/") || file.size > 5*1024*1024)){
+    message("productMessage","Choose a valid image smaller than 5 MB.");
     return;
   }
 
-  message("productMessage","Product saved successfully.");
-  cancelEdit();
-  await loadProducts();
+  const saveButton = document.querySelector("#formTitle + input + input + input + label + input + img + p + button");
+  const buttons = document.querySelectorAll("#dashboard .card button");
+  const productButton = buttons[buttons.length-1];
+  productButton.disabled = true;
+  productButton.textContent = "Saving...";
+
+  try{
+    let imageUrl = existingImageUrl;
+
+    if(file){
+      message("productMessage","Uploading image...");
+      imageUrl = await uploadProductImage(file);
+    }
+
+    const product = {
+      product_name:name,
+      product_number:number,
+      price:price,
+      image_url:imageUrl || "",
+      shop_id:currentShop.id,
+      is_available:true
+    };
+
+    let result;
+
+    if(editingProductId){
+      result = await db.from("Products")
+        .update(product)
+        .eq("id",editingProductId)
+        .eq("shop_id",currentShop.id);
+    }else{
+      result = await db.from("Products").insert(product);
+    }
+
+    if(result.error) throw result.error;
+
+    message("productMessage","Product saved successfully.");
+    cancelEdit();
+    await loadProducts();
+
+  }catch(error){
+    message("productMessage","Error: " + error.message);
+  }finally{
+    productButton.disabled = false;
+    productButton.textContent = "Save Product";
+  }
 }
 
 async function loadProducts(){
   const box = document.getElementById("productList");
   box.textContent = "Loading...";
 
-  const {data,error} = await db
-    .from("Products")
+  const {data,error} = await db.from("Products")
     .select("*")
     .eq("shop_id",currentShop.id)
     .order("created_at",{ascending:false});
@@ -307,11 +370,21 @@ async function loadProducts(){
 
 function editProduct(p){
   editingProductId = p.id;
+  existingImageUrl = p.image_url || "";
 
   document.getElementById("productName").value = p.product_name || "";
   document.getElementById("productNumber").value = p.product_number || "";
   document.getElementById("productPrice").value = p.price;
-  document.getElementById("productImage").value = p.image_url || "";
+  document.getElementById("productFile").value = "";
+
+  const preview = document.getElementById("imagePreview");
+
+  if(existingImageUrl){
+    preview.src = existingImageUrl;
+    preview.style.display = "block";
+  }else{
+    preview.style.display = "none";
+  }
 
   document.getElementById("formTitle").textContent = "Edit Product";
   document.getElementById("cancelEdit").classList.remove("hidden");
@@ -321,10 +394,12 @@ function editProduct(p){
 
 function cancelEdit(){
   editingProductId = null;
+  existingImageUrl = "";
 
-  ["productName","productNumber","productPrice","productImage"]
+  ["productName","productNumber","productPrice","productFile"]
     .forEach(id=>document.getElementById(id).value="");
 
+  document.getElementById("imagePreview").style.display = "none";
   document.getElementById("formTitle").textContent = "Add Product";
   document.getElementById("cancelEdit").classList.add("hidden");
 }

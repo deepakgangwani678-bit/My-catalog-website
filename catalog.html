@@ -167,7 +167,7 @@ async function loadCatalog(){
 
   const {data:shop,error} = await db
     .from("Shops")
-    .select("id,shop_name,description,is_active")
+    .select("id,shop_name,description,is_active,theme")
     .eq("slug",slug)
     .maybeSingle();
 

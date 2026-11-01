@@ -233,7 +233,10 @@ async function saveTheme(theme){
   }
 
   currentShop = data;
-  message("themeMessage","Cafe Theme saved successfully!");
+
+  const themeName = theme === "restaurant" ? "Restaurant" : "Cafe";
+  message("themeMessage",themeName + " Theme saved successfully!");
+}
 }
 function previewImage(event){
   const file = event.target.files[0];

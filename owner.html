@@ -206,7 +206,25 @@ async function saveShop(){
   message("shopMessage","Store details saved successfully.");
   showCatalogLink();
 }
+async function saveTheme(theme){
+  if(!currentShop) return;
 
+  message("themeMessage","Saving theme...");
+
+  const {data,error} = await db.from("Shops")
+    .update({theme:theme})
+    .eq("id",currentShop.id)
+    .select()
+    .single();
+
+  if(error){
+    message("themeMessage",error.message);
+    return;
+  }
+
+  currentShop = data;
+  message("themeMessage","Cafe Theme saved successfully!");
+}
 function previewImage(event){
   const file = event.target.files[0];
   const preview = document.getElementById("imagePreview");

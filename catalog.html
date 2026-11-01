@@ -3,94 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#4a1425">
-<title>Restaurant Menu | GetSmartQR</title>
+<meta name="theme-color" content="#315c45">
+<title>Digital Catalogue | GetSmartQR</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{
-  --wine:#4a1425;--wine-deep:#2e0c19;--wine-mid:#70283b;
-  --cream:#fff8ec;--paper:#fffdf8;--gold:#d6a24d;--gold-light:#f3d99f;
-  --ink:#35202a;--muted:#806d70;--line:#eadbc9;--soft:#f8eee2;
-  --shadow:0 18px 48px rgba(59,20,34,.10);
+  --primary:#315c45;
+  --deep:#193c2b;
+  --accent:#d5a45b;
+  --bg:#f5f3e9;
+  --paper:#fffefa;
+  --ink:#26352c;
+  --muted:#778078;
+  --line:#e5e4d8;
+  --soft:#eaf0e7;
+  --radius:18px;
+  --columns:4;
+  --hero-bg:linear-gradient(125deg,#193c2b,#315c45);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{
+ margin:0;background:var(--bg);color:var(--ink);
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
 button,input{font:inherit}
 .hero{
-  position:relative;isolation:isolate;overflow:hidden;color:#fff8ed;
-  background:radial-gradient(ellipse at 82% 12%,rgba(214,162,77,.22),transparent 32%),
-    linear-gradient(125deg,var(--wine-deep),var(--wine) 56%,#70283b);
-  min-height:410px;padding:24px 20px 56px;
+ position:relative;isolation:isolate;overflow:hidden;
+ color:white;background:var(--hero-bg);
+ min-height:365px;padding:24px 20px 55px;
 }
-.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border:1px solid rgba(243,217,159,.2);border-radius:50%}
+.hero:before,.hero:after{
+ content:"";position:absolute;z-index:-1;border:1px solid rgba(255,255,255,.15);
+ border-radius:50%;
+}
 .hero:before{width:390px;height:390px;right:-135px;top:-215px}
 .hero:after{width:260px;height:260px;left:-150px;bottom:-175px}
-.topline{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.4px;font-size:14px}
-.brand-mark{width:32px;height:32px;border:1px solid rgba(243,217,159,.65);border-radius:10px;display:grid;place-items:center;color:var(--gold-light);font-size:17px}
-.top-tag{border:1px solid rgba(243,217,159,.38);border-radius:999px;padding:7px 12px;color:#f5dfb5;font-size:11px;letter-spacing:1.2px;text-transform:uppercase}
-.hero-inner{max-width:1120px;margin:24px auto 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,440px);align-items:center;gap:22px}
-.hero-copy{padding:18px 0 24px;max-width:570px}
-.kicker{display:inline-flex;align-items:center;gap:8px;color:var(--gold-light);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.kicker:before{content:"";width:24px;height:1px;background:var(--gold)}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,6vw,66px);font-weight:500;line-height:1.02;letter-spacing:-1.5px;margin:14px 0 13px}
-h1 span{color:var(--gold-light);font-style:italic}
-.hero-description{max-width:470px;color:#f4e4d8;font-size:15px;line-height:1.75;margin:0}
-.hero-note{display:flex;align-items:center;gap:9px;margin-top:24px;color:#f5dfb5;font-size:12px;letter-spacing:.3px}
-.hero-note i{display:block;width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 0 5px rgba(214,162,77,.14)}
-.character-art{width:100%;max-width:440px;justify-self:end;filter:drop-shadow(0 18px 20px rgba(20,4,10,.23))}
-main{width:min(1120px,calc(100% - 36px));margin:-25px auto 0;position:relative;z-index:2}
-.intro-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 24px;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
-.intro-label{font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:#a27642;margin-bottom:5px}
-.intro-panel h2{font:500 25px Georgia,serif;margin:0;color:var(--wine)}
+.topline{
+ max-width:1120px;margin:auto;display:flex;
+ align-items:center;justify-content:space-between;gap:12px
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:850;letter-spacing:.7px;font-size:14px}
+.brand-mark{
+ width:34px;height:34px;border:1px solid rgba(255,255,255,.5);
+ border-radius:11px;display:grid;place-items:center;font-size:19px
+}
+.top-tag{
+ border:1px solid rgba(255,255,255,.4);border-radius:999px;
+ padding:7px 12px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase
+}
+.hero-inner{
+ max-width:1120px;margin:25px auto 0;
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,400px);
+ align-items:center;gap:25px
+}
+.hero-copy{padding:18px 0 24px;max-width:600px}
+.kicker{
+ display:inline-flex;align-items:center;gap:8px;
+ color:var(--accent);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase
+}
+.kicker:before{content:"";width:24px;height:1px;background:var(--accent)}
+h1{
+ font-family:Georgia,serif;font-size:clamp(38px,6vw,65px);
+ font-weight:500;line-height:1.04;letter-spacing:-1.5px;margin:14px 0
+}
+h1 span{color:var(--accent);font-style:italic}
+.hero-description{max-width:480px;color:rgba(255,255,255,.84);font-size:15px;line-height:1.75;margin:0}
+.hero-note{display:flex;align-items:center;gap:9px;margin-top:23px;font-size:12px;color:rgba(255,255,255,.85)}
+.hero-note i{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 5px rgba(255,255,255,.12)}
+.character-art{
+ width:100%;max-width:390px;justify-self:end;
+ display:flex;justify-content:center;align-items:center;
+ min-height:230px;position:relative
+}
+.art-circle{
+ width:225px;height:225px;border-radius:50%;
+ background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+ display:grid;place-items:center;font-size:105px;
+ box-shadow:0 20px 50px rgba(0,0,0,.15)
+}
+.art-small{
+ position:absolute;right:4%;bottom:12%;font-size:48px;
+ background:rgba(255,255,255,.16);border-radius:18px;padding:12px
+}
+.art-top{position:absolute;left:8%;top:8%;font-size:37px}
+main{
+ width:min(1120px,calc(100% - 36px));
+ margin:-25px auto 0;position:relative;z-index:2
+}
+.intro-panel{
+ display:flex;align-items:center;justify-content:space-between;gap:20px;
+ padding:20px 24px;background:var(--paper);
+ border:1px solid var(--line);border-radius:var(--radius);
+ box-shadow:0 18px 48px rgba(0,0,0,.07)
+}
+.intro-label{
+ font-size:10px;font-weight:800;letter-spacing:1.8px;
+ text-transform:uppercase;color:var(--primary);margin-bottom:5px
+}
+.intro-panel h2{font:500 25px Georgia,serif;margin:0;color:var(--primary)}
 .intro-panel p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
-.menu-count{flex:0 0 auto;border-left:1px solid var(--line);padding-left:22px;text-align:center;color:var(--wine)}
+.menu-count{
+ flex:0 0 auto;border-left:1px solid var(--line);
+ padding-left:22px;text-align:center;color:var(--primary)
+}
 .menu-count strong{display:block;font:500 27px Georgia,serif}
 .menu-count span{font-size:10px;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted)}
 .menu-section{padding:32px 0 54px}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:17px}
-.section-eyebrow{font-size:10px;color:#a27642;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.section-title{font:500 clamp(27px,4vw,36px) Georgia,serif;color:var(--wine);margin:5px 0 0}
+.section-head{
+ display:flex;align-items:end;justify-content:space-between;
+ gap:16px;margin-bottom:17px
+}
+.section-eyebrow{font-size:10px;color:var(--primary);font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.section-title{font:500 clamp(27px,4vw,36px) Georgia,serif;color:var(--primary);margin:5px 0 0}
 .search-box{width:min(340px,100%);position:relative}
-.search-box svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#9b8583;pointer-events:none}
-.search-box input{width:100%;height:48px;border:1px solid #e4d3c0;border-radius:12px;background:#fffdf9;padding:0 15px 0 44px;color:var(--ink);outline:none;box-shadow:0 4px 14px rgba(59,20,34,.035);font-size:14px}
-.search-box input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(214,162,77,.16)}
-.search-box input::placeholder{color:#a99a92}
-.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
-.product{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
-.product:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(59,20,34,.10);border-color:#d9bd98}
-.product-media{height:190px;background:linear-gradient(145deg,#f7ecdf,#f1dfca);position:relative;overflow:hidden}
-.product-media:after{content:"";position:absolute;width:130px;height:130px;border:1px solid rgba(255,255,255,.5);border-radius:50%;right:-38px;top:-48px}
+.search-box svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search-box input{
+ width:100%;height:48px;border:1px solid var(--line);
+ border-radius:12px;background:var(--paper);padding:0 15px 0 44px;
+ color:var(--ink);outline:none;font-size:14px
+}
+.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.products{display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));gap:17px}
+.product{
+ background:var(--paper);border:1px solid var(--line);
+ border-radius:var(--radius);overflow:hidden;min-width:0;
+ transition:transform .2s ease,box-shadow .2s ease
+}
+.product:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.09)}
+.product-media{height:190px;background:var(--soft);position:relative;overflow:hidden}
 .product img{display:block;width:100%;height:100%;object-fit:cover}
 .product-info{padding:14px 14px 16px}
 .product-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.item-number{font-size:10px;color:#9a8580;letter-spacing:.7px;text-transform:uppercase}
-.product h3{font:600 16px/1.35 Georgia,serif;color:var(--wine);margin:9px 0 12px;overflow-wrap:anywhere}
-.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #f0e6db;padding-top:11px}
-.price{font-size:18px;font-weight:800;color:#9a612b;white-space:nowrap}
-.price-label{font-size:9px;color:#a28d83;text-transform:uppercase;letter-spacing:1px}
+.item-number{font-size:10px;color:var(--muted);letter-spacing:.7px;text-transform:uppercase}
+.product h3{
+ font:600 16px/1.35 Georgia,serif;color:var(--primary);
+ margin:9px 0 12px;overflow-wrap:anywhere
+}
+.product-bottom{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ border-top:1px solid var(--line);padding-top:11px
+}
+.price{font-size:18px;font-weight:800;color:var(--primary);white-space:nowrap}
+.price-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 #message{margin:0;padding:24px 12px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
 #message:empty{display:none}
-.empty-state{grid-column:1/-1;border:1px dashed #dfcbb5;background:#fffaf2;border-radius:16px;padding:35px 16px;text-align:center;color:var(--muted)}
-.empty-state strong{display:block;font:500 22px Georgia,serif;color:var(--wine);margin-bottom:6px}
-footer{background:#32101c;color:#ead8c9;text-align:center;padding:25px 16px;font-size:12px;line-height:1.8}
-footer strong{color:var(--gold-light);letter-spacing:.4px}
-footer .footer-rule{width:34px;height:1px;background:var(--gold);margin:0 auto 12px}
-@media(max-width:850px){.hero-inner{grid-template-columns:minmax(0,1fr) 330px}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.product-media{height:175px}}
+.empty-state{
+ grid-column:1/-1;border:1px dashed var(--line);
+ background:var(--paper);border-radius:var(--radius);
+ padding:35px 16px;text-align:center;color:var(--muted)
+}
+.empty-state strong{display:block;font:500 22px Georgia,serif;color:var(--primary);margin-bottom:6px}
+footer{
+ background:var(--deep);color:rgba(255,255,255,.8);
+ text-align:center;padding:25px 16px;font-size:12px;line-height:1.8
+}
+footer strong{color:var(--accent);letter-spacing:.4px}
+.footer-rule{width:34px;height:1px;background:var(--accent);margin:0 auto 12px}
+
+/* THEME-SPECIFIC DESIGNS */
+
+html[data-shop-theme="cafe"]{
+ --primary:#79502f;--deep:#38251d;--accent:#e6b875;
+ --bg:#f6eee2;--paper:#fffaf2;--ink:#392c24;--line:#e9d7c0;
+ --soft:#f0e1cc;--radius:22px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#38251d,#79502f);
+}
+html[data-shop-theme="restaurant"]{
+ --primary:#4a1425;--deep:#2e0c19;--accent:#d6a24d;
+ --bg:#fff8ec;--paper:#fffdf8;--ink:#35202a;--line:#eadbc9;
+ --soft:#f8eee2;--radius:16px;--columns:4;
+ --hero-bg:linear-gradient(125deg,#2e0c19,#70283b);
+}
+html[data-shop-theme="clothing"]{
+ --primary:#37344f;--deep:#201e35;--accent:#d6b6a1;
+ --bg:#f2f0f5;--paper:#fff;--ink:#302d3b;--line:#dfdce8;
+ --soft:#e8e4ef;--radius:7px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#201e35,#55506d);
+}
+html[data-shop-theme="hotel"]{
+ --primary:#31516d;--deep:#172d40;--accent:#d7b879;
+ --bg:#f1f4f5;--paper:#fff;--ink:#263745;--line:#dce4e8;
+ --soft:#e4edf1;--radius:13px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#172d40,#31516d);
+}
+html[data-shop-theme="bakery"]{
+ --primary:#9b5537;--deep:#512b20;--accent:#f0c57c;
+ --bg:#fff3e6;--paper:#fffaf3;--ink:#503326;--line:#eed9c5;
+ --soft:#f7e4d1;--radius:20px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#512b20,#a45d3d);
+}
+html[data-shop-theme="gift"]{
+ --primary:#81465e;--deep:#452438;--accent:#edc58a;
+ --bg:#f9eff3;--paper:#fffafd;--ink:#432c39;--line:#eedbe5;
+ --soft:#f4e1e9;--radius:22px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#452438,#985b78);
+}
+html[data-shop-theme="jewellery"]{
+ --primary:#71521c;--deep:#30220d;--accent:#e8c46d;
+ --bg:#f8f3e6;--paper:#fffdf7;--ink:#3c301d;--line:#eadfbe;
+ --soft:#f2e9d0;--radius:8px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#30220d,#80601f);
+}
+html[data-shop-theme="food_cart"]{
+ --primary:#a43b20;--deep:#512014;--accent:#f6c64d;
+ --bg:#fff3df;--paper:#fffaf0;--ink:#472b1e;--line:#efd7b4;
+ --soft:#f8e3bd;--radius:12px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#512014,#b64a25);
+}
+html[data-shop-theme="furniture_hardware"]{
+ --primary:#48533b;--deep:#252e20;--accent:#c79a5b;
+ --bg:#f1f0e8;--paper:#fffefa;--ink:#30382c;--line:#deded0;
+ --soft:#e5e7d9;--radius:8px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#252e20,#586448);
+}
+html[data-shop-theme="universal"]{
+ --primary:#285a71;--deep:#163343;--accent:#e1ad65;
+ --bg:#eff5f7;--paper:#fff;--ink:#263c46;--line:#d9e5e9;
+ --soft:#e3eff2;--radius:14px;--columns:3;
+ --hero-bg:linear-gradient(125deg,#163343,#285a71);
+}
+
+/* Individual layout details */
+html[data-shop-theme="clothing"] .product{border-radius:5px}
+html[data-shop-theme="clothing"] .product-media{height:220px}
+html[data-shop-theme="clothing"] .product h3{font-family:system-ui,sans-serif;font-weight:750}
+html[data-shop-theme="hotel"] .intro-panel{border-radius:5px}
+html[data-shop-theme="hotel"] .product{box-shadow:0 5px 18px rgba(20,40,55,.06)}
+html[data-shop-theme="bakery"] .product-media{height:180px}
+html[data-shop-theme="gift"] .product{border-radius:24px}
+html[data-shop-theme="gift"] .product-media{height:175px}
+html[data-shop-theme="jewellery"] .product{border-radius:5px;border-color:#d7c28e}
+html[data-shop-theme="jewellery"] .product-info{text-align:center}
+html[data-shop-theme="jewellery"] .product-topline{justify-content:center}
+html[data-shop-theme="jewellery"] .product-bottom{justify-content:center;gap:15px}
+html[data-shop-theme="food_cart"] .hero{min-height:320px}
+html[data-shop-theme="food_cart"] .product{border:2px solid var(--line)}
+html[data-shop-theme="furniture_hardware"] .product{border-radius:7px}
+html[data-shop-theme="furniture_hardware"] .product-media{height:210px}
+html[data-shop-theme="universal"] .product{border-radius:13px}
+
+@media(max-width:850px){
+ .hero-inner{grid-template-columns:minmax(0,1fr) 300px}
+ .products{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .product-media{height:175px}
+}
 @media(max-width:650px){
  .hero{padding:18px 17px 54px;min-height:0}
- .topline{align-items:center}.top-tag{font-size:9px;padding:6px 9px}
+ .top-tag{font-size:9px;padding:6px 9px}
  .hero-inner{grid-template-columns:1fr;gap:0;margin-top:22px}
  .hero-copy{padding:8px 0 0;max-width:100%}
  h1{font-size:clamp(39px,11vw,55px);max-width:440px}
- .hero-description{font-size:14px;max-width:440px}
+ .hero-description{font-size:14px}
  .hero-note{margin-top:17px}
- .character-art{width:min(100%,390px);justify-self:center;margin:-2px auto -12px}
+ .character-art{min-height:190px;margin:-2px auto -12px}
+ .art-circle{width:180px;height:180px;font-size:85px}
+ .art-small{font-size:37px}
  main{width:calc(100% - 26px);margin:-22px auto 0}
  .intro-panel{padding:17px;border-radius:15px}
- .intro-panel h2{font-size:22px}.intro-panel p{font-size:12px}
- .menu-count{padding-left:15px}.menu-count strong{font-size:24px}
+ .intro-panel h2{font-size:22px}
+ .intro-panel p{font-size:12px}
+ .menu-count{padding-left:15px}
+ .menu-count strong{font-size:24px}
  .menu-section{padding:27px 0 40px}
  .section-head{align-items:stretch;flex-direction:column;margin-bottom:15px}
  .search-box{width:100%}
@@ -99,284 +274,409 @@ footer .footer-rule{width:34px;height:1px;background:var(--gold);margin:0 auto 1
  .product-info{padding:11px 11px 13px}
  .product h3{font-size:14px;margin:8px 0 10px}
  .price{font-size:16px}
+ html[data-shop-theme="clothing"] .product-media{height:165px}
+ html[data-shop-theme="furniture_hardware"] .product-media{height:145px}
 }
-@media(max-width:360px){.products{gap:8px}.product-media{height:125px}.product-info{padding:9px}.product h3{font-size:13px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:360px){
+ .products{gap:8px}
+ .product-media{height:125px}
+ .product-info{padding:9px}
+ .product h3{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+ *{scroll-behavior:auto!important;transition:none!important}
+}
 </style>
 </head>
+
 <body>
 <header class="hero">
-  <div class="topline">
-    <div class="brand"><span class="brand-mark">✦</span><span>GETSMARTQR</span></div>
-    <div class="top-tag">A taste worth sharing</div>
-  </div>
-  <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="kicker">Welcome to our table</div>
-      <h1 id="shopName">Good food.<br><span>Good moments.</span></h1>
-      <p class="hero-description" id="shopDescription">Discover delicious favourites, thoughtfully prepared and served with a smile.</p>
-      <div class="hero-note"><i></i><span>Fresh flavours · Warm hospitality · Made with care</span></div>
-    </div>
+ <div class="topline">
+  <div class="brand"><span class="brand-mark" id="brandMark">✦</span><span>GETSMARTQR</span></div>
+  <div class="top-tag" id="topTag">A better way to explore</div>
+ </div>
 
-    <!-- Original inline 2D character artwork; no external illustration assets required. -->
-    <svg class="character-art" viewBox="0 0 480 330" role="img" aria-label="Original cartoon illustration of a chef, a waiter with a serving tray, and a happy restaurant guest">
-      <defs>
-        <linearGradient id="chefCoat" x2="0" y2="1"><stop stop-color="#fffdf6"/><stop offset="1" stop-color="#e9d9c9"/></linearGradient>
-        <linearGradient id="wineApron" x2="0" y2="1"><stop stop-color="#9a3d50"/><stop offset="1" stop-color="#5a172c"/></linearGradient>
-        <linearGradient id="skin" x2="0" y2="1"><stop stop-color="#f5c99f"/><stop offset="1" stop-color="#d9956c"/></linearGradient>
-      </defs>
-      <ellipse cx="240" cy="306" rx="210" ry="17" fill="#1e0710" opacity=".24"/>
-      <circle cx="83" cy="145" r="88" fill="#f2c77e" opacity=".13"/>
-      <circle cx="386" cy="145" r="92" fill="#f2c77e" opacity=".12"/>
-      <!-- Chef -->
-      <g stroke="#32101c" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
-        <path d="M23 294q4-76 28-91 24-15 53 0 27 16 31 91z" fill="url(#chefCoat)"/>
-        <path d="M50 205l27 27 28-27 14 89H37z" fill="#fff8ec"/>
-        <path d="M49 202l28 30-15 18-25-35zM105 202l-28 30 15 18 25-35z" fill="#e8d7c6"/>
-        <path d="M58 165v31q19 20 39 0v-31" fill="url(#skin)"/>
-        <ellipse cx="78" cy="128" rx="43" ry="49" fill="url(#skin)"/>
-        <path d="M36 125q-7-52 42-57 49 2 43 57-10-13-14-29-24 15-60 10z" fill="#382019"/>
-        <path d="M40 90q-6-34 17-42 13-26 35-12 26-3 31 29 17 7 8 31-10-14-19-20-26 13-72 14z" fill="#fffdf6"/>
-        <path d="M48 77q-3-32 22-35 6-24 27-12 24-1 26 27 16 6 7 27-17-13-29-17-21 13-53 10z" fill="#fffdf6"/>
-        <path d="M61 124q8-6 15 0M86 124q8-6 15 0" fill="none"/>
-        <circle cx="68" cy="131" r="2.8" fill="#32101c" stroke="none"/><circle cx="93" cy="131" r="2.8" fill="#32101c" stroke="none"/>
-        <path d="M70 148q9 9 19 0" fill="none" stroke="#9b4650" stroke-width="3"/>
-        <path d="M48 294l-3 13h27l6-13 7 13h28l-5-13" fill="#3c2630"/>
-        <path d="M48 214q-22 9-22 37l-4 22 18 4 14-42M108 214q20 9 23 34l4 23-18 5-14-42" fill="url(#skin)"/>
-        <path d="M39 271l-2 20q-1 9 12 9h20q8-1 5-9l-7-20z" fill="#fffdf6"/>
-      </g>
-      <!-- Waiter in the middle, carrying a tray -->
-      <g stroke="#32101c" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
-        <path d="M157 294q4-82 27-96 27-15 55 0 24 15 27 96z" fill="url(#wineApron)"/>
-        <path d="M184 201l27 26 28-26 13 93h-81z" fill="#fffdf6"/>
-        <path d="M198 194v20l13 13 14-13v-20" fill="url(#skin)"/>
-        <ellipse cx="211" cy="143" rx="39" ry="46" fill="url(#skin)"/>
-        <path d="M173 143q-5-51 39-53 44 3 39 53-10-10-14-28-26 13-58 8z" fill="#3c211c"/>
-        <path d="M174 108q-4-27 17-34 7-25 24-12 22-3 25 25 14 8 5 26-13-10-23-16-21 13-48 11z" fill="#fffdf6"/>
-        <path d="M188 140q7-5 13 0M215 140q7-5 13 0" fill="none"/>
-        <circle cx="196" cy="147" r="2.7" fill="#32101c" stroke="none"/><circle cx="223" cy="147" r="2.7" fill="#32101c" stroke="none"/>
-        <path d="M198 162q12 10 24 0" fill="none" stroke="#9b4650" stroke-width="3"/>
-        <path d="M175 216q-20 8-24 32l-13 24 15 10 23-27M248 216q20 8 22 30l8 20-17 9-17-30" fill="url(#skin)"/>
-        <path d="M191 290l-4 18h24l7-18 7 18h24l-5-18" fill="#30202a"/>
-        <!-- Tray -->
-        <path d="M116 202q96 12 191 0l-10 9q-83 11-172 0z" fill="#d6a24d"/>
-        <path d="M124 202q88 8 175 0" fill="none" stroke="#fff0c8" stroke-width="2"/>
-        <path d="M169 198q-3-17 9-20 12 3 9 20M211 196q-2-22 11-23 13 2 11 23" fill="none" stroke="#d6a24d" stroke-width="4"/>
-      </g>
-      <!-- Happy guest on the right -->
-      <g stroke="#32101c" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
-        <path d="M313 294q4-74 27-91 27-16 55 0 26 17 30 91z" fill="#f0c879"/>
-        <path d="M335 204l24 24 25-24 17 90h-83z" fill="#fff8ec"/>
-        <path d="M346 184v20q13 15 27 0v-20" fill="url(#skin)"/>
-        <ellipse cx="360" cy="142" rx="41" ry="47" fill="url(#skin)"/>
-        <path d="M319 142q-5-48 40-51 47 2 43 53-11-8-16-27-24 14-60 9z" fill="#4b2920"/>
-        <path d="M323 116q10-33 40-27 29 1 39 31-22-14-39-16-18 13-40 12z" fill="#4b2920"/>
-        <path d="M337 140q7-5 13 0M366 140q7-5 13 0" fill="none"/>
-        <circle cx="345" cy="147" r="2.7" fill="#32101c" stroke="none"/><circle cx="374" cy="147" r="2.7" fill="#32101c" stroke="none"/>
-        <path d="M344 161q16 17 32 0" fill="#fffdf6" stroke="#9b4650" stroke-width="2.5"/>
-        <path d="M330 218q-19 8-23 28l-5 25 17 4 15-31M395 218q20 8 22 29l7 21-17 6-17-30" fill="url(#skin)"/>
-        <path d="M337 291l-3 17h23l5-17 8 17h24l-5-17" fill="#4a1425"/>
-        <!-- Little plate held by guest -->
-        <path d="M392 247q34-7 52 2l-5 7q-26 6-45-1z" fill="#fffdf6"/>
-        <path d="M400 244q12-11 25 0" fill="none" stroke="#d6a24d" stroke-width="3"/>
-      </g>
-      <path d="M290 64l7-13 7 13 13 7-13 7-7 13-7-13-13-7z" fill="#e5b965" opacity=".9"/>
-      <circle cx="145" cy="115" r="4" fill="#e5b965"/><circle cx="444" cy="91" r="5" fill="#e5b965"/>
-    </svg>
+ <div class="hero-inner">
+  <div class="hero-copy">
+   <div class="kicker" id="kicker">WELCOME</div>
+   <h1 id="shopName">Welcome to our store.<br><span>Explore something special.</span></h1>
+   <p class="hero-description" id="shopDescription">Discover our collection.</p>
+   <div class="hero-note"><i></i><span id="heroNote">Explore · Discover · Enjoy</span></div>
   </div>
+
+  <div class="character-art" id="characterArt" aria-hidden="true">
+   <span class="art-top" id="artTop">✦</span>
+   <div class="art-circle" id="artMain">🛍️</div>
+   <span class="art-small" id="artSmall">✨</span>
+  </div>
+ </div>
 </header>
 
 <main>
-  <section class="intro-panel" aria-label="Restaurant introduction">
-    <div>
-      <div class="intro-label">A little something for every craving</div>
-      <h2>Made to be enjoyed.</h2>
-      <p>Take a look through our menu and discover your next favourite.</p>
-    </div>
-    <div class="menu-count"><strong id="menuCount">—</strong><span>Menu items</span></div>
-  </section>
+ <section class="intro-panel">
+  <div>
+   <div class="intro-label" id="introLabel">WELCOME</div>
+   <h2 id="introHeading">Made for you.</h2>
+   <p id="introText">Explore our collection and discover your favourites.</p>
+  </div>
+  <div class="menu-count">
+   <strong id="menuCount">—</strong>
+   <span id="countLabel">Items</span>
+  </div>
+ </section>
 
-  <section class="menu-section" aria-labelledby="menuHeading">
-    <div class="section-head">
-      <div>
-        <div class="section-eyebrow">Explore the menu</div>
-        <h2 class="section-title" id="menuHeading">Our Menu</h2>
-      </div>
-      <label class="search-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <input id="search" type="search" placeholder="Search dishes or item number..." aria-label="Search menu by product name or number" autocomplete="off">
-      </label>
-    </div>
-    <div id="products" class="products" aria-live="polite"></div>
-    <p id="message" role="status">Preparing the menu...</p>
-  </section>
+ <section class="menu-section">
+  <div class="section-head">
+   <div>
+    <div class="section-eyebrow" id="sectionEyebrow">EXPLORE</div>
+    <h2 class="section-title" id="menuHeading">Our Collection</h2>
+   </div>
+   <label class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+     <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+     <path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <input id="search" type="search" placeholder="Search products or item number..." aria-label="Search products" autocomplete="off">
+   </label>
+  </div>
+  <div id="products" class="products" aria-live="polite"></div>
+  <p id="message" role="status">Loading catalogue...</p>
+ </section>
 </main>
 
 <footer>
-  <div class="footer-rule"></div>
-  <div>Thoughtfully presented with <strong>GetSmartQR</strong></div>
-  <div>Good food brings people together.</div>
+ <div class="footer-rule"></div>
+ <div>Thoughtfully presented with <strong>GetSmartQR</strong></div>
+ <div id="footerText">Discover something special.</div>
 </footer>
 
 <script>
 "use strict";
 
-/* Existing GetSmartQR Supabase project: public publishable key only. */
-const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
-const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL="https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY="sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-let allProducts = [];
-const $ = (id) => document.getElementById(id);
+let allProducts=[];
+const $=id=>document.getElementById(id);
 
-function showMessage(message) {
-  $("message").textContent = message || "";
+const themes={
+ cafe:{
+  title:"A little coffee.<br><span>A lot of happiness.</span>",
+  kicker:"YOUR COFFEE CORNER",
+  tag:"Coffee · Conversations · Comfort",
+  note:"Fresh brews · Sweet moments · Good company",
+  label:"A PLACE TO UNWIND",
+  heading:"Your favourite corner.",
+  intro:"Take a moment. Explore our coffee and food collection.",
+  eyebrow:"FROM OUR COUNTER",
+  menu:"Our Cafe Collection",
+  count:"Cafe Favourites",
+  footer:"Good coffee makes good days.",
+  main:"☕",small:"🥐",top:"☕"
+ },
+ restaurant:{
+  title:"Good food.<br><span>Good moments.</span>",
+  kicker:"WELCOME TO OUR TABLE",
+  tag:"A taste worth sharing",
+  note:"Fresh flavours · Warm hospitality · Made with care",
+  label:"A LITTLE SOMETHING FOR EVERY CRAVING",
+  heading:"Made to be enjoyed.",
+  intro:"Take a look through our menu and discover your next favourite.",
+  eyebrow:"EXPLORE THE MENU",
+  menu:"Our Menu",
+  count:"Menu items",
+  footer:"Good food brings people together.",
+  main:"👨‍🍳",small:"🍽️",top:"✦"
+ },
+ clothing:{
+  title:"Find your style.<br><span>Wear your story.</span>",
+  kicker:"THE STYLE COLLECTION",
+  tag:"Style · Elegance · You",
+  note:"New looks · Fresh styles · Everyday confidence",
+  label:"DRESS THE WAY YOU FEEL",
+  heading:"Made to make a statement.",
+  intro:"Explore our latest collection and find your next favourite look.",
+  eyebrow:"DISCOVER THE COLLECTION",
+  menu:"Our Collection",
+  count:"Style options",
+  footer:"Your style. Your statement.",
+  main:"👗",small:"👜",top:"✂️"
+ },
+ hotel:{
+  title:"Stay in comfort.<br><span>Feel at home.</span>",
+  kicker:"WELCOME TO YOUR STAY",
+  tag:"Comfort · Care · Hospitality",
+  note:"Relax · Refresh · Enjoy your stay",
+  label:"A WARM WELCOME AWAITS",
+  heading:"Comfort in every detail.",
+  intro:"Explore our facilities, services and available offerings.",
+  eyebrow:"EXPLORE OUR OFFERINGS",
+  menu:"Our Services",
+  count:"Available items",
+  footer:"Your comfort is our priority.",
+  main:"🏨",small:"🛎️",top:"🔑"
+ },
+ bakery:{
+  title:"Freshly baked.<br><span>Made with love.</span>",
+  kicker:"FRESH FROM OUR OVEN",
+  tag:"Fresh · Sweet · Delicious",
+  note:"Warm treats · Sweet memories · Freshly made",
+  label:"A LITTLE BAKED HAPPINESS",
+  heading:"Something sweet awaits.",
+  intro:"Discover freshly prepared treats and bakery favourites.",
+  eyebrow:"BAKERY SPECIALS",
+  menu:"Our Bakery",
+  count:"Fresh items",
+  footer:"Happiness is freshly baked.",
+  main:"🥐",small:"🧁",top:"🍰"
+ },
+ gift:{
+  title:"Give a little joy.<br><span>Make it memorable.</span>",
+  kicker:"THOUGHTFUL FINDS",
+  tag:"Gifts · Surprises · Smiles",
+  note:"Special finds · Thoughtful gifts · Happy moments",
+  label:"SOMETHING SPECIAL FOR SOMEONE",
+  heading:"Find the perfect surprise.",
+  intro:"Explore thoughtful gifts for every occasion and every person.",
+  eyebrow:"DISCOVER OUR FINDS",
+  menu:"Gift Collection",
+  count:"Gift ideas",
+  footer:"Every gift tells a story.",
+  main:"🎁",small:"🎀",top:"💝"
+ },
+ jewellery:{
+  title:"A touch of elegance.<br><span>A lifetime of shine.</span>",
+  kicker:"TIMELESS ELEGANCE",
+  tag:"Elegance · Craft · Beauty",
+  note:"Beautiful details · Timeless designs · Lasting shine",
+  label:"MADE TO BE TREASURED",
+  heading:"Discover timeless beauty.",
+  intro:"Explore our jewellery collection and find a piece to treasure.",
+  eyebrow:"THE COLLECTION",
+  menu:"Our Jewellery",
+  count:"Designs",
+  footer:"Elegance that stays with you.",
+  main:"💎",small:"✨",top:"👑"
+ },
+ food_cart:{
+  title:"Big flavours.<br><span>Street food vibes.</span>",
+  kicker:"STRAIGHT FROM OUR CART",
+  tag:"Quick · Tasty · Fresh",
+  note:"Hot and fresh · Full of flavour · Made for you",
+  label:"YOUR STREET FOOD STOP",
+  heading:"What are you craving?",
+  intro:"Explore the flavours and favourites available at our cart.",
+  eyebrow:"TODAY'S SPECIALS",
+  menu:"Our Food Menu",
+  count:"Food items",
+  footer:"Good food. Great street vibes.",
+  main:"🌮",small:"🍔",top:"🌶️"
+ },
+ furniture_hardware:{
+  title:"Build your vision.<br><span>Find the right fit.</span>",
+  kicker:"QUALITY FOR EVERY PROJECT",
+  tag:"Quality · Utility · Reliability",
+  note:"Useful products · Reliable quality · Everyday solutions",
+  label:"MADE FOR YOUR SPACE",
+  heading:"Everything in one place.",
+  intro:"Explore our furniture, hardware and useful everyday products.",
+  eyebrow:"EXPLORE OUR PRODUCTS",
+  menu:"Product Catalogue",
+  count:"Products",
+  footer:"The right products make every project easier.",
+  main:"🪑",small:"🛠️",top:"🏠"
+ },
+ universal:{
+  title:"Discover more.<br><span>Find what you need.</span>",
+  kicker:"WELCOME TO OUR STORE",
+  tag:"Explore · Discover · Choose",
+  note:"Quality products · Helpful service · Easy shopping",
+  label:"A COLLECTION MADE FOR YOU",
+  heading:"Explore our offerings.",
+  intro:"Browse our collection and discover products selected for you.",
+  eyebrow:"OUR COLLECTION",
+  menu:"Our Products",
+  count:"Available items",
+  footer:"Thank you for choosing us.",
+  main:"🛍️",small:"✨",top:"✦"
+ }
+};
+
+function applyTheme(value){
+ const allowed=Object.keys(themes);
+ const themeName=String(value||"restaurant").toLowerCase();
+ const key=allowed.includes(themeName)?themeName:"restaurant";
+ const t=themes[key];
+
+ document.documentElement.dataset.shopTheme=key;
+ document.title=t.menu+" | GetSmartQR";
+
+ $("topTag").textContent=t.tag;
+ $("kicker").textContent=t.kicker;
+ $("shopName").innerHTML=t.title;
+ $("heroNote").textContent=t.note;
+ $("introLabel").textContent=t.label;
+ $("introHeading").textContent=t.heading;
+ $("introText").textContent=t.intro;
+ $("sectionEyebrow").textContent=t.eyebrow;
+ $("menuHeading").textContent=t.menu;
+ $("countLabel").textContent=t.count;
+ $("footerText").textContent=t.footer;
+ $("artMain").textContent=t.main;
+ $("artSmall").textContent=t.small;
+ $("artTop").textContent=t.top;
+ $("brandMark").textContent=t.top;
 }
 
-function escapeSvgText(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  }[char]));
-}
-
-const fallbackImage = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420"><rect width="600" height="420" fill="#f2e4d3"/><circle cx="300" cy="190" r="92" fill="#e6c99e"/><path d="M220 190h160M300 110v160" stroke="#b8874b" stroke-width="8" stroke-linecap="round" opacity=".55"/><text x="300" y="330" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" fill="#79523c">Menu item</text></svg>'
+const fallbackImage="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(
+ '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="420"><rect width="600" height="420" fill="#eee8dc"/><circle cx="300" cy="190" r="92" fill="#d9c5a4"/><path d="M220 190h160M300 110v160" stroke="#a78b63" stroke-width="8" stroke-linecap="round" opacity=".55"/><text x="300" y="330" text-anchor="middle" font-family="Arial" font-size="25" fill="#69563f">Product</text></svg>'
 );
 
-function formatPrice(value) {
-  const amount = Number(value);
-  if (!Number.isFinite(amount)) return "₹" + String(value ?? "—");
-  return "₹" + amount.toLocaleString("en-IN", { maximumFractionDigits: 2 });
+function showMessage(text){$("message").textContent=text||""}
+
+function formatPrice(value){
+ const amount=Number(value);
+ if(!Number.isFinite(amount))return "₹"+String(value??"—");
+ return "₹"+amount.toLocaleString("en-IN",{maximumFractionDigits:2});
 }
 
-function renderProducts(list) {
-  const box = $("products");
-  box.replaceChildren();
-  $("menuCount").textContent = String(list.length);
+function renderProducts(list){
+ const box=$("products");
+ box.replaceChildren();
+ $("menuCount").textContent=String(list.length);
 
-  if (!list.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty-state";
-    const heading = document.createElement("strong");
-    heading.textContent = allProducts.length ? "No matching dishes" : "The menu is being refreshed";
-    const detail = document.createElement("span");
-    detail.textContent = allProducts.length
-      ? "Try another dish name or item number."
-      : "Please check back soon for our available menu.";
-    empty.append(heading, detail);
-    box.appendChild(empty);
-    showMessage("");
-    return;
-  }
-
+ if(!list.length){
+  const empty=document.createElement("div");
+  empty.className="empty-state";
+  const heading=document.createElement("strong");
+  heading.textContent=allProducts.length?"No matching products":"The catalogue is being refreshed";
+  const detail=document.createElement("span");
+  detail.textContent=allProducts.length
+   ?"Try another product name or item number."
+   :"Please check back soon for available products.";
+  empty.append(heading,detail);
+  box.appendChild(empty);
   showMessage("");
-  list.forEach((product) => {
-    const card = document.createElement("article");
-    card.className = "product";
+  return;
+ }
 
-    const media = document.createElement("div");
-    media.className = "product-media";
-    const img = document.createElement("img");
-    img.src = product.image_url || fallbackImage;
-    img.alt = product.product_name || "Menu item";
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = fallbackImage;
-    };
-    media.appendChild(img);
+ showMessage("");
 
-    const info = document.createElement("div");
-    info.className = "product-info";
+ list.forEach(product=>{
+  const card=document.createElement("article");
+  card.className="product";
 
-    const top = document.createElement("div");
-    top.className = "product-topline";
-    const number = document.createElement("span");
-    number.className = "item-number";
-    number.textContent = "Item No. " + (product.product_number ?? "—");
-    top.appendChild(number);
+  const media=document.createElement("div");
+  media.className="product-media";
 
-    const name = document.createElement("h3");
-    name.textContent = product.product_name || "Menu item";
+  const img=document.createElement("img");
+  img.src=product.image_url||fallbackImage;
+  img.alt=product.product_name||"Product";
+  img.loading="lazy";
+  img.decoding="async";
+  img.onerror=()=>{
+   img.onerror=null;
+   img.src=fallbackImage;
+  };
+  media.appendChild(img);
 
-    const bottom = document.createElement("div");
-    bottom.className = "product-bottom";
-    const label = document.createElement("span");
-    label.className = "price-label";
-    label.textContent = "Price";
-    const price = document.createElement("span");
-    price.className = "price";
-    price.textContent = formatPrice(product.price);
+  const info=document.createElement("div");
+  info.className="product-info";
 
-    bottom.append(label, price);
-    info.append(top, name, bottom);
-    card.append(media, info);
-    box.appendChild(card);
-  });
+  const top=document.createElement("div");
+  top.className="product-topline";
+
+  const number=document.createElement("span");
+  number.className="item-number";
+  number.textContent="Item No. "+(product.product_number??"—");
+  top.appendChild(number);
+
+  const name=document.createElement("h3");
+  name.textContent=product.product_name||"Product";
+
+  const bottom=document.createElement("div");
+  bottom.className="product-bottom";
+
+  const label=document.createElement("span");
+  label.className="price-label";
+  label.textContent="Price";
+
+  const price=document.createElement("span");
+  price.className="price";
+  price.textContent=formatPrice(product.price);
+
+  bottom.append(label,price);
+  info.append(top,name,bottom);
+  card.append(media,info);
+  box.appendChild(card);
+ });
 }
 
-async function loadCatalog() {
-  const slug = new URLSearchParams(window.location.search).get("shop");
+async function loadCatalog(){
+ const slug=new URLSearchParams(window.location.search).get("shop");
 
-  if (!slug || !slug.trim()) {
-    $("shopName").textContent = "Menu not found";
-    $("shopDescription").textContent = "This menu link appears to be incomplete.";
-    showMessage("Invalid catalogue link. Please scan the restaurant's QR code again.");
-    $("menuCount").textContent = "0";
-    return;
-  }
+ if(!slug||!slug.trim()){
+  $("shopName").textContent="Catalogue not found";
+  $("shopDescription").textContent="This catalogue link appears to be incomplete.";
+  showMessage("Invalid catalogue link. Please scan the shop's QR code again.");
+  $("menuCount").textContent="0";
+  return;
+ }
 
-  const { data: shop, error: shopError } = await db
-    .from("Shops")
-    .select("id,shop_name,description,is_active,theme")
-    .eq("slug", slug.trim())
-    .maybeSingle();
+ const {data:shop,error:shopError}=await db
+  .from("Shops")
+  .select("id,shop_name,description,is_active,theme")
+  .eq("slug",slug.trim())
+  .maybeSingle();
 
-  if (shopError) throw shopError;
+ if(shopError)throw shopError;
 
-  if (!shop || shop.is_active === false) {
-    $("shopName").textContent = "Restaurant unavailable";
-    $("shopDescription").textContent = "We are unable to display this menu right now.";
-    showMessage("This restaurant catalogue is unavailable.");
-    $("menuCount").textContent = "0";
-    return;
-  }
+ if(!shop||shop.is_active===false){
+  $("shopName").textContent="Shop unavailable";
+  $("shopDescription").textContent="We are unable to display this catalogue right now.";
+  showMessage("This shop catalogue is unavailable.");
+  $("menuCount").textContent="0";
+  return;
+ }
 
-  $("shopName").textContent = shop.shop_name || "Welcome to our restaurant";
-  $("shopDescription").textContent =
-    shop.description || "Discover delicious favourites, thoughtfully prepared and served with a smile.";
+ applyTheme(shop.theme);
 
-  /* Read and retain the saved shop theme without changing the existing theme data. */
-  const savedTheme = shop.theme == null ? "restaurant" : String(shop.theme);
-  document.documentElement.dataset.shopTheme = savedTheme.toLowerCase();
+ $("shopName").innerHTML=themes[
+  Object.keys(themes).includes(String(shop.theme||"restaurant").toLowerCase())
+  ?String(shop.theme||"restaurant").toLowerCase()
+  :"restaurant"
+ ].title;
 
-  const { data: products, error: productError } = await db
-    .from("Products")
-    .select("id,product_name,product_number,price,image_url")
-    .eq("shop_id", shop.id)
-    .eq("is_available", true)
-    .order("product_name");
+ $("shopDescription").textContent=
+  shop.description||"Discover our collection and explore our available products.";
 
-  if (productError) throw productError;
+ const {data:products,error:productError}=await db
+  .from("Products")
+  .select("id,product_name,product_number,price,image_url")
+  .eq("shop_id",shop.id)
+  .eq("is_available",true)
+  .order("product_name");
 
-  allProducts = products || [];
-  renderProducts(allProducts);
+ if(productError)throw productError;
+
+ allProducts=products||[];
+ renderProducts(allProducts);
 }
 
-$("search").addEventListener("input", (event) => {
-  const query = event.target.value.trim().toLocaleLowerCase();
-  const filtered = allProducts.filter((product) =>
-    String(product.product_name || "").toLocaleLowerCase().includes(query) ||
-    String(product.product_number ?? "").toLocaleLowerCase().includes(query)
-  );
-  renderProducts(filtered);
+$("search").addEventListener("input",event=>{
+ const query=event.target.value.trim().toLocaleLowerCase();
+ const filtered=allProducts.filter(product=>
+  String(product.product_name||"").toLocaleLowerCase().includes(query)||
+  String(product.product_number??"").toLocaleLowerCase().includes(query)
+ );
+ renderProducts(filtered);
 });
 
-loadCatalog().catch((error) => {
-  console.error("GetSmartQR restaurant catalogue error:", error);
-  $("menuCount").textContent = "—";
-  showMessage("We couldn't load this menu. Please refresh the page and try again.");
+loadCatalog().catch(error=>{
+ console.error("GetSmartQR catalogue error:",error);
+ $("menuCount").textContent="—";
+ showMessage("We couldn't load this catalogue. Please refresh the page and try again.");
 });
 </script>
 </body>

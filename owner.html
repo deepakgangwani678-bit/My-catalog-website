@@ -47,7 +47,16 @@ button.secondary{background:#455a64}
 <button onclick="saveShop()">Save Store Details</button>
 <p id="shopMessage" class="muted"></p>
 </div>
-
+<div class="card">
+  <h2>Choose Catalog Theme</h2>
+  <p class="muted">Select the design for your customer catalog.</p>
+  <div style="border:2px solid #9b6845;padding:15px;border-radius:12px;background:#fff8ed">
+    <h3>☕ Premium Cafe Theme</h3>
+    <p>2D cartoon barista, cream and coffee-brown design.</p>
+    <button onclick="saveTheme('cafe')">Select Cafe Theme</button>
+  </div>
+  <p id="themeMessage" class="muted"></p>
+</div>
 <div class="card">
 <h2>Your Catalog QR</h2>
 <p id="catalogLink" class="muted"></p>

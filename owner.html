@@ -12,8 +12,8 @@ body{margin:0;background:#f3f5f7;font-family:Arial,sans-serif;color:#172b25}
 header{background:#123b32;color:white;padding:20px;text-align:center}
 main{max-width:850px;margin:20px auto;padding:12px}
 .card{background:white;padding:20px;border-radius:14px;margin-bottom:18px;box-shadow:0 3px 14px #0001}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:8px;font-size:15px}
-input{border:1px solid #ddd}
+input,button,select{width:100%;padding:13px;margin:7px 0;border-radius:8px;font-size:15px}
+input,select{border:1px solid #ddd;background:white;color:#172b25}
 button{border:0;background:#176b50;color:white;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 button.danger{background:#b83232}
@@ -23,17 +23,11 @@ button.secondary{background:#455a64}
 .product img{width:100%;max-height:180px;object-fit:contain}
 .muted{color:#667085;font-size:13px;overflow-wrap:anywhere}
 #imagePreview{display:none;width:100%;max-height:220px;object-fit:contain;margin:10px 0;border-radius:10px}
-.theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.theme-option{padding:15px;border-radius:12px;border:2px solid #ddd;background:#fff}
-.theme-option.selected{border-color:#176b50;background:#effaf4}
-.theme-option h3{margin:0 0 8px;font-size:17px}
-.theme-option p{font-size:13px;color:#667085;min-height:36px}
-.theme-option button{margin-bottom:0}
 .theme-status{font-weight:bold;color:#176b50}
+.theme-select{border:2px solid #176b50;background:#f8fffb;font-weight:bold}
 @media(max-width:520px){
 main{padding:10px}
 .card{padding:15px}
-.theme-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -66,75 +60,31 @@ main{padding:10px}
 <p id="shopMessage" class="muted"></p>
 </div>
 
-<!-- THEME SELECTOR -->
+<!-- CATALOG THEME DROPDOWN -->
 
 <div class="card">
-<h2>Choose Catalog Theme</h2>
-<p class="muted">Choose the design that matches your business. Your selection will be saved for this shop only.</p>
+<h2>Select Catalog Theme</h2>
 
-<div class="theme-grid" id="themeGrid">
+<p class="muted">
+Choose one design for your shop. Your selection will be saved only for this shop.
+</p>
 
-<div class="theme-option" data-theme="cafe">
-<h3>☕ Cafe Theme</h3>
-<p>Cartoon barista, coffee-brown and cream design.</p>
-<button onclick="saveTheme('cafe')">Select Cafe</button>
-</div>
+<label for="themeSelect"><b>Choose Your Business Theme</b></label>
 
-<div class="theme-option" data-theme="restaurant">
-<h3>🍽️ Restaurant Theme</h3>
-<p>Cartoon chef, waiter and premium dining design.</p>
-<button style="background:#8b2635" onclick="saveTheme('restaurant')">Select Restaurant</button>
-</div>
+<select id="themeSelect" class="theme-select">
+<option value="cafe">☕ Cafe</option>
+<option value="restaurant">🍽️ Restaurant</option>
+<option value="clothing">👕 Clothing</option>
+<option value="hotel">🏨 Hotel</option>
+<option value="bakery">🧁 Bakery</option>
+<option value="gift">🎁 Gift Shop</option>
+<option value="jewellery">💎 Jewellery</option>
+<option value="food_cart">🍔 Food Cart</option>
+<option value="furniture_hardware">🛋️ Furniture & Hardware</option>
+<option value="universal">🏢 Universal Business</option>
+</select>
 
-<div class="theme-option" data-theme="clothing">
-<h3>👕 Clothing Theme</h3>
-<p>Fashion illustrations and stylish clothing catalogue.</p>
-<button onclick="saveTheme('clothing')">Select Clothing</button>
-</div>
-
-<div class="theme-option" data-theme="hotel">
-<h3>🏨 Hotel Theme</h3>
-<p>Hotel-inspired illustrations and premium hospitality design.</p>
-<button onclick="saveTheme('hotel')">Select Hotel</button>
-</div>
-
-<div class="theme-option" data-theme="bakery">
-<h3>🧁 Bakery Theme</h3>
-<p>Cartoon baker, cakes, pastries and warm bakery design.</p>
-<button onclick="saveTheme('bakery')">Select Bakery</button>
-</div>
-
-<div class="theme-option" data-theme="gift">
-<h3>🎁 Gift Shop Theme</h3>
-<p>Colourful gift illustrations and attractive product layout.</p>
-<button onclick="saveTheme('gift')">Select Gift Shop</button>
-</div>
-
-<div class="theme-option" data-theme="jewellery">
-<h3>💎 Jewellery Theme</h3>
-<p>Elegant jewellery illustrations and premium presentation.</p>
-<button onclick="saveTheme('jewellery')">Select Jewellery</button>
-</div>
-
-<div class="theme-option" data-theme="foodcart">
-<h3>🍔 Food Cart Theme</h3>
-<p>Street-food illustrations and lively food-stall design.</p>
-<button onclick="saveTheme('foodcart')">Select Food Cart</button>
-</div>
-
-<div class="theme-option" data-theme="furniture">
-<h3>🛋️ Furniture & Hardware</h3>
-<p>Furniture, tools and hardware-inspired illustrations.</p>
-<button onclick="saveTheme('furniture')">Select Furniture</button>
-</div>
-
-<div class="theme-option" data-theme="universal">
-<h3>🏢 Universal Business</h3>
-<p>Flexible catalogue design for gyms and other businesses.</p>
-<button onclick="saveTheme('universal')">Select Universal</button>
-</div>
-
-</div>
+<button id="saveThemeButton" onclick="saveTheme()">Save Theme</button>
 
 <p id="themeMessage" class="muted theme-status"></p>
 </div>
@@ -203,23 +153,13 @@ const themes = {
   bakery:"Bakery",
   gift:"Gift Shop",
   jewellery:"Jewellery",
-  foodcart:"Food Cart",
-  furniture:"Furniture & Hardware",
+  food_cart:"Food Cart",
+  furniture_hardware:"Furniture & Hardware",
   universal:"Universal Business"
 };
 
 function message(id,text){
   document.getElementById(id).textContent = text;
-}
-
-function showSavedTheme(theme){
-  const selected = themes[theme] ? theme : "cafe";
-
-  document.querySelectorAll(".theme-option").forEach(card=>{
-    card.classList.toggle("selected",card.dataset.theme === selected);
-  });
-
-  message("themeMessage","Current saved theme: " + (themes[selected] || "Cafe"));
 }
 
 // LOGIN
@@ -282,7 +222,11 @@ async function openDashboard(){
   document.getElementById("shopDescription").value = data.description || "";
   document.getElementById("shopContact").value = data.contact || "";
 
-  showSavedTheme(data.theme);
+  const savedTheme = themes[data.theme] ? data.theme : "cafe";
+
+  document.getElementById("themeSelect").value = savedTheme;
+
+  message("themeMessage","Current saved theme: " + themes[savedTheme]);
 
   showCatalogLink();
   await loadProducts();
@@ -354,22 +298,28 @@ async function saveShop(){
   showCatalogLink();
 }
 
-// SAVE THEME
+// SAVE SELECTED THEME
 
-async function saveTheme(theme){
+async function saveTheme(){
+
   if(!currentShop) return;
 
-  if(!themes[theme]){
-    message("themeMessage","Invalid theme selected.");
+  const theme = document.getElementById("themeSelect").value;
+
+  if(!Object.prototype.hasOwnProperty.call(themes,theme)){
+    message("themeMessage","Please select a valid theme.");
     return;
   }
 
-  message("themeMessage","Saving theme...");
+  const button = document.getElementById("saveThemeButton");
 
-  const buttons = document.querySelectorAll(".theme-option button");
-  buttons.forEach(button=>button.disabled=true);
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  message("themeMessage","Saving your theme...");
 
   try{
+
     const {data,error} = await db.from("Shops")
       .update({theme:theme})
       .eq("id",currentShop.id)
@@ -379,14 +329,23 @@ async function saveTheme(theme){
     if(error) throw error;
 
     currentShop = data;
-    showSavedTheme(data.theme);
 
-    message("themeMessage",themes[theme] + " Theme saved successfully!");
+    document.getElementById("themeSelect").value = data.theme;
+
+    message(
+      "themeMessage",
+      themes[data.theme] + " Theme saved successfully!"
+    );
 
   }catch(error){
+
     message("themeMessage","Error: " + error.message);
+
   }finally{
-    buttons.forEach(button=>button.disabled=false);
+
+    button.disabled = false;
+    button.textContent = "Save Theme";
+
   }
 }
 

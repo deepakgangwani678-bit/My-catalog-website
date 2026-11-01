@@ -3,215 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shop Catalog | Smart Catalog</title>
-
+<title>Shop Catalog | GetSmartQR</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-  color:#182230;
+:root{--cream:#fff8ed;--paper:#fffdf8;--coffee:#3b2419;--brown:#70452f;--gold:#d89a45;--muted:#806f63}
+body{margin:0;font-family:Arial,sans-serif;background:#f5eadb;color:var(--coffee)}
+header{background:linear-gradient(135deg,#3b2419,#70452f);color:#fff8ed;padding:25px 16px 30px;text-align:center;position:relative;overflow:hidden}
+header:before,header:after{content:"";position:absolute;border-radius:50%;background:#ffffff0c}
+header:before{width:190px;height:190px;left:-65px;top:-95px}
+header:after{width:150px;height:150px;right:-45px;bottom:-85px}
+.hero{position:relative;z-index:1;max-width:900px;margin:auto;display:flex;align-items:center;justify-content:center;gap:18px}
+.hero-copy{text-align:left;max-width:560px}
+.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#f0c98e;font-weight:bold}
+header h1{font-size:clamp(27px,6vw,42px);margin:8px 0}
+header p{margin:0;color:#f8e7d0;line-height:1.5}
+.barista{width:118px;min-width:95px;height:130px}
+main{width:92%;max-width:1000px;margin:22px auto}
+.card{background:var(--paper);padding:18px;border-radius:18px;margin-bottom:17px;border:1px solid #ead8c3;box-shadow:0 5px 18px #4b2c1710}
+.section-title{margin:0 0 14px;font-size:21px;color:var(--coffee)}
+.search-wrap{position:relative}
+input{width:100%;padding:14px 15px;border:1px solid #dfc9b2;border-radius:12px;font-size:16px;background:#fff}
+input:focus{outline:2px solid #d89a45;border-color:#d89a45}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:14px}
+.product{background:#fff;border:1px solid #ead8c3;border-radius:15px;overflow:hidden;padding-bottom:12px;transition:transform .18s}
+.product img{width:100%;height:165px;object-fit:cover;background:#f2e6d8;display:block}
+.product h3{margin:11px 11px 5px;font-size:16px;color:#3b2419}
+.product p{margin:7px 11px}
+.product .muted{font-size:12px;color:var(--muted)}
+.price{color:#8b4f26;font-size:19px;font-weight:bold}
+#message{padding:12px;line-height:1.5;color:var(--muted)}
+footer{text-align:center;padding:22px;color:#806f63;font-size:13px}
+footer strong{color:#70452f}
+@media(max-width:520px){
+.hero{gap:7px}
+.barista{width:95px;height:112px}
+.hero-copy{text-align:left}
+.products{grid-template-columns:repeat(2,minmax(0,1fr))}
+.product img{height:145px}
 }
-header{
-  background:#123b32;
-  color:white;
-  padding:25px 15px;
-  text-align:center;
-}
-header h1{margin:0 0 8px}
-main{
-  width:94%;
-  max-width:1000px;
-  margin:25px auto;
-}
-.card{
-  background:white;
-  padding:18px;
-  border-radius:15px;
-  margin-bottom:18px;
-  box-shadow:0 3px 15px #00000010;
-}
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:9px;
-  font-size:16px;
-}
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
-  gap:14px;
-}
-.product{
-  background:white;
-  border:1px solid #e5e7eb;
-  border-radius:12px;
-  overflow:hidden;
-  padding-bottom:10px;
-}
-.product img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  background:#eee;
-}
-.product h3{margin:10px;font-size:16px}
-.product p{margin:8px 10px}
-.price{
-  color:#14775b;
-  font-size:19px;
-  font-weight:bold;
-}
-.muted{color:#667085;font-size:14px}
-#message{padding:12px;line-height:1.5}
-footer{text-align:center;padding:25px;color:#667085}
 </style>
 </head>
-
 <body>
-
 <header>
-  <h1 id="shopName">Smart Catalog</h1>
-  <p id="shopDescription">Digital Store Catalog</p>
+ <div class="hero">
+  <svg class="barista" viewBox="0 0 140 150" role="img" aria-label="Cute illustrated cafe barista">
+   <path d="M24 139c2-27 18-43 46-43s44 16 46 43" fill="#e5a35a" stroke="#f7dfbd" stroke-width="4"/>
+   <path d="M43 61c0-28 12-43 29-43s29 15 29 43v22c0 19-13 33-29 33S43 102 43 83z" fill="#f1bd8b" stroke="#3b2419" stroke-width="3"/>
+   <path d="M39 61c-5-34 12-53 34-53 22 0 39 19 34 53-8-8-13-17-15-27-12 13-30 20-53 20z" fill="#4a2b20"/>
+   <path d="M53 69q7-6 14 0M82 69q7-6 14 0" fill="none" stroke="#3b2419" stroke-width="3" stroke-linecap="round"/>
+   <circle cx="61" cy="78" r="3" fill="#3b2419"/>
+   <circle cx="87" cy="78" r="3" fill="#3b2419"/>
+   <path d="M66 91q8 7 16 0" fill="none" stroke="#9b4e3d" stroke-width="3" stroke-linecap="round"/>
+   <path d="M43 52q27-12 57 0l-4 10H47z" fill="#fff3df" stroke="#3b2419" stroke-width="3"/>
+   <path d="M51 110l19 12 19-12 14 29H37z" fill="#fff3df" stroke="#3b2419" stroke-width="3"/>
+   <path d="M91 116q18-10 24 4l-5 19H88" fill="#f1bd8b" stroke="#3b2419" stroke-width="3"/>
+   <rect x="99" y="111" width="27" height="23" rx="5" fill="#fff8ed" stroke="#3b2419" stroke-width="3"/>
+   <path d="M126 116q12-2 8 10-2 7-9 5" fill="none" stroke="#3b2419" stroke-width="3"/>
+   <path d="M109 106q-7-8 0-14 8 8 0 14" fill="#d89a45"/>
+  </svg>
+  <div class="hero-copy">
+   <div class="eyebrow">Freshly made • Made with love</div>
+   <h1 id="shopName">Welcome to our Cafe</h1>
+   <p id="shopDescription">Coffee, conversations and something delicious.</p>
+  </div>
+ </div>
 </header>
-
 <main>
-
-<section class="card">
-  <h2>Find Products</h2>
-  <input id="search" placeholder="Search product name or number">
-</section>
-
-<section class="card">
-  <h2>Our Products</h2>
+ <section class="card">
+  <h2 class="section-title">Find your favourite ☕</h2>
+  <div class="search-wrap">
+   <input id="search" placeholder="Search product name or number" aria-label="Search products">
+  </div>
+ </section>
+ <section class="card">
+  <h2 class="section-title">Our Menu</h2>
   <div id="products" class="products"></div>
-  <p id="message" class="muted">Loading catalog...</p>
-</section>
-
+  <p id="message">Loading menu...</p>
+ </section>
 </main>
-
-<footer>Powered by Smart Catalog</footer>
-
+<footer>Presented with care by <strong>GetSmartQR</strong></footer>
 <script>
 "use strict";
-
-const SUPABASE_URL =
-"https://dfuqgijfkbaykgshvlxd.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
+const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allProducts = [];
 
 function showMessage(text){
-  document.getElementById("message").textContent = text;
+ document.getElementById("message").textContent=text;
 }
 
 function renderProducts(list){
-  const box = document.getElementById("products");
-  box.replaceChildren();
+ const box=document.getElementById("products");
+ box.replaceChildren();
 
-  if(!list.length){
-    showMessage("No products available.");
-    return;
-  }
+ if(!list.length){
+  showMessage("No products available.");
+  return;
+ }
 
-  showMessage("");
+ showMessage("");
 
-  list.forEach(p=>{
-    const card = document.createElement("article");
-    card.className = "product";
+ list.forEach(p=>{
+  const card=document.createElement("article");
+  card.className="product";
 
-    const img = document.createElement("img");
-    img.src = p.image_url || "https://placehold.co/300x220?text=Product";
-    img.alt = p.product_name || "Product";
-    img.onerror = ()=> {
-      img.onerror = null;
-      img.src = "https://placehold.co/300x220?text=Product";
-    };
+  const img=document.createElement("img");
+  img.src=p.image_url||"https://placehold.co/300x220?text=Product";
+  img.alt=p.product_name||"Product";
 
-    const name = document.createElement("h3");
-    name.textContent = p.product_name || "Product";
+  img.onerror=()=>{
+   img.onerror=null;
+   img.src="https://placehold.co/300x220?text=Product";
+  };
 
-    const number = document.createElement("p");
-    number.className = "muted";
-    number.textContent = "Product No.: " + (p.product_number || "-");
+  const name=document.createElement("h3");
+  name.textContent=p.product_name||"Product";
 
-    const price = document.createElement("p");
-    price.className = "price";
-    price.textContent = "₹" + Number(p.price).toLocaleString("en-IN");
+  const number=document.createElement("p");
+  number.className="muted";
+  number.textContent="Item No.: "+(p.product_number||"-");
 
-    card.append(img,name,number,price);
-    box.appendChild(card);
-  });
+  const price=document.createElement("p");
+  price.className="price";
+  price.textContent="₹"+Number(p.price).toLocaleString("en-IN");
+
+  card.append(img,name,number,price);
+  box.appendChild(card);
+ });
 }
 
 async function loadCatalog(){
+ const slug=new URLSearchParams(location.search).get("shop");
 
-  const slug = new URLSearchParams(location.search).get("shop");
+ if(!slug){
+  document.getElementById("shopName").textContent="Catalog Not Found";
+  showMessage("Invalid catalog link.");
+  return;
+ }
 
-  if(!slug){
-    document.getElementById("shopName").textContent = "Catalog Not Found";
-    showMessage("Invalid catalog link.");
-    return;
-  }
+ const {data:shop,error}=await db.from("Shops")
+  .select("id,shop_name,description,is_active,theme")
+  .eq("slug",slug).maybeSingle();
 
-  const {data:shop,error} = await db
-    .from("Shops")
-    .select("id,shop_name,description,is_active,theme")
-    .eq("slug",slug)
-    .maybeSingle();
+ if(error)throw error;
 
-  if(error) throw error;
+ if(!shop||shop.is_active===false){
+  document.getElementById("shopName").textContent="Store Not Found";
+  showMessage("This store is unavailable.");
+  return;
+ }
 
-  if(!shop || shop.is_active === false){
-    document.getElementById("shopName").textContent = "Store Not Found";
-    showMessage("This store is unavailable.");
-    return;
-  }
+ document.getElementById("shopName").textContent=shop.shop_name;
 
-  document.getElementById("shopName").textContent = shop.shop_name;
-  document.getElementById("shopDescription").textContent =
-    shop.description || "Welcome to our store";
+ document.getElementById("shopDescription").textContent=
+  shop.description||"Coffee, conversations and something delicious.";
 
-  const {data:products,error:productError} = await db
-    .from("Products")
-    .select("id,product_name,product_number,price,image_url")
-    .eq("shop_id",shop.id)
-    .eq("is_available",true)
-    .order("product_name");
+ const {data:products,error:productError}=await db.from("Products")
+  .select("id,product_name,product_number,price,image_url")
+  .eq("shop_id",shop.id)
+  .eq("is_available",true)
+  .order("product_name");
 
-  if(productError) throw productError;
+ if(productError)throw productError;
 
-  allProducts = products || [];
-  renderProducts(allProducts);
+ allProducts=products||[];
+ renderProducts(allProducts);
 }
 
 document.getElementById("search").addEventListener("input",e=>{
-  const q = e.target.value.trim().toLowerCase();
+ const q=e.target.value.trim().toLowerCase();
 
-  const filtered = allProducts.filter(p=>
-    String(p.product_name || "").toLowerCase().includes(q) ||
-    String(p.product_number || "").toLowerCase().includes(q)
-  );
-
-  renderProducts(filtered);
+ renderProducts(allProducts.filter(p=>
+  String(p.product_name||"").toLowerCase().includes(q)||
+  String(p.product_number||"").toLowerCase().includes(q)
+ ));
 });
 
 loadCatalog().catch(error=>{
-  console.error(error);
-  showMessage("Catalog loading failed: " + error.message);
+ console.error(error);
+ showMessage("Catalog loading failed: "+error.message);
 });
 </script>
-
 </body>
 </html>

@@ -673,6 +673,12 @@ if (String(shop.theme || "").toLowerCase() === "food_cart") {
     "food_cart.html?shop=" + encodeURIComponent(slug.trim())
   );
   return;
+}// Redirect Furniture & Hardware theme
+if (String(shop.theme || "").toLowerCase() === "furniture_hardware") {
+  window.location.replace(
+    "furniture_hardware.html?shop=" + encodeURIComponent(slug.trim())
+  );
+  return;
 }
 applyTheme(shop.theme);
 

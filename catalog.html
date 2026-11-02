@@ -655,7 +655,13 @@ if (String(shop.theme || "").toLowerCase() === "bakery") {
   );
   return;
 }
-
+// Redirect Gift theme to its dedicated catalogue page
+if (String(shop.theme || "").toLowerCase() === "gift") {
+  window.location.replace(
+    "gift.html?shop=" + encodeURIComponent(slug.trim())
+  );
+  return;
+}
 applyTheme(shop.theme);
 
  $("shopName").innerHTML=themes[

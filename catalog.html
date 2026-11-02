@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8">or
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#315c45">
 <title>Digital Catalogue | GetSmartQR</title>
@@ -640,15 +640,23 @@ async function loadCatalog(){
   return;
  }
 
-  // Redirect Hotel theme to its dedicated catalogue page
- if (String(shop.theme || "").toLowerCase() === "hotel") {
+// Redirect Hotel theme to its dedicated catalogue page
+if (String(shop.theme || "").toLowerCase() === "hotel") {
   window.location.replace(
-   "hotel.html?shop=" + encodeURIComponent(slug.trim())
+    "hotel.html?shop=" + encodeURIComponent(slug.trim())
   );
   return;
- }
+}
 
- applyTheme(shop.theme);
+// Redirect Bakery theme to its dedicated catalogue page
+if (String(shop.theme || "").toLowerCase() === "bakery") {
+  window.location.replace(
+    "bakery.html?shop=" + encodeURIComponent(slug.trim())
+  );
+  return;
+}
+
+applyTheme(shop.theme);
 
  $("shopName").innerHTML=themes[
   Object.keys(themes).includes(String(shop.theme||"restaurant").toLowerCase())

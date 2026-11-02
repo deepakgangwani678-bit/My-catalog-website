@@ -661,6 +661,12 @@ if (String(shop.theme || "").toLowerCase() === "gift") {
     "gift.html?shop=" + encodeURIComponent(slug.trim())
   );
   return;
+}// Redirect Jewellery theme to its dedicated catalogue page
+if (String(shop.theme || "").toLowerCase() === "jewellery") {
+  window.location.replace(
+    "jewellery.html?shop=" + encodeURIComponent(slug.trim())
+  );
+  return;
 }
 applyTheme(shop.theme);
 

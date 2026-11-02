@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7dfe0">
+<title>Bakery Catalogue | GetSmartQR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f2b9c1;--pink2:#f9dfe1;--cream:#fff9ef;--paper:#fffdf8;--choc:#56382f;--brown:#76594e;--gold:#d8ae62;--line:#ead8c8;--green:#159653;--muted:#8a756b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--choc);font-family:Inter,Arial,sans-serif;overflow-x:hidden}a{color:inherit}.wrap{width:min(1120px,calc(100% - 28px));margin:auto}.hidden{display:none!important}
+.topbar{height:9px;background:repeating-linear-gradient(90deg,#d98591 0 18px,#f5cbd0 18px 27px,#56382f 27px 42px)}
+header{position:relative;text-align:center;overflow:hidden;background:radial-gradient(ellipse at 50% 90%,#f4c5cc 0,transparent 52%),linear-gradient(180deg,#fff0ed,#f8dfe1);padding:28px 14px 24px}
+header:before,header:after{content:"";position:absolute;width:130px;height:130px;border:2px solid #d9a8a4;border-radius:50%;opacity:.24;top:30px}header:before{left:-75px}header:after{right:-75px}
+.kicker{display:inline-block;background:#fff9ef;border:1px solid #e8c7c3;border-radius:30px;padding:8px 15px;color:#a45161;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font:800 clamp(34px,8vw,70px)/1.08 "Playfair Display",Georgia,serif;color:var(--choc);margin:16px auto 8px;max-width:900px;overflow-wrap:anywhere;text-shadow:2px 3px 0 #eebdc4}
+.tagline{font:600 italic clamp(17px,4vw,24px) "Playfair Display",Georgia,serif;color:#9b5360;margin:8px 0}.desc{max-width:620px;margin:10px auto;color:var(--brown);font-size:14px;line-height:1.7}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px auto 12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:45px;padding:0 18px;border-radius:12px;text-decoration:none;font-weight:800;font-size:13px;border:0}.btn-call{background:#d97885;color:white;box-shadow:0 4px 0 #8d4e55}.btn-wa{background:var(--green);color:white;box-shadow:0 4px 0 #0d713b}
+.hero-art{width:min(560px,100%);height:auto;display:block;margin:8px auto -12px;filter:drop-shadow(0 12px 12px #56382f22)}
+.plaque{position:relative;margin:0 auto 0;width:min(760px,calc(100% - 28px));background:var(--paper);border:2px solid var(--choc);border-radius:18px;padding:22px 18px;text-align:center;box-shadow:0 0 0 6px var(--paper),0 0 0 8px var(--gold),0 12px 24px #56382f20}
+.plaque h2{font:700 clamp(23px,5vw,36px) "Playfair Display",Georgia,serif;margin:5px 0 8px}.plaque p{margin:0;color:var(--brown);font-size:14px;line-height:1.6}
+.section{padding:54px 0}.section-title{text-align:center;margin:0 0 26px}.eyebrow{color:#b15d6a;font-size:11px;font-weight:800;letter-spacing:2.5px}.section-title h2{font:800 clamp(28px,6vw,46px) "Playfair Display",Georgia,serif;margin:8px 0;color:var(--choc)}.section-title p{color:var(--muted);margin:0;font-size:14px}
+.highlights{background:#f5e4d5}.hl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.hl-card{background:#fff9ed;border:1.5px solid #e8d5bd;border-bottom:5px solid var(--gold);border-radius:20px;padding:18px 12px 17px;text-align:center;min-width:0;box-shadow:0 5px 14px #56382f0d}.hl-card svg{width:min(130px,100%);height:118px;display:block;margin:0 auto 8px}.hl-card h3{font:700 17px "Playfair Display",Georgia,serif;margin:5px 0 7px;color:var(--choc)}.hl-card p{font-size:13px;line-height:1.55;color:var(--muted);margin:0}
+.menu{background:#fff8ee}.menu-frame{background:#fffdf8;border:2px solid var(--choc);border-radius:22px;padding:22px 14px;box-shadow:inset 0 0 0 5px #fffdf8,inset 0 0 0 7px #efc4c8}
+.search{display:block;max-width:500px;margin:0 auto 17px}.search input{width:100%;height:49px;border:1.5px solid var(--line);border-radius:13px;padding:0 15px;font:14px Inter;background:white;color:var(--choc)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:22px}.chip{border:1.5px solid var(--choc);background:#fffaf2;color:var(--choc);border-radius:30px;padding:9px 12px;font-size:12px;font-weight:700}.chip[aria-pressed=true]{background:var(--choc);color:white}.chip small{opacity:.75;margin-left:4px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.product{background:white;border:1px solid var(--line);border-radius:17px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 15px #56382f10}.product-img{aspect-ratio:4/3;background:#f7e7df;position:relative}.product-img img{width:100%;height:100%;object-fit:cover;display:block}.availability{position:absolute;left:8px;top:8px;border-radius:20px;background:#fff9ef;padding:5px 9px;font-size:10px;font-weight:800;color:#147544}.product-body{padding:12px;display:flex;flex-direction:column;flex:1}.number{font-size:10px;color:var(--muted);letter-spacing:.7px}.product h3{font:700 16px/1.35 "Playfair Display",Georgia,serif;margin:6px 0 10px}.price{margin-top:auto;border-top:1px dashed var(--line);padding-top:10px;font:800 20px "Playfair Display",Georgia,serif;color:#b45e6b}.order{display:block;text-align:center;margin-top:10px;background:var(--green);color:white;text-decoration:none;border-radius:10px;padding:11px 8px;font-size:12px;font-weight:800}.empty{grid-column:1/-1;text-align:center;background:white;border:1px dashed var(--line);padding:35px 15px;border-radius:16px;color:var(--muted)}.empty strong{display:block;font:700 21px "Playfair Display",Georgia,serif;color:var(--choc);margin-bottom:7px}
+footer{background:var(--choc);color:#fff2e6;text-align:center;padding:0 0 30px}.footer-inner{padding-top:28px}.footer-inner h2{font:800 clamp(25px,6vw,40px) "Playfair Display",Georgia,serif;color:#f1c77d;margin:0 0 10px;overflow-wrap:anywhere}.footer-lines{display:grid;gap:9px;margin:18px 0;color:#f9e8d8;font-size:14px}.footer-lines a{text-decoration:none}.thanks{font:600 italic 24px "Playfair Display",Georgia,serif;margin:25px 0 8px}.powered{font-size:12px;opacity:.75}.fab{position:fixed;right:15px;bottom:18px;width:58px;height:58px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center;text-decoration:none;font-size:26px;box-shadow:0 8px 22px #15965355;z-index:10}
+@media(min-width:650px){.hl-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.menu-frame{padding:28px}.hl-card{padding:22px 16px}}
+@media(min-width:950px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:380px){.hl-card{padding:14px 8px}.hl-card h3{font-size:15px}.hl-card p{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<header>
+  <div class="kicker">✦ Welcome to Our Bakery ✦</div>
+  <h1 id="shopName">Loading bakery…</h1>
+  <p class="tagline">Freshly Baked Happiness, Every Day</p>
+  <p class="desc" id="shopDesc"></p>
+  <div class="actions" id="actions"></div>
+  <svg class="hero-art" viewBox="0 0 640 390" role="img" aria-label="Illustrated bakery counter with a friendly baker and fresh pastries">
+    <defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#fff8ef"/><stop offset="1" stop-color="#f4cbd0"/></linearGradient><linearGradient id="apron" x2="0" y2="1"><stop stop-color="#e98c98"/><stop offset="1" stop-color="#b95c6b"/></linearGradient></defs>
+    <ellipse cx="320" cy="360" rx="260" ry="22" fill="#8b5d4c" opacity=".16"/><circle cx="320" cy="177" r="158" fill="url(#wall)" stroke="#d7a65f" stroke-width="5" stroke-dasharray="4 12"/>
+    <path d="M150 335V208q0-95 85-95h170q85 0 85 95v127" fill="#fffaf2" stroke="#56382f" stroke-width="8"/>
+    <path d="M250 115q-22-42 10-64q9-39 47-26q30-39 61-4q40-5 43 42q23 29-4 52Z" fill="#fffdf8" stroke="#56382f" stroke-width="7"/>
+    <rect x="250" y="102" width="160" height="28" rx="10" fill="#fffdf8" stroke="#56382f" stroke-width="7"/>
+    <ellipse cx="287" cy="180" rx="18" ry="23" fill="white" stroke="#56382f" stroke-width="4"/><ellipse cx="373" cy="180" rx="18" ry="23" fill="white" stroke="#56382f" stroke-width="4"/><circle cx="291" cy="183" r="8" fill="#56382f"/><circle cx="369" cy="183" r="8" fill="#56382f"/><path d="M294 225q36 35 72 0" fill="none" stroke="#56382f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M222 335q5-93 98-93h0q93 0 98 93Z" fill="url(#apron)" stroke="#56382f" stroke-width="7"/><path d="M255 255l65 58 65-58" fill="none" stroke="#fff3e8" stroke-width="8"/>
+    <path d="M80 335h480v28H80Z" fill="#7d5140" stroke="#56382f" stroke-width="7"/><path d="M96 290h448v45H96Z" fill="#f4d7bd" stroke="#56382f" stroke-width="6"/>
+    <g stroke="#56382f" stroke-width="5"><path d="M120 286q0-53 43-53t43 53Z" fill="#d99a4d"/><path d="M132 260l15 20m17-28 12 29" stroke="#ffe1a4" stroke-width="7"/><path d="M240 286q4-47 45-47t45 47Z" fill="#e9a4ad"/><path d="M245 270q40 17 80 0" fill="none" stroke="#fff5e9" stroke-width="8"/><path d="M390 286q0-44 43-44t43 44Z" fill="#c98c4a"/><circle cx="433" cy="240" r="9" fill="#d66d7c"/></g>
+    <g fill="#d66d7c"><path d="M90 100l9 17 18 9-18 9-9 17-9-17-18-9 18-9z"/><path d="M548 115l7 13 14 7-14 7-7 13-7-13-14-7 14-7z"/></g>
+  </svg>
+</header>
+<div class="plaque">
+  <h2>Fresh from Our Bakery</h2>
+  <p>Baked with Care. Finished with Love. Served Fresh.</p>
+</div>
+
+<section class="section highlights">
+ <div class="wrap">
+  <div class="section-title"><div class="eyebrow">WHY EVERY BITE FEELS SPECIAL</div><h2>The Bakery Promise</h2></div>
+  <div class="hl-grid">
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Fresh bread coming out of an oven"><rect x="17" y="25" width="116" height="86" rx="13" fill="#e9b5a9" stroke="#56382f" stroke-width="5"/><rect x="29" y="39" width="92" height="59" rx="8" fill="#fff2df" stroke="#56382f" stroke-width="4"/><path d="M42 85q4-34 32-34t33 34Z" fill="#d99a4d" stroke="#56382f" stroke-width="4"/><path d="M58 61l9 18m12-20 8 20" stroke="#ffe5b0" stroke-width="6" stroke-linecap="round"/><path d="M47 17q-8-10 0-18m27 18q-8-10 0-18m27 18q-8-10 0-18" fill="none" stroke="#bd8b79" stroke-width="4" stroke-linecap="round"/></svg>
+    <h3>Freshly Baked</h3><p>Made fresh in small batches every day.</p>
+   </article>
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Bowl of fresh baking ingredients"><path d="M25 58h100l-13 43H38Z" fill="#d7a66b" stroke="#56382f" stroke-width="5"/><path d="M31 58q44-35 88 0" fill="#fff3dc" stroke="#56382f" stroke-width="5"/><ellipse cx="56" cy="49" rx="17" ry="12" fill="#f2d37c" stroke="#56382f" stroke-width="3"/><ellipse cx="94" cy="45" rx="15" ry="11" fill="#fff" stroke="#56382f" stroke-width="3"/><path d="M75 18l8 15-8 15-8-15Z" fill="#e98b99" stroke="#56382f" stroke-width="3"/><circle cx="29" cy="25" r="7" fill="#d99a4d"/><circle cx="121" cy="22" r="7" fill="#d99a4d"/></svg>
+    <h3>Quality Ingredients</h3><p>Carefully chosen ingredients in every bite.</p>
+   </article>
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Decorated celebration cake"><ellipse cx="75" cy="103" rx="53" ry="9" fill="#d8ae62"/><path d="M29 65h92v34H29Z" fill="#e98d9b" stroke="#56382f" stroke-width="5"/><path d="M29 65q0-25 46-25t46 25Z" fill="#fff5e8" stroke="#56382f" stroke-width="5"/><path d="M29 77q23 12 46 0t46 0" fill="none" stroke="#fff5e8" stroke-width="6"/><path d="M75 40q-16-20 0-30q16 10 0 30Z" fill="#d85f70" stroke="#56382f" stroke-width="3"/><path d="M75 12q-17-14-24 0q13 12 24 0m0 0q17-14 24 0q-13 12-24 0" fill="#6b9a63" stroke="#56382f" stroke-width="2"/><circle cx="49" cy="61" r="4" fill="#d85f70"/><circle cx="101" cy="61" r="4" fill="#d85f70"/></svg>
+    <h3>Cakes for Every Moment</h3><p>Sweet creations for celebrations big and small.</p>
+   </article>
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Golden freshly baked bread loaf"><path d="M20 91q-4-52 55-62q58 8 55 62q-54 25-110 0Z" fill="#c98543" stroke="#56382f" stroke-width="5"/><path d="M45 48l17 34m10-47 15 47m12-35 9 30" stroke="#ffe0a2" stroke-width="9" stroke-linecap="round"/><path d="M21 91q54 23 109 0" fill="none" stroke="#8a5435" stroke-width="4"/></svg>
+    <h3>Daily Bread</h3><p>Soft, warm and delicious bakery favourites.</p>
+   </article>
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Handcrafted cupcake with frosting"><path d="M42 60h66l-8 48H50Z" fill="#e98b99" stroke="#56382f" stroke-width="5"/><path d="M43 61q-13-12 1-23q-1-22 20-21q12-25 29-7q22-2 22 19q15 14 0 31Z" fill="#fff7e9" stroke="#56382f" stroke-width="5"/><path d="M55 70l5 28m17-28v29m17-29-4 29" stroke="#f8d8ce" stroke-width="4"/><circle cx="75" cy="14" r="7" fill="#d75e71"/></svg>
+    <h3>Handcrafted Cupcakes</h3><p>Little treats finished with a personal touch.</p>
+   </article>
+   <article class="hl-card">
+    <svg viewBox="0 0 150 125" role="img" aria-label="Smiling artisan baker holding a whisk"><circle cx="75" cy="49" r="28" fill="#d49a75" stroke="#56382f" stroke-width="4"/><path d="M47 43q0-35 28-35t28 35q-27-13-56 0Z" fill="#56382f"/><circle cx="65" cy="49" r="3.5" fill="#56382f"/><circle cx="85" cy="49" r="3.5" fill="#56382f"/><path d="M64 62q11 10 22 0" fill="none" stroke="#56382f" stroke-width="3" stroke-linecap="round"/><path d="M31 119q2-47 44-47t44 47Z" fill="#e98b99" stroke="#56382f" stroke-width="5"/><path d="M110 22l16 16m-8-24q12 9 0 19m-9-9q-10 12 2 20" fill="none" stroke="#8c756c" stroke-width="4" stroke-linecap="round"/></svg>
+    <h3>Made with Love</h3><p>A little happiness in every treat.</p>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section class="section menu" id="menu">
+ <div class="wrap">
+  <div class="section-title"><div class="eyebrow">BAKED FRESH FOR YOU</div><h2>Our Bakery Menu</h2><p>Discover something delicious</p></div>
+  <div class="menu-frame">
+   <label class="search"><input id="search" type="search" placeholder="Search bakery items or item number…" autocomplete="off"></label>
+   <div class="chips" id="chips"></div>
+   <div class="products" id="products"><div class="empty">Loading the fresh menu…</div></div>
+  </div>
+ </div>
+</section>
+<footer><div class="topbar"></div><div class="wrap footer-inner"><h2 id="footerName">Our Bakery</h2><div class="footer-lines" id="footerLines"></div><div class="actions" id="footerActions"></div><div class="thanks">Thank you for visiting!</div><div class="powered">Presented with <strong>GetSmartQR</strong></div></div></footer>
+<a class="fab hidden" id="fab" target="_blank" rel="noopener" aria-label="WhatsApp enquiry">✆</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const SUPABASE_URL="https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY="sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let shop=null,items=[],active="all";
+const categories=[
+ {id:"cakes",label:"Cakes",icon:"🎂",keys:["cake","cheesecake","gateau"]},
+ {id:"pastries",label:"Pastries",icon:"🧁",keys:["pastry","cupcake","muffin","brownie","tart","mousse","tiramisu","eclair"]},
+ {id:"breads",label:"Breads",icon:"🍞",keys:["bread","bun","pav","loaf","toast","rusk","baguette"]},
+ {id:"cookies",label:"Cookies & Biscuits",icon:"🍪",keys:["cookie","biscuit","nankhatai","khari","cracker"]},
+ {id:"donuts",label:"Donuts",icon:"🍩",keys:["donut","doughnut"]},
+ {id:"snacks",label:"Puffs & Snacks",icon:"🥐",keys:["puff","patty","samosa","roll","pizza","burger","sandwich","namkeen"]},
+ {id:"sweets",label:"Sweets & Chocolates",icon:"🍫",keys:["chocolate","sweet","mithai","truffle","fudge","barfi","burfi","laddu","ladoo"]},
+ {id:"beverages",label:"Beverages",icon:"🥤",keys:["drink","tea","chai","coffee","juice","shake","water"]}
+];
+function phoneDigits(v){let n=String(v||"").replace(/\D/g,"");if(n.length===10)n="91"+n;else if(n.length===11&&n[0]==="0")n="91"+n.slice(1);return n.length>=10?n:""}
+function wa(text){const n=phoneDigits(shop?.contact||shop?.phone||shop?.whatsapp);return n?"https://wa.me/"+n+"?text="+encodeURIComponent(text):""}
+function money(v){const n=Number(v);return Number.isFinite(n)?"₹"+n.toLocaleString("en-IN",{maximumFractionDigits:2}):"₹"+String(v??"—")}
+function categoryFor(p){const t=(p.product_name||"").toLowerCase();return categories.filter(c=>c.keys.some(k=>t.includes(k))).map(c=>c.id)}
+function addLink(parent,label,href,cls){if(!href)return;const a=document.createElement("a");a.className=cls;a.textContent=label;a.href=href;if(href.startsWith("http")){a.target="_blank";a.rel="noopener noreferrer"}parent.append(a)}
+function renderShop(){
+ const name=shop.shop_name||"Our Bakery";$("shopName").textContent=name;$("footerName").textContent=name;document.title=name+" | GetSmartQR";
+ $("shopDesc").textContent=shop.description||"Freshly baked favourites, made with care every day.";
+ const phone=String(shop.contact||shop.phone||"").replace(/[^\d+]/g,"");
+ addLink($("actions"),"☎ Contact Us",phone?"tel:"+phone:"","btn btn-call");
+ const enquiry=wa("Hello "+name+", I would like to know more about your bakery menu.");
+ addLink($("actions"),"WhatsApp Enquiry",enquiry,"btn btn-wa");addLink($("footerActions"),"Chat on WhatsApp",enquiry,"btn btn-wa");
+ if(enquiry){$("fab").href=enquiry;$("fab").classList.remove("hidden")}
+ if(phone){const a=document.createElement("a");a.href="tel:"+phone;a.textContent="☎ "+(shop.contact||shop.phone);$("footerLines").append(a)}
+ const address=shop.address||shop.shop_address||"";if(address){const p=document.createElement("div");p.textContent="⌖ "+address;$("footerLines").append(p)}
+}
+function renderChips(){
+ const host=$("chips");host.replaceChildren();
+ [{id:"all",label:"All",icon:"✦"}].concat(categories).forEach(c=>{
+  const count=c.id==="all"?items.length:items.filter(p=>p._cats.includes(c.id)).length;
+  const b=document.createElement("button");b.type="button";b.className="chip";b.setAttribute("aria-pressed",String(active===c.id));b.textContent=c.icon+" "+c.label+" ";
+  const s=document.createElement("small");s.textContent=count;b.append(s);b.onclick=()=>{active=c.id;renderChips();renderProducts()};host.append(b);
+ });
+}
+const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#f7e7df"/><circle cx="200" cy="135" r="75" fill="#fff9ef" stroke="#d8ae62" stroke-width="7"/><path d="M130 160q10-80 70-80t70 80Z" fill="#d99a4d" stroke="#56382f" stroke-width="5"/><text x="200" y="260" text-anchor="middle" fill="#56382f" font-family="Georgia" font-size="23">Freshly Baked</text></svg>');
+function renderProducts(){
+ const q=$("search").value.trim().toLowerCase();let list=items.filter(p=>(active==="all"||p._cats.includes(active))&&(!q||String(p.product_name||"").toLowerCase().includes(q)||String(p.product_number||"").toLowerCase().includes(q)));
+ const host=$("products");host.replaceChildren();
+ if(!list.length){const e=document.createElement("div");e.className="empty";const s=document.createElement("strong");s.textContent=items.length?"No matching bakery items":"Our fresh menu is being prepared";e.append(s,document.createTextNode(items.length?"Try another name or category.":"Please check back soon for our specialities."));host.append(e);return}
+ list.forEach(p=>{
+  const card=document.createElement("article");card.className="product";const media=document.createElement("div");media.className="product-img";const img=document.createElement("img");img.src=p.image_url||fallback;img.alt=p.product_name||"Bakery item";img.loading="lazy";img.onerror=()=>{img.onerror=null;img.src=fallback};media.append(img);
+  const badge=document.createElement("span");badge.className="availability";badge.textContent=p.is_available===false?"Unavailable":"Available";media.append(badge);
+  const body=document.createElement("div");body.className="product-body";const no=document.createElement("div");no.className="number";no.textContent="ITEM NO. "+(p.product_number||"—");const h=document.createElement("h3");h.textContent=p.product_name||"Bakery item";const price=document.createElement("div");price.className="price";price.textContent=money(p.price);body.append(no,h,price);
+  if(p.is_available!==false){const link=wa("Hello "+(shop.shop_name||"Bakery")+", I would like to order "+(p.product_name||"an item")+(p.product_number?" (Item No. "+p.product_number+")":"")+". Price: "+money(p.price));if(link){const a=document.createElement("a");a.className="order";a.href=link;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Order on WhatsApp";body.append(a)}}
+  card.append(media,body);host.append(card);
+ });
+}
+async function start(){
+ const slug=new URLSearchParams(location.search).get("shop");
+ if(!slug){$("shopName").textContent="Catalogue link missing";$("products").innerHTML='<div class="empty"><strong>Invalid catalogue link</strong>Please scan the bakery QR code again.</div>';return}
+ try{
+  const {data:found,error}=await db.from("Shops").select("*").eq("slug",slug.trim()).maybeSingle();
+  if(error)throw error;if(!found||found.is_active===false){$("shopName").textContent="Bakery unavailable";$("products").innerHTML='<div class="empty"><strong>Catalogue unavailable</strong>Please contact the bakery directly.</div>';return}
+  shop=found;
+  const theme=String(shop.theme||"").toLowerCase();
+  if(theme&&theme!=="bakery"&&!new URLSearchParams(location.search).has("preview")){location.replace("catalog.html?shop="+encodeURIComponent(slug.trim()));return}
+  renderShop();
+  const {data,error:productError}=await db.from("Products").select("*").eq("shop_id",shop.id).order("product_name");
+  if(productError)throw productError;
+  items=(data||[]).map(p=>({...p,_cats:categoryFor(p)}));renderChips();renderProducts();
+ }catch(err){console.error("Bakery catalogue:",err);$("products").innerHTML='<div class="empty"><strong>Menu could not be loaded</strong>Please check your internet connection and refresh.</div>'}
+}
+$("search").addEventListener("input",renderProducts);
+start();
+</script>
+</body>
+</html>

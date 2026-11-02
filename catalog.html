@@ -684,6 +684,12 @@ if (String(shop.theme || "").toLowerCase() === "furniture_hardware") {
         "universal.html?shop=" + encodeURIComponent(slug.trim())
     );
     return;
+}// Redirect Cafe theme to its dedicated page
+if (String(shop.theme || "").toLowerCase() === "cafe") {
+    window.location.replace(
+        "cafe.html?shop=" + encodeURIComponent(slug.trim())
+    );
+    return;
 }
 applyTheme(shop.theme);
 

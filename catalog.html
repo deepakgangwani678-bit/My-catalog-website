@@ -700,6 +700,11 @@ if (String(shop.theme || "").toLowerCase() === "cafe") {
 
     return;
 
+}if (String(shop.theme || "").toLowerCase() === "clothing") {
+    window.location.replace(
+        "clothing.html?shop=" + encodeURIComponent(slug.trim())
+    );
+    return;
 }
 applyTheme(shop.theme);
 

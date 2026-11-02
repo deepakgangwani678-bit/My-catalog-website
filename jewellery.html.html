@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4b1429">
+<title>Royal Jewellery Boutique | GetSmartQR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#4b1429;--wine2:#70243e;--maroon:#32101f;--gold:#d7b36a;--gold2:#f4dfa5;--ivory:#fff8e9;--paper:#fffdf7;--rose:#e7bdc2;--rose2:#f4dfe0;--ink:#432431;--muted:#806b70;--green:#138b50;--line:#eadcc8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ivory);color:var(--ink);font-family:Poppins,Arial,sans-serif;overflow-x:hidden}a{color:inherit}.wrap{width:min(1160px,calc(100% - 28px));margin:auto}.goldbar{height:8px;background:repeating-linear-gradient(90deg,var(--gold) 0 22px,#fff0bd 22px 30px,var(--wine) 30px 48px)}
+.hero{position:relative;overflow:hidden;text-align:center;color:var(--ivory);padding:23px 14px 0;background:radial-gradient(ellipse at 50% 75%,#8e4057 0,transparent 52%),linear-gradient(145deg,#2d0b1a,#5a1932 55%,#351020)}
+.hero:before,.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #e4c27c;border-radius:50%;opacity:.24;top:40px}.hero:before{left:-155px}.hero:after{right:-155px}
+.hero-ornament{position:absolute;inset:15px;pointer-events:none;border:1px solid #c99c54;border-radius:20px;opacity:.28}
+.label{display:inline-block;padding:8px 15px;border:1px solid #cda75f;border-radius:30px;background:#3b1024;color:#f5d995;font-size:10px;font-weight:700;letter-spacing:2.3px;text-transform:uppercase}
+h1{font:800 clamp(33px,8.5vw,72px)/1.08 Cinzel,Georgia,serif;color:#f4d994;margin:17px auto 7px;max-width:1000px;overflow-wrap:anywhere;text-shadow:0 3px 0 #280b18,0 0 22px #f2d38b66}
+.tagline{font:600 italic clamp(16px,4vw,23px) Cinzel,Georgia,serif;color:#f4dce0;margin:10px 0}.desc{max-width:660px;margin:10px auto;color:#f0dfe0;font-size:13px;line-height:1.8}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:17px auto 0}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:45px;padding:0 18px;border-radius:12px;text-decoration:none;font-weight:700;font-size:12px}.call{background:#f2d28a;color:#421326;box-shadow:0 4px 0 #a87935}.wa{background:var(--green);color:white;box-shadow:0 4px 0 #0b6238}
+.hero-scene{display:block;width:min(850px,100%);height:auto;margin:0 auto -4px;position:relative;z-index:1;filter:drop-shadow(0 12px 18px #16071188)}
+.plaque{position:relative;z-index:2;width:min(790px,calc(100% - 34px));margin:-2px auto 0;padding:20px 16px;background:var(--paper);border:2px solid var(--gold);outline:4px solid var(--paper);border-radius:15px;box-shadow:0 0 0 7px #d5ad63,0 13px 25px #35102024;text-align:center}
+.plaque h2{font:700 clamp(21px,5vw,34px) Cinzel,Georgia,serif;color:var(--wine);margin:3px 0 7px}.plaque p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+.section{padding:52px 0}.highlights{background:linear-gradient(180deg,#f1e1d2,#f8eee1)}.section-head{text-align:center;margin:0 0 26px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:2.5px;color:#a06b32}.section-head h2{font:800 clamp(27px,6vw,44px) Cinzel,Georgia,serif;color:var(--wine);margin:8px 0}.section-head p{font-size:13px;color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.feature{background:linear-gradient(145deg,#fffdf7,#fff4e2);border:1.5px solid #e2cda9;border-bottom:5px solid var(--gold);border-radius:18px;padding:16px 10px 17px;text-align:center;box-shadow:0 6px 16px #4b142914;min-width:0}.feature svg{display:block;width:min(132px,100%);height:116px;margin:0 auto 8px}.feature h3{font:700 15px Cinzel,Georgia,serif;color:var(--wine);margin:5px 0 7px}.feature p{font-size:11px;line-height:1.65;color:var(--muted);margin:0}
+.menu{background:#fff9ed}.menu-box{background:var(--paper);border:2px solid var(--wine);border-radius:20px;padding:20px 13px;box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 7px #e6c98e}
+.search{display:block;max-width:520px;margin:0 auto 16px}.search input{width:100%;height:48px;border:1.5px solid #dfcba8;border-radius:12px;padding:0 15px;font:13px Poppins;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:21px}.chip{border:1.5px solid #c9aa70;background:#fffaf1;color:var(--wine);border-radius:30px;padding:9px 12px;font-size:10px;font-weight:700}.chip[aria-pressed=true]{background:var(--wine);color:#f8e5b4;border-color:var(--wine)}.chip small{opacity:.75;margin-left:4px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.product{background:#fff;border:1px solid #eadbc2;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 16px #4b142910}.product-img{aspect-ratio:4/3;background:#f2e5d8;position:relative}.product-img img{width:100%;height:100%;object-fit:cover;display:block}.badge{position:absolute;left:8px;top:8px;border-radius:20px;background:#fff8e9;padding:5px 9px;font-size:9px;font-weight:800;color:#167849}.product-body{padding:12px;display:flex;flex-direction:column;flex:1}.number{font-size:9px;color:var(--muted);letter-spacing:.7px}.product h3{font:700 14px/1.4 Cinzel,Georgia,serif;margin:6px 0 10px;color:var(--wine)}.price{margin-top:auto;border-top:1px dashed #e6d5b7;padding-top:10px;font:800 19px Cinzel,Georgia,serif;color:#a56c25}.order{display:block;text-align:center;margin-top:10px;background:var(--green);color:#fff;text-decoration:none;border-radius:9px;padding:10px 7px;font-size:11px;font-weight:700}.empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed #dfcba8;padding:34px 15px;border-radius:15px;color:var(--muted)}.empty strong{display:block;font:700 19px Cinzel,Georgia,serif;color:var(--wine);margin-bottom:7px}
+footer{background:var(--maroon);color:#f8ead6;text-align:center;padding-bottom:28px}.foot{padding-top:27px}.foot h2{font:800 clamp(23px,6vw,38px) Cinzel,Georgia,serif;color:#f0d18a;margin:0 0 10px;overflow-wrap:anywhere}.foot-info{display:grid;gap:9px;margin:16px 0;font-size:12px}.foot-info a{text-decoration:none}.thanks{font:600 italic 21px Cinzel,Georgia,serif;color:#f4d995;margin:22px 0 8px}.powered{font-size:10px;opacity:.75}.float-wa{position:fixed;right:15px;bottom:18px;width:57px;height:57px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:25px;box-shadow:0 8px 22px #15965355;z-index:10}
+@media(min-width:650px){.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.menu-box{padding:28px}.feature{padding:21px 15px}}
+@media(min-width:950px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:370px){.feature{padding:13px 7px}.feature h3{font-size:13px}.feature p{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="goldbar"></div>
+<header class="hero">
+ <div class="hero-ornament"></div>
+ <div class="label">✦ Heritage • Elegance • Craftsmanship ✦</div>
+ <h1 id="shopName">Royal Jewellery Boutique</h1>
+ <p class="tagline">Tradition That Shines. Elegance That Lasts.</p>
+ <p class="desc" id="shopDesc">Discover timeless designs, crafted to make every moment shine.</p>
+ <div class="actions" id="heroActions"></div>
+ <svg class="hero-scene" viewBox="0 0 900 440" role="img" aria-label="Detailed 2D Indian royal jewellery showroom with Indian woman boutique owner, male jeweller, ornate gold displays and necklace stands">
+  <defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#fff2d4"/><stop offset="1" stop-color="#d9a86a"/></linearGradient><linearGradient id="counter" x2="0" y2="1"><stop stop-color="#f9e7bc"/><stop offset="1" stop-color="#b98243"/></linearGradient></defs>
+  <rect x="40" y="45" width="820" height="340" rx="18" fill="url(#wall)" stroke="#d6b46e" stroke-width="8"/>
+  <path d="M60 65h780v42H60Z" fill="#6b2438" stroke="#e5c77f" stroke-width="5"/>
+  <path d="M88 108v240m724-240v240" stroke="#9a633e" stroke-width="10"/>
+  <g fill="#fff5dc" stroke="#9a633e" stroke-width="5"><path d="M110 120h155v145H110Z"/><path d="M372 120h155v145H372Z"/><path d="M635 120h155v145H635Z"/></g>
+  <!-- ornate wall arches -->
+  <g fill="none" stroke="#bd8b4c" stroke-width="5"><path d="M120 264V176q0-55 68-55t68 55v88"/><path d="M382 264V176q0-55 68-55t68 55v88"/><path d="M645 264V176q0-55 68-55t68 55v88"/></g>
+  <!-- necklace displays -->
+  <g fill="none" stroke="#c58d25" stroke-width="8" stroke-linecap="round"><path d="M145 165q45 96 90 0"/><path d="M407 165q45 96 90 0"/><path d="M670 165q45 96 90 0"/></g>
+  <g fill="#e8c46d" stroke="#8a572b" stroke-width="3"><circle cx="190" cy="239" r="10"/><circle cx="452" cy="239" r="10"/><circle cx="715" cy="239" r="10"/><path d="M190 246l-13 17h26Z"/><path d="M452 246l-13 17h26Z"/><path d="M715 246l-13 17h26Z"/></g>
+  <!-- central glass jewellery counter -->
+  <path d="M90 315h720l-30 75H120Z" fill="url(#counter)" stroke="#5a1b30" stroke-width="7"/>
+  <path d="M120 315h660l-20 45H140Z" fill="#fff6dd" stroke="#a56c3b" stroke-width="5"/>
+  <g fill="none" stroke="#d6a83d" stroke-width="7"><path d="M190 329q30 43 60 0"/><path d="M315 329q30 43 60 0"/><path d="M440 329q30 43 60 0"/><path d="M565 329q30 43 60 0"/></g>
+  <g fill="#e6c16d" stroke="#7b4c2d" stroke-width="3"><circle cx="220" cy="350" r="9"/><circle cx="345" cy="350" r="9"/><circle cx="470" cy="350" r="9"/><circle cx="595" cy="350" r="9"/></g>
+  <!-- Indian woman shop owner, distinct character -->
+  <path d="M210 312q0-107 80-107t80 107" fill="#24745e" stroke="#4b1429" stroke-width="6"/>
+  <path d="M253 196q-10-20 1-48q9-48 49-48q43 0 53 48q12 39-13 61q-47 23-90-13" fill="#b97855" stroke="#4b1429" stroke-width="5"/>
+  <path d="M254 157q-4-61 50-67q58 2 58 65q-27-18-53-19q-29 0-55 21" fill="#241321"/>
+  <path d="M270 129q-15 25-13 54" fill="none" stroke="#241321" stroke-width="13" stroke-linecap="round"/>
+  <circle cx="279" cy="160" r="4" fill="#32101f"/><circle cx="326" cy="160" r="4" fill="#32101f"/><path d="M286 181q17 12 33 0" fill="none" stroke="#fff0df" stroke-width="4" stroke-linecap="round"/><circle cx="302" cy="140" r="5" fill="#b51e35"/>
+  <path d="M276 199q25 16 51 0" fill="none" stroke="#e9bd54" stroke-width="6"/>
+  <!-- male jeweller on right -->
+  <path d="M605 311q0-105 74-105t75 105" fill="#617f9c" stroke="#4b1429" stroke-width="6"/>
+  <path d="M643 195q-10-19 0-47q8-45 39-45q41 0 49 45q10 35-12 57q-40 18-76-10" fill="#a96f51" stroke="#4b1429" stroke-width="5"/>
+  <path d="M642 154q-3-55 41-59q48 2 50 58q-21-17-46-16q-23 0-45 17" fill="#211b20"/>
+  <path d="M656 178q27 15 53 0" fill="none" stroke="#2b1720" stroke-width="7"/><circle cx="665" cy="158" r="4" fill="#32101f"/><circle cx="704" cy="158" r="4" fill="#32101f"/>
+  <path d="M670 190q16 9 31 0" fill="none" stroke="#fff0df" stroke-width="3"/>
+  <!-- velvet necklace bust in foreground -->
+  <path d="M405 298q0-66 44-66t44 66v27H405Z" fill="#70243e" stroke="#4b1429" stroke-width="5"/>
+  <path d="M416 269q33 66 66 0" fill="none" stroke="#edc65f" stroke-width="8"/><path d="M449 307l-11 16 11 13 11-13Z" fill="#e6c16d" stroke="#8a572b" stroke-width="3"/>
+  <g fill="#e8c46d"><circle cx="430" cy="289" r="4"/><circle cx="468" cy="289" r="4"/><circle cx="449" cy="279" r="4"/></g>
+  <path d="M55 390h790" stroke="#e2bf74" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#e6c16d"><path d="M78 90l8 14 16 8-16 8-8 14-8-14-16-8 16-8z"/><path d="M823 90l8 14 16 8-16 8-8 14-8-14-16-8 16-8z"/></g>
+ </svg>
+</header>
+<div class="plaque"><h2>Jewellery That Becomes Your Story</h2><p>From everyday elegance to unforgettable celebrations — discover pieces made to be treasured.</p></div>
+
+<section class="section highlights"><div class="wrap">
+ <div class="section-head"><div class="eyebrow">THE ART OF TIMELESS BEAUTY</div><h2>Our Signature Promise</h2><p>Beautiful details, thoughtful service and designs for every occasion.</p></div>
+ <div class="cards">
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Traditional gold necklace on a display bust"><path d="M35 111q0-65 40-65t40 65" fill="#6c2540" stroke="#4b1429" stroke-width="4"/><path d="M43 54q32 78 64 0" fill="none" stroke="#d9ad4f" stroke-width="8"/><g fill="#f4d88c" stroke="#8a572b" stroke-width="2"><circle cx="53" cy="75" r="5"/><circle cx="64" cy="91" r="5"/><circle cx="75" cy="99" r="5"/><circle cx="86" cy="91" r="5"/><circle cx="97" cy="75" r="5"/></g><path d="M75 100l-9 14 9 8 9-8Z" fill="#b52d50" stroke="#8a572b" stroke-width="2"/></svg>
+   <h3>Royal Gold Collection</h3><p>Classic gold designs with a timeless royal touch.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Indian bride wearing traditional bridal jewellery"><path d="M31 119q3-54 44-54t44 54" fill="#a52e48" stroke="#4b1429" stroke-width="4"/><circle cx="75" cy="44" r="29" fill="#c98461" stroke="#4b1429" stroke-width="4"/><path d="M46 44q-4-35 29-39q34 5 29 39q-28-17-58 0" fill="#21131c"/><path d="M48 33q27-31 54 0" fill="none" stroke="#e1b44e" stroke-width="7"/><circle cx="75" cy="20" r="7" fill="#b32143" stroke="#e1b44e" stroke-width="3"/><path d="M54 55q21 27 42 0" fill="none" stroke="#e5b64f" stroke-width="5"/><circle cx="51" cy="48" r="5" fill="#e5b64f"/><circle cx="99" cy="48" r="5" fill="#e5b64f"/><path d="M68 48h14" stroke="#a51d3e" stroke-width="4"/></svg>
+   <h3>Bridal Jewellery</h3><p>Statement pieces for the moments you cherish forever.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Pair of ornate gold jhumka earrings"><g fill="#e5bd62" stroke="#70451f" stroke-width="3"><path d="M38 33q0-15 14-15t14 15q0 15-14 15t-14-15Z"/><path d="M84 33q0-15 14-15t14 15q0 15-14 15t-14-15Z"/><path d="M36 49h32q-1 31-16 38q-15-7-16-38Z"/><path d="M82 49h32q-1 31-16 38q-15-7-16-38Z"/></g><path d="M42 60q10 14 20 0m26 0q10 14 20 0" fill="none" stroke="#fff0b7" stroke-width="4"/><g fill="#c22b4b"><circle cx="54" cy="93" r="5"/><circle cx="100" cy="93" r="5"/></g><path d="M54 98v13m46-13v13" stroke="#d7b36a" stroke-width="3"/></svg>
+   <h3>Elegant Earrings</h3><p>Delicate details that bring every look to life.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Stack of ornate gold bangles"><ellipse cx="75" cy="92" rx="48" ry="17" fill="#e4bd67" stroke="#70451f" stroke-width="4"/><ellipse cx="75" cy="79" rx="48" ry="17" fill="none" stroke="#c38c2e" stroke-width="10"/><ellipse cx="75" cy="65" rx="48" ry="17" fill="none" stroke="#f1d78e" stroke-width="9"/><ellipse cx="75" cy="51" rx="48" ry="17" fill="none" stroke="#b77d25" stroke-width="8"/><g fill="#b52b4b"><circle cx="37" cy="51" r="4"/><circle cx="75" cy="34" r="4"/><circle cx="113" cy="51" r="4"/></g></svg>
+   <h3>Beautiful Bangles</h3><p>Graceful traditional and contemporary styles.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Diamond ring with sparkling gemstone"><path d="M36 72q39 65 78 0" fill="none" stroke="#d5a849" stroke-width="12"/><path d="M43 69q32 45 64 0" fill="none" stroke="#fff0b5" stroke-width="4"/><path d="M75 13l27 27-27 30-27-30Z" fill="#dceaf0" stroke="#7892a2" stroke-width="4"/><path d="M75 13v57M48 40h54M48 40l27-27 27 27" fill="none" stroke="#fff" stroke-width="3"/><g stroke="#d6b36a" stroke-width="3"><path d="M20 20l7 13m-14-6 14 0m96-8-7 13m14-6-14 0"/></g></svg>
+   <h3>Diamond Collection</h3><p>Brilliant sparkle for your most special occasions.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Jewellery artisan carefully crafting a gold ornament"><path d="M28 117q3-43 43-43t43 43" fill="#6b829b" stroke="#4b1429" stroke-width="4"/><circle cx="71" cy="42" r="25" fill="#c98763" stroke="#4b1429" stroke-width="4"/><path d="M47 41q0-31 25-31t25 31q-24-14-50 0" fill="#2c2024"/><circle cx="62" cy="44" r="3" fill="#32101f"/><circle cx="80" cy="44" r="3" fill="#32101f"/><path d="M63 56q8 6 16 0" fill="none" stroke="#fff" stroke-width="2"/><path d="M98 78l26-24m-18 30 21-5" stroke="#d3a34e" stroke-width="5" stroke-linecap="round"/><circle cx="119" cy="48" r="9" fill="#e8c16b" stroke="#70451f" stroke-width="3"/></svg>
+   <h3>Expert Craftsmanship</h3><p>Careful attention to detail in every design.</p>
+  </article>
+ </div>
+</div></section>
+
+<section class="section menu" id="catalogue"><div class="wrap">
+ <div class="section-head"><div class="eyebrow">FIND YOUR SIGNATURE PIECE</div><h2>Explore Our Collection</h2><p>Discover jewellery for every style and celebration.</p></div>
+ <div class="menu-box">
+  <label class="search"><input id="search" type="search" placeholder="Search jewellery or item number…" autocomplete="off"></label>
+  <div class="chips" id="chips"></div>
+  <div class="products" id="products"><div class="empty">Loading the jewellery collection…</div></div>
+ </div>
+</div></section>
+<footer><div class="goldbar"></div><div class="wrap foot"><h2 id="footerName">Royal Jewellery Boutique</h2><div class="foot-info" id="footInfo"></div><div class="actions" id="footActions"></div><div class="thanks">A little sparkle. A lifetime of memories.</div><div class="powered">Digital catalogue by <strong>GetSmartQR</strong></div></div></footer>
+<a class="float-wa" id="floatWa" href="#" aria-label="WhatsApp enquiry" hidden>✆</a>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const SUPABASE_URL="https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY="sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);let shop=null,products=[],active="all";
+const categories=[
+{id:"gold",label:"Gold Jewellery",icon:"✨",keys:["gold","22k","24k","18k"]},
+{id:"silver",label:"Silver Jewellery",icon:"🥈",keys:["silver","925","sterling"]},
+{id:"diamond",label:"Diamond Jewellery",icon:"💎",keys:["diamond","solitaire"]},
+{id:"rings",label:"Rings",icon:"💍",keys:["ring"]},
+{id:"earrings",label:"Earrings",icon:"🌟",keys:["earring","jhumka","stud","bali","tops"]},
+{id:"necklaces",label:"Necklaces",icon:"📿",keys:["necklace","haar","haram","mala","choker"]},
+{id:"bangles",label:"Bangles",icon:"⭕",keys:["bangle","bracelet","kada","chudi"]},
+{id:"bridal",label:"Bridal Sets",icon:"👑",keys:["bridal","wedding","rani haar","bridal set"]},
+{id:"chains",label:"Chains",icon:"⛓️",keys:["chain"]},
+{id:"pendants",label:"Pendants",icon:"💠",keys:["pendant","locket"]}
+];
+function digits(v){let n=String(v||"").replace(/\D/g,"");if(n.length===10)n="91"+n;else if(n.length===11&&n[0]==="0")n="91"+n.slice(1);return n.length>=10?n:""}
+function waLink(message){const n=digits(shop?.contact||shop?.phone||shop?.whatsapp);return n?"https://wa.me/"+n+"?text="+encodeURIComponent(message):""}
+function money(v){const n=Number(v);return Number.isFinite(n)?"₹"+n.toLocaleString("en-IN",{maximumFractionDigits:2}):"₹"+String(v??"—")}
+function getCats(p){const n=String(p.product_name||"").toLowerCase();return categories.filter(c=>c.keys.some(k=>n.includes(k))).map(c=>c.id)}
+function addLink(parent,label,href,cls){if(!href)return;const a=document.createElement("a");a.className=cls;a.href=href;a.textContent=label;if(href.startsWith("http")){a.target="_blank";a.rel="noopener noreferrer"}parent.append(a)}
+function renderShop(){
+ const name=shop.shop_name||"Royal Jewellery Boutique";$("shopName").textContent=name;$("footerName").textContent=name;document.title=name+" | GetSmartQR";$("shopDesc").textContent=shop.description||"Discover timeless designs, crafted to make every moment shine.";
+ const phone=String(shop.contact||shop.phone||"").replace(/[^\d+]/g,"");addLink($("heroActions"),"☎ Contact Us",phone?"tel:"+phone:"","btn call");
+ const enquiry=waLink("Hello "+name+", I would like to enquire about your jewellery collection.");addLink($("heroActions"),"WhatsApp Enquiry",enquiry,"btn wa");addLink($("footActions"),"Chat on WhatsApp",enquiry,"btn wa");
+ if(enquiry){$("floatWa").href=enquiry;$("floatWa").hidden=false}
+ if(phone){const a=document.createElement("a");a.href="tel:"+phone;a.textContent="☎ "+(shop.contact||shop.phone);$("footInfo").append(a)}
+ const address=shop.address||shop.shop_address||"";if(address){const p=document.createElement("div");p.textContent="⌖ "+address;$("footInfo").append(p)}
+}
+function renderChips(){const host=$("chips");host.replaceChildren();[{id:"all",label:"All Jewellery",icon:"✦"}].concat(categories).forEach(c=>{const count=c.id==="all"?products.length:products.filter(p=>p._cats.includes(c.id)).length;const b=document.createElement("button");b.type="button";b.className="chip";b.setAttribute("aria-pressed",String(active===c.id));b.textContent=c.icon+" "+c.label+" ";const s=document.createElement("small");s.textContent=count;b.append(s);b.onclick=()=>{active=c.id;renderChips();renderProducts()};host.append(b)})}
+const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#f2e5d8"/><path d="M110 180q90-130 180 0" fill="none" stroke="#d7b36a" stroke-width="16"/><path d="M200 55l38 38-38 45-38-45Z" fill="#dceaf0" stroke="#79542d" stroke-width="7"/><text x="200" y="265" text-anchor="middle" fill="#4b1429" font-family="Georgia" font-size="21">Royal Collection</text></svg>');
+function renderProducts(){const q=$("search").value.trim().toLowerCase();const list=products.filter(p=>(active==="all"||p._cats.includes(active))&&(!q||String(p.product_name||"").toLowerCase().includes(q)||String(p.product_number||"").toLowerCase().includes(q)));const host=$("products");host.replaceChildren();if(!list.length){const e=document.createElement("div");e.className="empty";const s=document.createElement("strong");s.textContent=products.length?"No matching jewellery found":"Our collection is being updated";e.append(s,document.createTextNode(products.length?"Try another search or category.":"Please check back soon."));host.append(e);return}
+ list.forEach(p=>{const card=document.createElement("article");card.className="product";const media=document.createElement("div");media.className="product-img";const img=document.createElement("img");img.src=p.image_url||fallback;img.alt=p.product_name||"Jewellery item";img.loading="lazy";img.onerror=()=>{img.onerror=null;img.src=fallback};media.append(img);const badge=document.createElement("span");badge.className="badge";badge.textContent=p.is_available===false?"Unavailable":"Available";media.append(badge);const body=document.createElement("div");body.className="product-body";const no=document.createElement("div");no.className="number";no.textContent="ITEM NO. "+(p.product_number||"—");const h=document.createElement("h3");h.textContent=p.product_name||"Jewellery item";const price=document.createElement("div");price.className="price";price.textContent=money(p.price);body.append(no,h,price);if(p.is_available!==false){const url=waLink("Hello "+(shop.shop_name||"Jewellery Shop")+", I am interested in "+(p.product_name||"this jewellery")+(p.product_number?" (Item No. "+p.product_number+")":"")+". Please share details.");if(url){const a=document.createElement("a");a.className="order";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Enquire on WhatsApp";body.append(a)}}card.append(media,body);host.append(card)})
+}
+async function start(){const slug=new URLSearchParams(location.search).get("shop");if(!slug){$("shopName").textContent="Jewellery catalogue link missing";$("products").innerHTML='<div class="empty"><strong>Invalid catalogue link</strong>Please scan the shop QR code again.</div>';return}
+ try{const {data:found,error}=await db.from("Shops").select("*").eq("slug",slug.trim()).maybeSingle();if(error)throw error;if(!found||found.is_active===false){$("shopName").textContent="Jewellery shop unavailable";$("products").innerHTML='<div class="empty"><strong>Catalogue unavailable</strong>Please contact the shop directly.</div>';return}shop=found;const theme=String(shop.theme||"").toLowerCase();if(theme&&theme!=="jewellery"&&!new URLSearchParams(location.search).has("preview")){location.replace("catalog.html?shop="+encodeURIComponent(slug.trim()));return}renderShop();const {data,error:productError}=await db.from("Products").select("*").eq("shop_id",shop.id).eq("is_available",true).order("product_name");if(productError)throw productError;products=(data||[]).map(p=>({...p,_cats:getCats(p)}));renderChips();renderProducts()}catch(err){console.error("Jewellery catalogue:",err);$("products").innerHTML='<div class="empty"><strong>Jewellery collection could not be loaded</strong>Please check your internet connection and refresh.</div>'}}
+$("search").addEventListener("input",renderProducts);start();
+</script>
+</body>
+</html>

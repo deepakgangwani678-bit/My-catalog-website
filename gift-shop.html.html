@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4e6f2">
+<title>Gift Boutique | GetSmartQR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--lav:#eee0f1;--lav2:#dfc5e5;--pink:#e99ab5;--pink2:#f8dce5;--plum:#57364f;--plum2:#79516e;--gold:#d8b36a;--cream:#fffaf2;--paper:#fffdf9;--ink:#493344;--muted:#806d7c;--green:#159653;--line:#e8d9e6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",Arial,sans-serif;overflow-x:hidden}a{color:inherit}.wrap{width:min(1120px,calc(100% - 28px));margin:auto}.ribbon{height:9px;background:repeating-linear-gradient(90deg,var(--plum) 0 28px,var(--pink) 28px 48px,var(--gold) 48px 58px)}
+.hero{position:relative;overflow:hidden;text-align:center;padding:24px 14px 0;background:radial-gradient(ellipse at 50% 80%,#f4cfe0 0,transparent 48%),linear-gradient(180deg,#f3e8f4 0%,#f8e5ec 100%)}
+.hero:before,.hero:after{content:"";position:absolute;width:170px;height:170px;border:2px solid #b88bb6;border-radius:50%;opacity:.23;top:85px}.hero:before{left:-105px}.hero:after{right:-105px}
+.top-label{display:inline-block;padding:8px 15px;border:1px solid #d6b7d6;border-radius:30px;background:#fffaf4;color:var(--plum2);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font:800 clamp(36px,9vw,72px)/1.04 "Playfair Display",Georgia,serif;color:var(--plum);margin:17px auto 8px;max-width:950px;overflow-wrap:anywhere;text-shadow:2px 3px 0 #edc7d7}
+.tagline{font:600 italic clamp(17px,4vw,24px) "Playfair Display",Georgia,serif;color:#a15c83;margin:9px 0}
+.desc{max-width:620px;margin:9px auto;color:#765e72;font-size:14px;line-height:1.7}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:17px auto 0}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:45px;padding:0 18px;border-radius:13px;text-decoration:none;font-weight:800;font-size:13px}.call{background:#bd6f91;color:#fff;box-shadow:0 4px 0 #844966}.wa{background:var(--green);color:#fff;box-shadow:0 4px 0 #0d713b}
+.hero-scene{display:block;width:min(760px,100%);height:auto;margin:0 auto -5px;position:relative;z-index:1}
+.name-plaque{position:relative;z-index:2;width:min(760px,calc(100% - 34px));margin:-3px auto 0;padding:20px 17px;background:var(--paper);border:2px solid var(--plum);border-radius:18px;box-shadow:0 0 0 5px var(--paper),0 0 0 7px var(--gold),0 12px 24px #57364f1c;text-align:center}
+.name-plaque h2{font:700 clamp(22px,5vw,34px) "Playfair Display",Georgia,serif;margin:3px 0 7px;color:var(--plum)}.name-plaque p{font-size:13px;color:var(--muted);margin:0;line-height:1.6}
+.section{padding:52px 0}.highlights{background:#f1e4f0}.section-head{text-align:center;margin:0 0 25px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:2.4px;color:#a45f86}.section-head h2{font:800 clamp(28px,6vw,45px) "Playfair Display",Georgia,serif;color:var(--plum);margin:8px 0}.section-head p{font-size:13px;color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.feature{background:#fffaf1;border:1.5px solid #e6d4e1;border-bottom:5px solid var(--gold);border-radius:20px;padding:16px 10px 17px;text-align:center;box-shadow:0 5px 15px #57364f0d;min-width:0}.feature svg{display:block;width:min(132px,100%);height:116px;margin:0 auto 8px}.feature h3{font:700 16px "Playfair Display",Georgia,serif;color:var(--plum);margin:5px 0 7px}.feature p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.menu{background:#fff9f2}.menu-box{background:var(--paper);border:2px solid var(--plum);border-radius:22px;padding:20px 13px;box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 7px #edcbdc}
+.search{display:block;max-width:510px;margin:0 auto 16px}.search input{width:100%;height:48px;border:1.5px solid var(--line);border-radius:13px;padding:0 15px;font:14px "DM Sans",sans-serif;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:21px}.chip{border:1.5px solid #c7a8c5;background:#fffaf4;color:var(--plum);border-radius:30px;padding:9px 12px;font-size:11px;font-weight:800}.chip[aria-pressed=true]{background:var(--plum);color:white;border-color:var(--plum)}.chip small{opacity:.75;margin-left:4px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.product{background:white;border:1px solid var(--line);border-radius:17px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 15px #57364f10}.product-img{aspect-ratio:4/3;background:#f2e5f0;position:relative}.product-img img{width:100%;height:100%;object-fit:cover;display:block}.badge{position:absolute;left:8px;top:8px;border-radius:20px;background:#fffaf2;padding:5px 9px;font-size:10px;font-weight:800;color:#167849}.product-body{padding:12px;display:flex;flex-direction:column;flex:1}.number{font-size:10px;color:var(--muted);letter-spacing:.6px}.product h3{font:700 15px/1.35 "Playfair Display",Georgia,serif;margin:6px 0 10px;color:var(--plum)}.price{margin-top:auto;border-top:1px dashed var(--line);padding-top:10px;font:800 20px "Playfair Display",Georgia,serif;color:#a85d83}.order{display:block;text-align:center;margin-top:10px;background:var(--green);color:#fff;text-decoration:none;border-radius:10px;padding:11px 8px;font-size:12px;font-weight:800}.empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed var(--line);padding:34px 15px;border-radius:16px;color:var(--muted)}.empty strong{display:block;font:700 21px "Playfair Display",Georgia,serif;color:var(--plum);margin-bottom:7px}
+footer{background:var(--plum);color:#fff1e9;text-align:center;padding-bottom:28px}.foot{padding-top:27px}.foot h2{font:800 clamp(25px,6vw,40px) "Playfair Display",Georgia,serif;color:#f3d18a;margin:0 0 10px;overflow-wrap:anywhere}.foot-info{display:grid;gap:9px;margin:16px 0;color:#f7e8ef;font-size:13px}.foot-info a{text-decoration:none}.thanks{font:600 italic 23px "Playfair Display",Georgia,serif;margin:22px 0 8px}.powered{font-size:11px;opacity:.75}.float-wa{position:fixed;right:15px;bottom:18px;width:58px;height:58px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center;text-decoration:none;font-size:25px;box-shadow:0 8px 22px #15965355;z-index:10}
+@media(min-width:650px){.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.menu-box{padding:28px}.feature{padding:21px 15px}}
+@media(min-width:950px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:370px){.feature{padding:13px 7px}.feature h3{font-size:14px}.feature p{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="ribbon"></div>
+<header class="hero">
+ <div class="top-label">✦ Thoughtful Gifts • Beautiful Moments ✦</div>
+ <h1 id="shopName">Your Gift Boutique</h1>
+ <p class="tagline">Every Gift Tells a Beautiful Story</p>
+ <p class="desc" id="shopDesc">Find a little something that makes someone feel special.</p>
+ <div class="actions" id="heroActions"></div>
+ <svg class="hero-scene" viewBox="0 0 760 420" role="img" aria-label="Colourful 2D gift boutique scene with a friendly gift shop owner, gift boxes, flowers and teddy bear">
+  <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fff8f5"/><stop offset="1" stop-color="#eccfe4"/></linearGradient><linearGradient id="boxpink" x2="1" y2="1"><stop stop-color="#f5a9c4"/><stop offset="1" stop-color="#cf75a0"/></linearGradient></defs>
+  <ellipse cx="380" cy="386" rx="315" ry="22" fill="#68435f" opacity=".14"/><path d="M95 100q0-42 42-42h486q42 0 42 42v260H95Z" fill="url(#bg)" stroke="#76516f" stroke-width="6"/>
+  <path d="M125 130h510v18H125Z" fill="#8a5e82"/><path d="M145 148v190m470-190v190" stroke="#8a5e82" stroke-width="8"/>
+  <g stroke="#68445f" stroke-width="5"><rect x="155" y="174" width="132" height="120" rx="8" fill="#fff8f1"/><rect x="315" y="174" width="132" height="120" rx="8" fill="#fff8f1"/><rect x="475" y="174" width="132" height="120" rx="8" fill="#fff8f1"/></g>
+  <g><rect x="178" y="222" width="85" height="67" rx="7" fill="#e78eb1" stroke="#68445f" stroke-width="4"/><path d="M213 222v67m-35-42h85" stroke="#ffe8b9" stroke-width="11"/><path d="M220 222q-37-25-24-39q16-9 24 18q8-27 25-18q12 14-25 39" fill="#f5c2d2" stroke="#68445f" stroke-width="3"/>
+  <path d="M337 282q0-51 44-51t44 51Z" fill="#d6a1bf" stroke="#68445f" stroke-width="4"/><circle cx="367" cy="265" r="4" fill="#68445f"/><circle cx="395" cy="265" r="4" fill="#68445f"/><path d="M370 278q11 9 22 0" fill="none" stroke="#68445f" stroke-width="3" stroke-linecap="round"/><circle cx="356" cy="247" r="15" fill="#d6a1bf"/><circle cx="411" cy="247" r="15" fill="#d6a1bf"/>
+  <path d="M497 278q0-42 38-42t38 42Z" fill="#f0c77e" stroke="#68445f" stroke-width="4"/><path d="M515 236q-10-31 7-34q17-2 13 31m17 3q3-33 19-28q13 9-4 35" fill="#f0c77e" stroke="#68445f" stroke-width="4"/>
+  <path d="M120 360h520" stroke="#68445f" stroke-width="10"/><rect x="90" y="333" width="580" height="34" rx="8" fill="#9a6b8c" stroke="#68445f" stroke-width="5"/>
+  <!-- friendly shop owner, distinct main character -->
+  <path d="M283 344q0-100 97-100t97 100" fill="#6c86b4" stroke="#56364f" stroke-width="6"/>
+  <path d="M338 234q-20-20-8-51q4-46 51-46q47 0 52 46q12 31-10 53q-41 20-85-2" fill="#a96e54" stroke="#56364f" stroke-width="5"/>
+  <path d="M326 181q-4-64 55-65q59 1 63 65q-24-20-54-19q-31 0-64 19" fill="#56364f" stroke="#56364f" stroke-width="4"/>
+  <circle cx="360" cy="190" r="5" fill="#56364f"/><circle cx="401" cy="190" r="5" fill="#56364f"/><path d="M366 211q15 12 30 0" fill="none" stroke="#fff0e7" stroke-width="4" stroke-linecap="round"/>
+  <path d="M355 245l25 29 25-29" fill="#fff8f1" stroke="#56364f" stroke-width="4"/>
+  <path d="M280 285q-46-28-67-1q-15 20 11 35l65 25m171-59q45-28 66-1q15 20-11 35l-65 25" fill="none" stroke="#a96e54" stroke-width="19" stroke-linecap="round"/>
+  <!-- present held out by owner -->
+  <rect x="309" y="291" width="142" height="65" rx="8" fill="url(#boxpink)" stroke="#56364f" stroke-width="5"/><path d="M365 291v65m-56-40h142" stroke="#ffe8b9" stroke-width="12"/><path d="M380 291q-42-27-27-42q16-9 27 20q11-29 27-20q15 15-27 42" fill="#f5c2d2" stroke="#56364f" stroke-width="3"/>
+  <!-- floor decorations -->
+  <g fill="#d76e9a"><path d="M91 102l8 16 17 8-17 8-8 16-8-16-17-8 17-8z"/><path d="M674 126l7 13 14 7-14 7-7 13-7-13-14-7 14-7z"/></g><g fill="#d8b36a"><circle cx="112" cy="188" r="8"/><circle cx="653" cy="220" r="8"/><circle cx="145" cy="90" r="5"/><circle cx="618" cy="89" r="5"/></g>
+ </svg>
+</header>
+<div class="name-plaque"><h2>Make Every Moment Unforgettable</h2><p>Thoughtfully picked treasures, wrapped with love and ready to make someone smile.</p></div>
+
+<section class="section highlights"><div class="wrap">
+ <div class="section-head"><div class="eyebrow">A LITTLE JOY IN EVERY BOX</div><h2>The Gift Gallery Promise</h2><p>Small details. Big smiles. Memories that last.</p></div>
+ <div class="cards">
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Birthday gift with balloons"><path d="M34 60q-10-40 14-44q24 4 12 43m35-2q-10-40 14-44q24 4 12 43" fill="#e99ab5" stroke="#57364f" stroke-width="4"/><path d="M52 57l-5 20m58-20 5 20" stroke="#80627d" stroke-width="2"/><rect x="25" y="72" width="100" height="43" rx="7" fill="#8e75ad" stroke="#57364f" stroke-width="4"/><path d="M68 72v43m-43-24h100" stroke="#f8dca0" stroke-width="9"/><path d="M75 72q-30-20-18-31q13-7 18 17q5-24 18-17q12 11-18 31" fill="#f2b7ce" stroke="#57364f" stroke-width="3"/></svg>
+   <h3>Gifts for Every Occasion</h3><p>Thoughtful surprises for birthdays, milestones and more.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Gift box tied with a ribbon and bow"><rect x="24" y="48" width="102" height="67" rx="8" fill="#e99ab5" stroke="#57364f" stroke-width="4"/><path d="M70 48v67m-46-40h102" stroke="#fff0c9" stroke-width="10"/><path d="M75 48q-43-29-27-43q17-9 27 23q10-32 27-23q16 14-27 43" fill="#d9a5d9" stroke="#57364f" stroke-width="4"/><path d="M20 115h110" stroke="#d8b36a" stroke-width="5" stroke-linecap="round"/></svg>
+   <h3>Beautifully Wrapped</h3><p>Every present gets a lovely finishing touch.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Custom gift tag with a handwritten name"><path d="M30 27h75l22 22v59H30Z" fill="#fff3e6" stroke="#57364f" stroke-width="4"/><path d="M105 27v24h22" fill="#e9bfdc" stroke="#57364f" stroke-width="4"/><circle cx="49" cy="48" r="5" fill="#d8b36a"/><path d="M52 69h52m-52 14h39m-39 14h45" stroke="#b37e9f" stroke-width="5" stroke-linecap="round"/><path d="M18 20l10 10m-8 10-9 2" stroke="#d8b36a" stroke-width="4" stroke-linecap="round"/></svg>
+   <h3>Personalised Surprises</h3><p>Add a personal touch to make your gift one of a kind.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="A cheerful teddy bear holding a present"><circle cx="75" cy="50" r="33" fill="#c98d65" stroke="#57364f" stroke-width="4"/><circle cx="48" cy="28" r="14" fill="#c98d65" stroke="#57364f" stroke-width="4"/><circle cx="102" cy="28" r="14" fill="#c98d65" stroke="#57364f" stroke-width="4"/><circle cx="64" cy="49" r="4" fill="#57364f"/><circle cx="86" cy="49" r="4" fill="#57364f"/><ellipse cx="75" cy="64" rx="13" ry="9" fill="#f5d9c6"/><path d="M70 65q5 5 10 0" fill="none" stroke="#57364f" stroke-width="2"/><path d="M37 117q0-43 38-43t38 43" fill="#c98d65" stroke="#57364f" stroke-width="4"/><rect x="60" y="83" width="31" height="27" rx="4" fill="#e99ab5" stroke="#57364f" stroke-width="3"/><path d="M75 83v27m-15-16h31" stroke="#ffe6b6" stroke-width="5"/></svg>
+   <h3>Adorable Keepsakes</h3><p>Find soft toys and little treasures worth holding on to.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="Fresh flower bouquet wrapped as a gift"><path d="M75 112L42 57m33 55 8-65m-8 65 42-52" stroke="#56815c" stroke-width="5" fill="none"/><path d="M45 58q-27-25-33 0q17 17 33 0m39 0q-4-33 21-28q5 21-21 28m-8 26q-29-14-34 11q22 15 34-11" fill="#78a879" stroke="#57364f" stroke-width="3"/><g stroke="#57364f" stroke-width="3"><circle cx="40" cy="39" r="16" fill="#e98eae"/><circle cx="84" cy="30" r="17" fill="#e7b7d9"/><circle cx="116" cy="52" r="15" fill="#e8a3a0"/></g><circle cx="40" cy="39" r="5" fill="#d8b36a"/><circle cx="84" cy="30" r="5" fill="#d8b36a"/><circle cx="116" cy="52" r="5" fill="#d8b36a"/><path d="M38 75q37 28 76 0l-14 43H52Z" fill="#d9a4c8" stroke="#57364f" stroke-width="4"/><path d="M75 88l-9 18 9 9 9-9Z" fill="#f5d18c" stroke="#57364f" stroke-width="2"/></svg>
+   <h3>Flowers & Sweet Gestures</h3><p>Say it beautifully with a thoughtful floral surprise.</p>
+  </article>
+  <article class="feature">
+   <svg viewBox="0 0 150 125" role="img" aria-label="A gift artist wrapping a present at a work table"><path d="M30 110q4-40 43-40t43 40" fill="#7187ad" stroke="#57364f" stroke-width="4"/><circle cx="73" cy="39" r="24" fill="#d69a79" stroke="#57364f" stroke-width="4"/><path d="M49 36q-1-27 25-29q25 3 25 29q-23-14-50 0" fill="#56364f"/><circle cx="65" cy="42" r="3" fill="#57364f"/><circle cx="82" cy="42" r="3" fill="#57364f"/><path d="M66 53q8 7 16 0" fill="none" stroke="#57364f" stroke-width="2"/><rect x="94" y="66" width="42" height="36" rx="4" fill="#e99ab5" stroke="#57364f" stroke-width="3"/><path d="M115 66v36m-21-21h42" stroke="#fff0c9" stroke-width="6"/><path d="M105 66q-19-14-10-21q9-4 20 21q10-25 20-21q8 7-10 21" fill="#d9a5d9" stroke="#57364f" stroke-width="2"/></svg>
+   <h3>Made to Make You Smile</h3><p>A friendly touch and a happy surprise in every visit.</p>
+  </article>
+ </div>
+</div></section>
+
+<section class="section menu" id="catalogue"><div class="wrap">
+ <div class="section-head"><div class="eyebrow">PICK SOMETHING SPECIAL</div><h2>Explore Our Gifts</h2><p>Find the perfect surprise for someone special</p></div>
+ <div class="menu-box">
+  <label class="search"><input id="search" type="search" placeholder="Search gifts or item number…" autocomplete="off"></label>
+  <div class="chips" id="chips"></div>
+  <div class="products" id="products"><div class="empty">Loading the gift collection…</div></div>
+ </div>
+</div></section>
+<footer><div class="ribbon"></div><div class="wrap foot"><h2 id="footerName">Your Gift Boutique</h2><div class="foot-info" id="footInfo"></div><div class="actions" id="footActions"></div><div class="thanks">Wrapped with love. Given with joy.</div><div class="powered">A digital catalogue by <strong>GetSmartQR</strong></div></div></footer>
+<a class="float-wa" id="floatWa" href="#" aria-label="WhatsApp enquiry" hidden>✆</a>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const SUPABASE_URL="https://dfuqgijfkbaykgshvlxd.supabase.co";
+const SUPABASE_KEY="sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let shop=null,products=[],active="all";
+const categories=[
+{id:"birthday",label:"Birthday Gifts",icon:"🎈",keys:["birthday","balloon","party","celebration"]},
+{id:"toys",label:"Teddy & Soft Toys",icon:"🧸",keys:["teddy","toy","soft toy","plush","doll"]},
+{id:"flowers",label:"Flowers & Bouquets",icon:"💐",keys:["flower","bouquet","rose","artificial flower"]},
+{id:"personalised",label:"Personalised Gifts",icon:"🎁",keys:["personal","custom","photo frame","name plate","printed","mug","keychain","key chain"]},
+{id:"anniversary",label:"Anniversary Gifts",icon:"💝",keys:["anniversary","couple","romantic","love"]},
+{id:"decor",label:"Home Decor",icon:"🏡",keys:["decor","showpiece","lamp","wall","vase","clock","idol","frame"]},
+{id:"hampers",label:"Gift Hampers",icon:"🧺",keys:["hamper","basket","combo","gift set","gift box"]},
+{id:"wrapping",label:"Gift Wrapping",icon:"🎀",keys:["wrap","wrapping","ribbon","packing","packaging"]}
+];
+function digits(v){let n=String(v||"").replace(/\D/g,"");if(n.length===10)n="91"+n;else if(n.length===11&&n[0]==="0")n="91"+n.slice(1);return n.length>=10?n:""}
+function waLink(message){const n=digits(shop?.contact||shop?.phone||shop?.whatsapp);return n?"https://wa.me/"+n+"?text="+encodeURIComponent(message):""}
+function rupees(v){const n=Number(v);return Number.isFinite(n)?"₹"+n.toLocaleString("en-IN",{maximumFractionDigits:2}):"₹"+String(v??"—")}
+function getCats(p){const name=String(p.product_name||"").toLowerCase();return categories.filter(c=>c.keys.some(k=>name.includes(k))).map(c=>c.id)}
+function link(parent,label,href,cls){if(!href)return;const a=document.createElement("a");a.className=cls;a.href=href;a.textContent=label;if(href.startsWith("http")){a.target="_blank";a.rel="noopener noreferrer"}parent.append(a)}
+function renderShop(){
+ const name=shop.shop_name||"Your Gift Boutique";$("shopName").textContent=name;$("footerName").textContent=name;document.title=name+" | GetSmartQR";
+ $("shopDesc").textContent=shop.description||"Find a little something that makes someone feel special.";
+ const phone=String(shop.contact||shop.phone||"").replace(/[^\d+]/g,"");
+ link($("heroActions"),"☎ Contact Us",phone?"tel:"+phone:"","btn call");
+ const enquiry=waLink("Hello "+name+", I would like to enquire about your gift collection.");
+ link($("heroActions"),"WhatsApp Enquiry",enquiry,"btn wa");link($("footActions"),"Chat on WhatsApp",enquiry,"btn wa");
+ if(enquiry){$("floatWa").href=enquiry;$("floatWa").hidden=false}
+ if(phone){const a=document.createElement("a");a.href="tel:"+phone;a.textContent="☎ "+(shop.contact||shop.phone);$("footInfo").append(a)}
+ const address=shop.address||shop.shop_address||"";if(address){const p=document.createElement("div");p.textContent="⌖ "+address;$("footInfo").append(p)}
+}
+function renderChips(){
+ const host=$("chips");host.replaceChildren();
+ [{id:"all",label:"All Gifts",icon:"✦"}].concat(categories).forEach(c=>{
+  const count=c.id==="all"?products.length:products.filter(p=>p._cats.includes(c.id)).length;
+  const b=document.createElement("button");b.type="button";b.className="chip";b.setAttribute("aria-pressed",String(active===c.id));b.textContent=c.icon+" "+c.label+" ";
+  const s=document.createElement("small");s.textContent=count;b.append(s);b.onclick=()=>{active=c.id;renderChips();renderProducts()};host.append(b);
+ });
+}
+const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#f2e5f0"/><rect x="125" y="75" width="150" height="145" rx="15" fill="#e99ab5" stroke="#57364f" stroke-width="7"/><path d="M195 75v145m-70-75h150" stroke="#fff0c9" stroke-width="18"/><path d="M200 75q-55-40-35-58q20-12 35 35q15-47 35-35q20 18-35 58" fill="#d9a5d9" stroke="#57364f" stroke-width="5"/><text x="200" y="270" text-anchor="middle" fill="#57364f" font-family="Georgia" font-size="22">A Gift for You</text></svg>');
+function renderProducts(){
+ const q=$("search").value.trim().toLowerCase();const list=products.filter(p=>(active==="all"||p._cats.includes(active))&&(!q||String(p.product_name||"").toLowerCase().includes(q)||String(p.product_number||"").toLowerCase().includes(q)));
+ const host=$("products");host.replaceChildren();
+ if(!list.length){const e=document.createElement("div");e.className="empty";const s=document.createElement("strong");s.textContent=products.length?"No matching gifts found":"Our gift collection is being updated";e.append(s,document.createTextNode(products.length?"Try another search or category.":"Please check back soon."));host.append(e);return}
+ list.forEach(p=>{
+  const card=document.createElement("article");card.className="product";const media=document.createElement("div");media.className="product-img";const img=document.createElement("img");img.src=p.image_url||fallback;img.alt=p.product_name||"Gift item";img.loading="lazy";img.onerror=()=>{img.onerror=null;img.src=fallback};media.append(img);
+  const badge=document.createElement("span");badge.className="badge";badge.textContent=p.is_available===false?"Unavailable":"Available";media.append(badge);
+  const body=document.createElement("div");body.className="product-body";const no=document.createElement("div");no.className="number";no.textContent="ITEM NO. "+(p.product_number||"—");const h=document.createElement("h3");h.textContent=p.product_name||"Gift item";const price=document.createElement("div");price.className="price";price.textContent=rupees(p.price);body.append(no,h,price);
+  if(p.is_available!==false){const url=waLink("Hello "+(shop.shop_name||"Gift Shop")+", I am interested in "+(p.product_name||"this gift")+(p.product_number?" (Item No. "+p.product_number+")":"")+". Price: "+rupees(p.price)+".");if(url){const a=document.createElement("a");a.className="order";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Enquire on WhatsApp";body.append(a)}}
+  card.append(media,body);host.append(card);
+ });
+}
+async function start(){
+ const slug=new URLSearchParams(location.search).get("shop");
+ if(!slug){$("shopName").textContent="Gift catalogue link missing";$("products").innerHTML='<div class="empty"><strong>Invalid catalogue link</strong>Please scan the shop QR code again.</div>';return}
+ try{
+  const {data:found,error}=await db.from("Shops").select("*").eq("slug",slug.trim()).maybeSingle();
+  if(error)throw error;if(!found||found.is_active===false){$("shopName").textContent="Gift shop unavailable";$("products").innerHTML='<div class="empty"><strong>Catalogue unavailable</strong>Please contact the shop directly.</div>';return}
+  shop=found;
+  const theme=String(shop.theme||"").toLowerCase();
+  if(theme&&theme!=="gift"&&!new URLSearchParams(location.search).has("preview")){location.replace("catalog.html?shop="+encodeURIComponent(slug.trim()));return}
+  renderShop();
+  const {data,error:productError}=await db.from("Products").select("*").eq("shop_id",shop.id).eq("is_available",true).order("product_name");
+  if(productError)throw productError;
+  products=(data||[]).map(p=>({...p,_cats:getCats(p)}));renderChips();renderProducts();
+ }catch(err){console.error("Gift catalogue:",err);$("products").innerHTML='<div class="empty"><strong>Gift collection could not be loaded</strong>Please check your internet connection and refresh.</div>'}
+}
+$("search").addEventListener("input",renderProducts);start();
+</script>
+</body>
+</html>

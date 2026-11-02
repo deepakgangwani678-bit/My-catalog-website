@@ -690,6 +690,16 @@ if (String(shop.theme || "").toLowerCase() === "cafe") {
         "cafe.html?shop=" + encodeURIComponent(slug.trim())
     );
     return;
+}if (String(shop.theme || "").toLowerCase() === "restaurant") {
+
+    window.location.replace(
+
+        "restaurant.html?shop=" + encodeURIComponent(slug.trim())
+
+    );
+
+    return;
+
 }
 applyTheme(shop.theme);
 

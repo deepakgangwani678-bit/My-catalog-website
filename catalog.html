@@ -679,6 +679,11 @@ if (String(shop.theme || "").toLowerCase() === "furniture_hardware") {
     "furniture_hardware.html?shop=" + encodeURIComponent(slug.trim())
   );
   return;
+}if (String(shop.theme || "").toLowerCase() === "universal") {
+    window.location.replace(
+        "universal.html?shop=" + encodeURIComponent(slug.trim())
+    );
+    return;
 }
 applyTheme(shop.theme);
 

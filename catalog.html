@@ -640,6 +640,14 @@ async function loadCatalog(){
   return;
  }
 
+  // Redirect Hotel theme to its dedicated catalogue page
+ if (String(shop.theme || "").toLowerCase() === "hotel") {
+  window.location.replace(
+   "hotel.html?shop=" + encodeURIComponent(slug.trim())
+  );
+  return;
+ }
+
  applyTheme(shop.theme);
 
  $("shopName").innerHTML=themes[

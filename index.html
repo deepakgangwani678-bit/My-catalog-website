@@ -20,9 +20,14 @@ section{padding:88px 0}.sectionhead{text-align:center;max-width:760px;margin:0 a
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 
 </style>
+
+<style id="language-control-style">
+.language-switch{position:fixed;z-index:1000;right:18px;top:86px;background:#fff;border:1px solid #dce6d6;border-radius:999px;box-shadow:0 8px 24px rgba(20,37,28,.12);padding:4px 9px}.language-switch select{border:0;background:transparent;color:#14251c;font:700 13px system-ui;outline:none;padding:5px 2px;cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:700px){.language-switch{top:74px;right:12px}.language-switch select{font-size:12px}}
+</style>
 </head>
 <body>
-<header><div class="wrap nav"><a class="brand" href="#"><span class="mark">▦</span>GetSmartQR</a><nav class="links" aria-label="Main navigation"><a href="#how">How it works</a><a href="#benefits">Benefits</a><a href="#contact">Contact</a></nav><a class="navbtn" href="#contact">Get started ↗</a></div></header>
+<header><div class="wrap nav"><a class="brand" href="#"><span class="mark">▦</span>GetSmartQR</a><nav class="links" aria-label="Main navigation"><a href="#how">How it works</a><a href="#benefits">Benefits</a><a href="#contact">Contact</a></nav><a class="navbtn" href="#contact" data-i18n="getStarted">Get started ↗</a></div></header>
+<div class="language-switch" aria-label="Choose language"><label for="siteLanguage" class="sr-only">Language</label><select id="siteLanguage" aria-label="Choose language"><option value="en">English</option><option value="hi">हिन्दी</option></select></div>
 <main>
 <div class="wrap hero">
 <div class="hero-copy"><div class="eyebrow"><span class="dot"></span> SMART CATALOGS FOR LOCAL SHOPS</div><h1>Make your shop easy to <span>explore.</span></h1><p class="lead">Give customers a simple way to browse your products, check prices and discover your store — just by scanning one QR code.</p><div class="actions"><a class="btn primary" href="#contact">Get your shop online ↗</a><a class="btn secondary" href="#how">See how it works</a></div><div class="micro">No app download needed • Easy product updates • Made for local businesses</div></div>
@@ -35,4 +40,44 @@ section{padding:88px 0}.sectionhead{text-align:center;max-width:760px;margin:0 a
 <section id="contact" style="padding-top:35px"><div class="wrap contactbox"><div class="sectionhead"><div class="kicker">Let's get started</div><h2>Ready to put your shop on the map?</h2><p>Message GetSmartQR and tell us about your shop. We'll help you get started with a digital product catalogue.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="https://wa.me/917976234678?text=Hi%20GetSmartQR%2C%20I%20want%20to%20create%20a%20digital%20catalogue%20for%20my%20shop.">Chat on WhatsApp ↗</a></div></div></div></section>
 </main>
 <footer><div class="wrap foot"><span class="brand" style="font-size:15px"><span class="mark" style="width:27px;height:27px;border-radius:8px;font-size:15px">▦</span>GetSmartQR</span><span>© 2026 GetSmartQR. Simple digital catalogs for local shops.</span></div></footer>
+
+<script id="getsmartqr-language-script">
+(()=>{
+ const translations={
+ 'How it works':'कैसे काम करता है','Benefits':'फायदे','Contact':'संपर्क','Get started ↗':'शुरू करें ↗',
+ 'SMART CATALOGS FOR LOCAL SHOPS':'स्थानीय दुकानों के लिए स्मार्ट कैटलॉग','Make your shop easy to ':'अपनी दुकान को ग्राहकों के लिए ',
+ 'explore.':'आसानी से देखने योग्य बनाएं।','Give customers a simple way to browse your products, check prices and discover your store — just by scanning one QR code.':'ग्राहक सिर्फ एक QR कोड स्कैन करके आपके प्रोडक्ट देख सकते हैं, कीमतें जान सकते हैं और आपकी दुकान के बारे में जानकारी पा सकते हैं।',
+ 'Get your shop online ↗':'अपनी दुकान ऑनलाइन लाएं ↗','See how it works':'जानें यह कैसे काम करता है','No app download needed • Easy product updates • Made for local businesses':'ऐप डाउनलोड करने की जरूरत नहीं • प्रोडक्ट आसानी से अपडेट करें • स्थानीय कारोबार के लिए',
+ 'Your own shop catalog':'आपकी अपनी दुकान का कैटलॉग','Photos and prices':'फोटो और कीमतें','Update anytime':'कभी भी अपडेट करें','Share with one QR':'एक QR से शेयर करें',
+ 'Simple for everyone':'सबके लिए आसान','From your shop to their screen.':'आपकी दुकान से सीधे उनके फोन तक।','Customers can browse your products without installing an app or waiting to ask for every detail.':'ग्राहक बिना कोई ऐप इंस्टॉल किए आपके प्रोडक्ट देख सकते हैं और हर जानकारी के लिए इंतजार नहीं करना पड़ता।',
+ 'We set up your catalog':'हम आपका कैटलॉग तैयार करते हैं','Your shop gets a digital page with its name, details and product collection.':'आपकी दुकान के नाम, जानकारी और प्रोडक्ट्स के साथ एक डिजिटल पेज बनाया जाता है।','Add products and prices':'प्रोडक्ट और कीमतें जोड़ें','Upload product photos, names and prices. Make changes whenever you need.':'प्रोडक्ट की फोटो, नाम और कीमत अपलोड करें। जरूरत पड़ने पर कभी भी बदलाव करें।','Put your QR to work':'अपने QR का इस्तेमाल करें','Display the QR in your shop, on bills or in your promotions. Customers scan and browse.':'QR को दुकान, बिल या प्रचार सामग्री पर लगाएं। ग्राहक स्कैन करके कैटलॉग देख सकते हैं।',
+ 'Made for busy shop owners':'व्यस्त दुकानदारों के लिए','Less time explaining. More time running your shop.':'कम समझाना पड़े, दुकान के लिए ज्यादा समय मिले।','Give customers the details they need while keeping your product catalogue easy to manage.':'ग्राहकों को जरूरी जानकारी दें और अपने प्रोडक्ट कैटलॉग को आसानी से मैनेज करें।',
+ 'Save time':'समय बचाएं','Customers can check product details and prices themselves.':'ग्राहक खुद प्रोडक्ट की जानकारी और कीमतें देख सकते हैं।','Show more products':'ज्यादा प्रोडक्ट दिखाएं','Display a wider collection without filling the counter with samples.':'काउंटर पर ढेरों सैंपल रखे बिना ज्यादा प्रोडक्ट दिखाएं।','Update with ease':'आसानी से अपडेट करें','Change product photos, names and prices when needed.':'जरूरत के अनुसार प्रोडक्ट की फोटो, नाम और कीमत बदलें।','Share anywhere':'कहीं भी शेयर करें','Use your QR on the counter, bills, packaging and social media.':'अपने QR को काउंटर, बिल, पैकेजिंग और सोशल मीडिया पर इस्तेमाल करें।',
+ 'A smarter shop experience':'दुकान का बेहतर अनुभव','Your products deserve to be seen.':'आपके प्रोडक्ट ज्यादा लोगों तक पहुंचने चाहिए।','Make browsing easier for customers while keeping your catalogue simple to manage.':'ग्राहकों के लिए प्रोडक्ट देखना आसान बनाएं और कैटलॉग को आसानी से मैनेज करें।',
+ "Let's set up your catalog ↗":'चलिए आपका कैटलॉग बनाते हैं ↗','Let’s set up your catalog ↗':'चलिए आपका कैटलॉग बनाते हैं ↗','Let\'s get started':'शुरुआत करते हैं','Ready to put your shop on the map?':'क्या आप अपनी दुकान को डिजिटल पहचान देना चाहते हैं?','Message GetSmartQR and tell us about your shop. We\'ll help you get started with a digital product catalogue.':'GetSmartQR को मैसेज करके अपनी दुकान के बारे में बताएं। हम आपका डिजिटल प्रोडक्ट कैटलॉग शुरू करने में मदद करेंगे।','Chat on WhatsApp ↗':'WhatsApp पर बात करें ↗','© 2026 GetSmartQR. Simple digital catalogs for local shops.':'© 2026 GetSmartQR. स्थानीय दुकानों के लिए आसान डिजिटल कैटलॉग।'
+ };
+ const original=new WeakMap();
+ function setLanguage(lang){
+  document.documentElement.lang=lang;
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(node=>{
+   if(!original.has(node))original.set(node,node.nodeValue);
+   const base=original.get(node);
+   if(lang==='en'){node.nodeValue=base;return;}
+   let value=base;
+   Object.keys(translations).sort((a,b)=>b.length-a.length).forEach(key=>{if(value.includes(key))value=value.split(key).join(translations[key]);});
+   node.nodeValue=value;
+  });
+  const title=lang==='hi'?'GetSmartQR — आपकी दुकान, अब डिजिटल रूप में':'GetSmartQR — Your Store, Digitally Connected';
+  document.title=title;
+  const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=lang==='hi'?'स्थानीय दुकानों के लिए डिजिटल प्रोडक्ट कैटलॉग, एक QR कोड के जरिए।':'Digital product catalogues for local shops, shared with one QR code.';
+  localStorage.setItem('getsmartqr-language',lang);
+  const select=document.getElementById('siteLanguage');if(select)select.value=lang;
+ }
+ const select=document.getElementById('siteLanguage');
+ const saved=localStorage.getItem('getsmartqr-language');
+ if(select){select.addEventListener('change',()=>setLanguage(select.value));setLanguage(saved==='hi'?'hi':'en');}
+})();
+</script>
 </body></html>

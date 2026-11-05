@@ -4,43 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GetSmartQR – Admin Panel</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2'"
+></script>
 
 <style>
 *{box-sizing:border-box}
-
 :root{
   --green:#176b45;
   --dark:#104c34;
   --cream:#f7f5e9;
-  --white:#ffffff;
+  --white:#fff;
   --text:#26382e;
   --muted:#718075;
   --border:#e3e8dc;
 }
-
 body{
   margin:0;
   background:var(--cream);
   font-family:Arial,sans-serif;
   color:var(--text);
 }
-
 header{
   background:linear-gradient(135deg,#176b45,#104c34);
   color:white;
   padding:25px 20px;
 }
-
 header h2{margin:0;font-size:25px}
 header p{margin:8px 0 0;color:#e1eee5}
-
 .container{
   max-width:1000px;
   margin:auto;
   padding:20px;
 }
-
 .card{
   background:white;
   padding:22px;
@@ -49,9 +47,7 @@ header p{margin:8px 0 0;color:#e1eee5}
   margin-bottom:18px;
   box-shadow:0 5px 20px rgba(20,65,40,.06);
 }
-
 h2{color:var(--dark)}
-
 input,textarea{
   width:100%;
   padding:14px;
@@ -62,12 +58,10 @@ input,textarea{
   background:#fff;
   color:var(--text);
 }
-
 input:focus,textarea:focus{
   outline:2px solid #a6d2b6;
   border-color:var(--green);
 }
-
 button{
   border:0;
   padding:12px 17px;
@@ -78,14 +72,12 @@ button{
   margin:4px;
   cursor:pointer;
 }
-
 button:hover{background:var(--dark)}
+button:disabled{opacity:.6;cursor:not-allowed}
 .red{background:#bd3d35}
 .green{background:#218653}
 .gray{background:#647568}
-
-.hidden{display:none !important}
-
+.hidden{display:none!important}
 .shop{
   border:1px solid var(--border);
   background:#fbfcf7;
@@ -93,18 +85,34 @@ button:hover{background:var(--dark)}
   border-radius:12px;
   margin:13px 0;
 }
-
-
-.shop-search-wrap{display:flex;gap:10px;align-items:center;margin:12px 0 16px;flex-wrap:wrap}
-.shop-search-wrap input{flex:1;min-width:220px;margin:0}
-.shop-search-count{font-size:13px;color:var(--muted);white-space:nowrap}
-.shop-empty{padding:16px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);background:#fbfcf7}
-
+.shop-search-wrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:12px 0 16px;
+  flex-wrap:wrap;
+}
+.shop-search-wrap input{
+  flex:1;
+  min-width:220px;
+  margin:0;
+}
+.shop-search-count{
+  font-size:13px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+.shop-empty{
+  padding:16px;
+  border:1px dashed var(--border);
+  border-radius:10px;
+  color:var(--muted);
+  background:#fbfcf7;
+}
 .shop h3{
   margin:3px 0 12px;
   color:var(--dark);
 }
-
 .small{
   font-size:13px;
   color:var(--muted);
@@ -112,41 +120,165 @@ button:hover{background:var(--dark)}
   line-height:1.7;
   margin-bottom:10px;
 }
-
 #message{
-  padding:12px;
-  color:var(--green);
+  display:block;
+  padding:13px 15px;
+  margin:10px 0 18px;
+  border-radius:10px;
+  color:var(--dark);
+  background:#edf6ef;
+  border:1px solid #cfe3d3;
   font-weight:600;
+  line-height:1.5;
   word-break:break-word;
 }
-
+#message:empty{display:none}
+#message.error{
+  color:#8b1e1e;
+  background:#fff0ef;
+  border-color:#f1c5c2;
+}
+#message.success{
+  color:#155c36;
+  background:#edf8ef;
+  border-color:#c6e6ce;
+}
+#message.info{
+  color:#244b70;
+  background:#eef5fc;
+  border-color:#cbdff2;
+}
 .qr{
   max-width:230px;
   width:100%;
   display:block;
   margin:12px auto;
 }
-
 @media(max-width:600px){
   .container{padding:12px}
   .card{padding:17px}
   header{padding:22px 16px}
   button{padding:12px 13px}
 }
-
-.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.stat{background:#f7faf4;border:1px solid var(--border);border-radius:12px;padding:15px}.stat span{display:block;color:var(--muted);font-size:13px}.stat strong{display:block;color:var(--dark);font-size:25px;margin-top:8px}.review-item{border:1px solid var(--border);border-radius:11px;padding:14px;margin:10px 0;background:#fbfcf7}.review-item p{white-space:pre-wrap;line-height:1.5}.traffic-chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end;min-height:190px;padding:15px;background:#fbfcf7;border:1px solid var(--border);border-radius:12px}.traffic-day{text-align:center;font-size:12px;color:var(--muted)}.traffic-bar{height:130px;display:flex;align-items:end;justify-content:center}.traffic-bar i{display:block;width:min(28px,70%);background:linear-gradient(180deg,#8bc7a1,#176b45);border-radius:7px 7px 2px 2px;min-height:3px}.traffic-day b{display:block;color:var(--text);margin:6px 0}.review-actions{display:flex;flex-wrap:wrap;gap:6px}@media(max-width:650px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.traffic-chart{gap:4px;padding:8px}.traffic-day{font-size:10px}.stat strong{font-size:22px}}
-
-/* Premium single-open accordion */
-.accordion-card{padding:0;overflow:hidden;border:1px solid #dce5d9;border-radius:18px;box-shadow:0 8px 24px rgba(16,76,52,.055);margin:14px 0}
-.accordion-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0;padding:18px 20px;background:linear-gradient(135deg,#fff,#f7faf4);color:#104c34;text-align:left;border:0;border-radius:0;font-size:16px;font-weight:750}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0;
+}
+.stat{
+  background:#f7faf4;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;
+}
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+}
+.stat strong{
+  display:block;
+  color:var(--dark);
+  font-size:25px;
+  margin-top:8px;
+}
+.review-item{
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:14px;
+  margin:10px 0;
+  background:#fbfcf7;
+}
+.review-item p{white-space:pre-wrap;line-height:1.5}
+.traffic-chart{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:10px;
+  align-items:end;
+  min-height:190px;
+  padding:15px;
+  background:#fbfcf7;
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+.traffic-day{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.traffic-bar{
+  height:130px;
+  display:flex;
+  align-items:end;
+  justify-content:center;
+}
+.traffic-bar i{
+  display:block;
+  width:min(28px,70%);
+  background:linear-gradient(180deg,#8bc7a1,#176b45);
+  border-radius:7px 7px 2px 2px;
+  min-height:3px;
+}
+.traffic-day b{
+  display:block;
+  color:var(--text);
+  margin:6px 0;
+}
+.review-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+@media(max-width:650px){
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .traffic-chart{gap:4px;padding:8px}
+  .traffic-day{font-size:10px}
+  .stat strong{font-size:22px}
+}
+.accordion-card{
+  padding:0;
+  overflow:hidden;
+  border:1px solid #dce5d9;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(16,76,52,.055);
+  margin:14px 0;
+}
+.accordion-trigger{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:0;
+  padding:18px 20px;
+  background:linear-gradient(135deg,#fff,#f7faf4);
+  color:#104c34;
+  text-align:left;
+  border:0;
+  border-radius:0;
+  font-size:16px;
+  font-weight:750;
+}
 .accordion-trigger:hover{background:#eff6ed}
-.accordion-trigger .acc-chevron{transition:transform .2s ease;color:#64806d}
-.accordion-card.is-open .acc-chevron{transform:rotate(180deg)}
-.accordion-content{display:none;padding:0 20px 20px;border-top:1px solid #edf1e9}
+.accordion-trigger .acc-chevron{
+  transition:transform .2s ease;
+  color:#64806d;
+}
+.accordion-card.is-open .acc-chevron{
+  transform:rotate(180deg);
+}
+.accordion-content{
+  display:none;
+  padding:0 20px 20px;
+  border-top:1px solid #edf1e9;
+}
 .accordion-card.is-open .accordion-content{display:block}
 .accordion-content>:first-child{margin-top:16px}
-@media(max-width:600px){.accordion-trigger{padding:15px}.accordion-content{padding:0 14px 16px}}
-
+@media(max-width:600px){
+  .accordion-trigger{padding:15px}
+  .accordion-content{padding:0 14px 16px}
+}
 </style>
 </head>
 
@@ -166,15 +298,15 @@ button:hover{background:var(--dark)}
     <input id="email" type="email" placeholder="Admin Email">
     <input id="password" type="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
+    <button type="button" onclick="login()">Login</button>
   </div>
 
   <div id="dashboard" class="hidden">
 
     <div class="card">
       <h2>Welcome Admin</h2>
-      <button class="gray" onclick="logout()">Logout</button>
-      <button onclick="loadShops()">Refresh Shops</button>
+      <button type="button" class="gray" onclick="logout()">Logout</button>
+      <button type="button" onclick="loadShops()">Refresh Shops</button>
     </div>
 
     <div class="card">
@@ -185,29 +317,32 @@ button:hover{background:var(--dark)}
       <input id="ownerPassword" type="password" placeholder="Owner Password (minimum 6 characters)">
       <input id="contact" placeholder="Mobile Number">
       <textarea id="description" placeholder="Shop Description"></textarea>
+
       <label for="planName"><b>Select Subscription Plan</b></label>
       <select id="planName" style="width:100%;padding:14px;margin:7px 0 13px;border:1px solid #d9e1d7;border-radius:10px">
         <option value="BASIC">BASIC — ₹999 / 24 months / 40 products</option>
         <option value="STANDARD" selected>STANDARD — ₹1,499 / 24 months / 60 products</option>
         <option value="PREMIUM">PREMIUM — ₹1,999 / 24 months / 150 products</option>
       </select>
+
       <label for="paymentMode"><b>Payment Mode</b></label>
       <select id="paymentMode" style="width:100%;padding:14px;margin:7px 0 13px;border:1px solid #d9e1d7;border-radius:10px">
         <option value="UPI">UPI</option>
         <option value="CASH">Cash</option>
       </select>
+
       <label style="display:flex;align-items:center;gap:9px;margin:8px 0 14px">
         <input id="paymentConfirmed" type="checkbox" style="width:auto;margin:0">
         I confirm that full payment has been received
       </label>
 
-      <button onclick="createShop()">Create Shop</button>
+      <button type="button" onclick="createShop()">Create Shop</button>
     </div>
 
     <div class="card">
       <h2>All Shops</h2>
       <div class="shop-search-wrap">
-        <input id="shopSearch" type="search" placeholder="Search shop by name, owner email, mobile, plan..." oninput="filterShops()" autocomplete="off">
+        <input id="shopSearch" type="search" aria-label="Search shops" placeholder="Search shops: name, owner email, mobile, plan..." oninput="filterShops()" autocomplete="off">
         <span id="shopSearchCount" class="shop-search-count">Loading shops...</span>
       </div>
       <div id="shopList">Loading shops...</div>
@@ -216,48 +351,94 @@ button:hover{background:var(--dark)}
     <div class="card">
       <h2>Customer Reviews</h2>
       <p class="small">Approve genuine customer feedback before it appears on the homepage.</p>
-      <button onclick="loadReviews()">Refresh Reviews</button>
-      <h3>Pending Reviews</h3><div id="pendingReviews">Loading reviews...</div>
-      <h3>Approved Reviews</h3><div id="approvedReviews">Loading reviews...</div>
+      <button type="button" onclick="loadReviews()">Refresh Reviews</button>
+      <h3>Pending Reviews</h3>
+      <div id="pendingReviews">Loading reviews...</div>
+      <h3>Approved Reviews</h3>
+      <div id="approvedReviews">Loading reviews...</div>
     </div>
 
     <div class="card">
       <h2>Homepage Analytics</h2>
       <p class="small">Traffic for the GetSmartQR homepage only. Unique visitors represent browsers/devices, not verified people. Active time is estimated from visible-page activity pings.</p>
-      <button onclick="loadAnalytics()">Refresh Analytics</button>
+      <button type="button" onclick="loadAnalytics()">Refresh Analytics</button>
       <div class="stats-grid">
-       <div class="stat"><span>Today's Visitors</span><strong id="todayVisitors">—</strong></div>
-       <div class="stat"><span>Total Page Views</span><strong id="totalViews">—</strong></div>
-       <div class="stat"><span>Average Active Time</span><strong id="avgActive">—</strong></div>
-       <div class="stat"><span>Currently Active</span><strong id="currentlyActive">—</strong></div>
+        <div class="stat"><span>Today's Visitors</span><strong id="todayVisitors">—</strong></div>
+        <div class="stat"><span>Total Page Views</span><strong id="totalViews">—</strong></div>
+        <div class="stat"><span>Average Active Time</span><strong id="avgActive">—</strong></div>
+        <div class="stat"><span>Currently Active</span><strong id="currentlyActive">—</strong></div>
       </div>
-      <h3>Last 7 Days Traffic</h3><div id="trafficChart" class="traffic-chart">Loading analytics...</div>
+      <h3>Last 7 Days Traffic</h3>
+      <div id="trafficChart" class="traffic-chart">Loading analytics...</div>
     </div>
 
   </div>
 
-  <div id="message"></div>
+  <div id="message" role="status" aria-live="polite"></div>
 
 </div>
 
 <script>
 const SUPABASE_URL = "https://dfuqgijfkbaykgshvlxd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_jBM3D-TScCdMmNWTp6Zicg_rzh4zAN_";
-
 const ADMIN_UID = "4471cdf9-38b9-4a1d-b267-67f5c34e70b3";
-
 const SITE_URL = "https://deepakgangwani678-bit.github.io/My-catalog-website";
 
 let allShopsCache = [];
+let db = null;
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-function msg(text){
-  document.getElementById("message").textContent = text;
+function getDb(){
+  if(!window.supabase || typeof window.supabase.createClient !== "function"){
+    throw new Error("Supabase library load नहीं हुई। Internet connection जाँचें और पेज Reload करें।");
+  }
+  if(!db){
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+  return db;
 }
+
+function msg(message,type="info"){
+  const box = document.getElementById("message");
+  if(!box) return;
+  box.textContent = String(message || "");
+  box.className = type;
+  if(type === "error" && box.textContent){
+    box.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+}
+
+function friendlyError(error,fallback="Something went wrong."){
+  const raw = String(error?.message || error || fallback);
+  const lower = raw.toLowerCase();
+
+  if(lower.includes("failed to fetch") ||
+     lower.includes("networkerror") ||
+     lower.includes("load failed")){
+    return "Internet connection या server से संपर्क में समस्या है। Internet जाँचकर दोबारा कोशिश करें।";
+  }
+
+  if(lower.includes("invalid login credentials")){
+    return "Email या Password गलत है। दोनों दोबारा जाँचें।";
+  }
+
+  if(lower.includes("email not confirmed")){
+    return "इस Email की पुष्टि नहीं हुई है। Admin से संपर्क करें।";
+  }
+
+  if(lower.includes("too many requests")){
+    return "बहुत बार कोशिश की गई है। कुछ देर बाद दोबारा कोशिश करें।";
+  }
+
+  return raw;
+}
+
+window.addEventListener("error",function(event){
+  msg("पेज में तकनीकी समस्या आई: "+friendlyError(event.message),"error");
+});
+
+window.addEventListener("unhandledrejection",function(event){
+  msg("काम पूरा नहीं हो पाया: "+friendlyError(event.reason),"error");
+});
 
 function showDashboard(){
   document.getElementById("loginBox").classList.add("hidden");
@@ -270,114 +451,218 @@ function showLogin(){
 }
 
 async function checkAdmin(){
-  const {data:{session}} = await db.auth.getSession();
+  try{
+    const {data:{session},error} = await getDb().auth.getSession();
 
-  if(session && session.user.id === ADMIN_UID){
-    showDashboard();
-    loadShops();
-    loadReviews();
-    loadAnalytics();
-  }else{
+    if(error) throw error;
+
+    if(session && session.user && session.user.id === ADMIN_UID){
+      showDashboard();
+      initPremiumAccordion();
+      await Promise.allSettled([
+        loadShops(),
+        loadReviews(),
+        loadAnalytics()
+      ]);
+    }else{
+      showLogin();
+    }
+
+  }catch(error){
     showLogin();
+    msg("Admin Panel शुरू नहीं हो पाया: "+friendlyError(error),"error");
   }
 }
 
 async function login(){
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+  const button = document.querySelector("#loginBox button");
 
-  msg("Logging in...");
-
-  const {data,error} = await db.auth.signInWithPassword({
-    email,password
-  });
-
-  if(error){
-    msg(error.message);
+  if(!email){
+    msg("कृपया Admin Email दर्ज करें।","error");
     return;
   }
 
-  if(data.user.id !== ADMIN_UID){
-    await db.auth.signOut();
-    msg("Admin access denied.");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg("कृपया सही Email Address दर्ज करें।","error");
     return;
   }
 
-  msg("Login successful.");
-  showDashboard();
-  initPremiumAccordion();
-  loadShops();
-  loadReviews();
-  loadAnalytics();
+  if(!password){
+    msg("कृपया Password दर्ज करें।","error");
+    return;
+  }
+
+  if(button){
+    button.disabled = true;
+    button.textContent = "Please wait...";
+  }
+
+  msg("Admin Login की जाँच हो रही है...","info");
+
+  try{
+    const {data,error} = await getDb().auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if(error){
+      msg("Login असफल: "+friendlyError(error),"error");
+      return;
+    }
+
+    if(!data.user || data.user.id !== ADMIN_UID){
+      await getDb().auth.signOut();
+      msg("इस अकाउंट को Admin Panel की अनुमति नहीं है। सही Admin Email से Login करें।","error");
+      return;
+    }
+
+    msg("Admin Login सफल हुआ। Dashboard लोड हो रहा है...","success");
+
+    showDashboard();
+    initPremiumAccordion();
+
+    await Promise.allSettled([
+      loadShops(),
+      loadReviews(),
+      loadAnalytics()
+    ]);
+
+  }catch(error){
+    msg("Login के दौरान समस्या: "+friendlyError(error),"error");
+  }finally{
+    if(button){
+      button.disabled = false;
+      button.textContent = "Login";
+    }
+  }
 }
 
 async function logout(){
-  await db.auth.signOut();
-  showLogin();
-  msg("Logged out.");
+  try{
+    const {error} = await getDb().auth.signOut();
+
+    if(error) throw error;
+
+    showLogin();
+    msg("आप सफलतापूर्वक Logout हो गए हैं।","success");
+
+  }catch(error){
+    msg("Logout नहीं हो पाया: "+friendlyError(error),"error");
+  }
 }
 
 async function callFunction(actionData){
-  const {data,error} = await db.functions.invoke(
+  const {data,error} = await getDb().functions.invoke(
     "admin-manage-shops",
     {body:actionData}
   );
 
   if(error){
-  let details = error.message;
+    throw new Error(error.message);
+  }
 
-  try {
-    const context = error.context;
-    if(context && typeof context.clone === "function"){
-      const response = context.clone();
-      const body = await response.json();
-      details = body.error || body.message || JSON.stringify(body);
-    }
-  } catch(e) {}
-
-  throw new Error(details);
-}
-
-if(data && data.error) throw new Error(data.error);
+  if(data && data.error){
+    throw new Error(data.error);
   }
 
   return data;
 }
 
 async function createShop(){
-  const shop_name=document.getElementById("shopName").value.trim();
-  const email=document.getElementById("ownerEmail").value.trim();
-  const password=document.getElementById("ownerPassword").value;
-  const contact=document.getElementById("contact").value.trim();
-  const description=document.getElementById("description").value.trim();
-  const plan_name=document.getElementById("planName").value;
-  const payment_mode=document.getElementById("paymentMode").value;
-  const payment_confirmed=document.getElementById("paymentConfirmed").checked;
-  if(!shop_name||!email||password.length<6||!contact){msg("Shop name, email, password and mobile number are required.");return;}
-  if(!payment_confirmed){msg("Please confirm that payment has been received before creating the shop.");return;}
-  const prices={BASIC:999,STANDARD:1499,PREMIUM:1999};
-  if(!confirm(`Confirm ${plan_name} plan (₹${prices[plan_name]}) paid by ${payment_mode} and create this shop?`))return;
-  msg("Creating shop and activating subscription...");
+  const shop_name = document.getElementById("shopName").value.trim();
+  const email = document.getElementById("ownerEmail").value.trim();
+  const password = document.getElementById("ownerPassword").value;
+  const contact = document.getElementById("contact").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const plan_name = document.getElementById("planName").value;
+  const payment_mode = document.getElementById("paymentMode").value;
+  const payment_confirmed = document.getElementById("paymentConfirmed").checked;
+
+  if(!shop_name || !email || password.length < 6 || !contact){
+    msg("Shop name, सही Email, कम से कम 6 अक्षर का Password और Mobile Number भरें।","error");
+    return;
+  }
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg("कृपया सही Owner Email Address दर्ज करें।","error");
+    return;
+  }
+
+  if(!payment_confirmed){
+    msg("Shop बनाने से पहले Payment Received की पुष्टि करें।","error");
+    return;
+  }
+
+  const prices = {BASIC:999,STANDARD:1499,PREMIUM:1999};
+
+  if(!prices[plan_name]){
+    msg("कृपया सही Subscription Plan चुनें।","error");
+    return;
+  }
+
+  if(!confirm(`Confirm ${plan_name} plan (₹${prices[plan_name]}) paid by ${payment_mode} and create this shop?`)){
+    return;
+  }
+
+  msg("Creating shop and activating subscription...","info");
+
   try{
-    const {data,error}=await db.functions.invoke("create-shop-owner",{body:{shop_name,email,password,contact,description,plan_name,payment_mode,payment_confirmed}});
-    if(error)throw new Error(error.message);
-    if(data.error)throw new Error(data.error);
-    msg("Shop, subscription and payment record created successfully.");
-    if(data.receipt) showPaymentReceipt({...data.receipt, contact, owner_email:email});
-    ["shopName","ownerEmail","ownerPassword","contact","description"].forEach(id=>document.getElementById(id).value="");
-    document.getElementById("paymentConfirmed").checked=false;
-    const shopSearch=document.getElementById("shopSearch"); if(shopSearch) shopSearch.value="";
+    const {data,error} = await getDb().functions.invoke(
+      "create-shop-owner",
+      {
+        body:{
+          shop_name,
+          email,
+          password,
+          contact,
+          description,
+          plan_name,
+          payment_mode,
+          payment_confirmed
+        }
+      }
+    );
+
+    if(error) throw new Error(error.message);
+    if(data && data.error) throw new Error(data.error);
+
+    msg("Shop, subscription and payment record created successfully.","success");
+
+    if(data.receipt){
+      showPaymentReceipt({...data.receipt,contact,owner_email:email});
+    }
+
+    ["shopName","ownerEmail","ownerPassword","contact","description"]
+      .forEach(id=>document.getElementById(id).value="");
+
+    document.getElementById("paymentConfirmed").checked = false;
+
+    const shopSearch = document.getElementById("shopSearch");
+    if(shopSearch) shopSearch.value = "";
+
     loadShops();
-  }catch(error){msg("Error: "+error.message);}
+
+  }catch(error){
+    msg("Shop Create नहीं हुआ: "+friendlyError(error),"error");
+  }
 }
+
 function showPaymentReceipt(r){
-  const w=window.open("","_blank");
-  if(!w){msg("Shop created. Allow pop-ups to open the receipt and WhatsApp message.");return;}
-  const esc=v=>escapeHTML(v??"");
-  const digits=String(r.contact||"").replace(/\D/g,"");
-  const whatsappNumber=digits.length===10 ? "91"+digits : digits;
-  const validity="24 Months";
-  const message=[
+  const w = window.open("","_blank");
+
+  if(!w){
+    msg("Shop बन गया है, लेकिन Receipt खोलने के लिए Pop-ups Allow करें।","error");
+    return;
+  }
+
+  const esc = v => escapeHTML(v ?? "");
+  const digits = String(r.contact || "").replace(/\D/g,"");
+  const whatsappNumber = digits.length === 10 ? "91"+digits : digits;
+  const validity = "24 Months";
+
+  const message = [
     "🎉 Congratulations!",
     "",
     "नमस्कार "+(r.shop_name||"")+",",
@@ -401,32 +686,75 @@ function showPaymentReceipt(r){
     "Founder – GetSmartQR",
     "Support: 7976234678"
   ].join("\n");
-  const whatsappUrl=whatsappNumber.length>=10
+
+  const whatsappUrl = whatsappNumber.length >= 10
     ? "https://wa.me/"+encodeURIComponent(whatsappNumber)+"?text="+encodeURIComponent(message)
     : "";
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GetSmartQR Payment Receipt</title>
-  <style>
-  body{font-family:Arial,sans-serif;background:#f4f0e6;color:#203b2e;padding:20px;margin:0}
-  .receipt{max-width:680px;margin:20px auto;background:#fffdf7;border:1px solid #ddd5c3;border-radius:20px;overflow:hidden;box-shadow:0 12px 36px #183b2b18}
-  .head{background:linear-gradient(135deg,#153e32,#246448);color:white;padding:28px}
-  .head h1{margin:0;font-size:28px}.head p{color:#e8c98a;letter-spacing:1px}
-  .body{padding:28px}.paid{display:inline-block;background:#e5f4e9;color:#176b45;padding:8px 13px;border-radius:30px;font-weight:bold}
-  .shop{font-size:28px;font-weight:bold;margin:22px 0 5px}.row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #eee8da}
-  .amount{font-size:26px;font-weight:bold;color:#153e32}.sign{margin-top:25px;padding:18px;background:#f0ecdf;border-radius:12px}
-  .foot{text-align:center;padding:20px;color:#647568}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px auto;max-width:680px}
-  .actions a,.actions button{display:inline-block;padding:13px 18px;background:#176b45;color:white;border:0;border-radius:9px;text-decoration:none;font-weight:bold;font-size:14px;cursor:pointer}
-  .actions .wa{background:#168a4a}.notice{text-align:center;color:#647568;font-size:13px;margin:8px auto;max-width:680px}
-  @media(max-width:520px){body{padding:10px}.body{padding:18px}.head{padding:22px}.row{font-size:14px}}
-  @media print{body{background:white;padding:0}.actions,.notice{display:none}.receipt{box-shadow:none;margin:0}}
-  </style></head><body>
-  <div class="receipt"><div class="head"><h1>GetSmartQR</h1><p>SMART DIGITAL CATALOGUE SOLUTIONS</p><h2>PAYMENT RECEIPT</h2><span>OFFICIAL PAYMENT ACKNOWLEDGEMENT</span></div>
-  <div class="body"><span class="paid">✓ PAYMENT RECEIVED</span><p>Receipt No. ${esc(r.receipt_number)}</p><div class="shop">${esc(r.shop_name)}</div>
-  <p>चिंता मत कीजिए, अब अपने बिजनेस को डिजिटल पहचान देने की शुरुआत आपने हमारे साथ की है। हम इस सफर में हमेशा आपके साथ हैं!</p>
-  <div class="row"><span>Selected Plan</span><b>${esc(r.plan_name)}</b></div><div class="row"><span>Amount Received</span><span class="amount">₹${esc(r.amount_paid)}</span></div><div class="row"><span>Payment Mode</span><b>${esc(r.payment_mode)}</b></div><div class="row"><span>Product Limit</span><b>${esc(r.product_limit)} Products</b></div><div class="row"><span>Validity</span><b>24 Months</b></div><div class="row"><span>Activation Date</span><b>${esc(r.activation_date)}</b></div><div class="row"><span>Expiry Date</span><b>${esc(r.expiry_date)}</b></div>
-  <div class="sign"><small>PAYMENT RECEIVED & VERIFIED BY</small><h2>Deepak Gangwani</h2><b>Founder · GetSmartQR</b><p>Authorized Signature</p></div></div><div class="foot">Smart. Simple. Digital.<br>Thank you for your trust.</div></div>
-  <div class="actions"><button onclick="window.print()">Print / Save as PDF</button>
-  ${whatsappUrl ? `<a class="wa" href="${whatsappUrl}" target="_blank" rel="noopener">Send Welcome Message on WhatsApp</a>` : `<button disabled title="Customer mobile number is missing">WhatsApp Number Missing</button>`}
-  </div><div class="notice">WhatsApp will open with the message pre-filled. Review it and tap Send in WhatsApp.</div></body></html>`);
+
+  w.document.write(`<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GetSmartQR Payment Receipt</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f0e6;color:#203b2e;padding:20px;margin:0}
+.receipt{max-width:680px;margin:20px auto;background:#fffdf7;border:1px solid #ddd5c3;border-radius:20px;overflow:hidden;box-shadow:0 12px 36px #183b2b18}
+.head{background:linear-gradient(135deg,#153e32,#246448);color:white;padding:28px}
+.head h1{margin:0;font-size:28px}
+.head p{color:#e8c98a;letter-spacing:1px}
+.body{padding:28px}
+.paid{display:inline-block;background:#e5f4e9;color:#176b45;padding:8px 13px;border-radius:30px;font-weight:bold}
+.shop{font-size:28px;font-weight:bold;margin:22px 0 5px}
+.row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #eee8da}
+.amount{font-size:26px;font-weight:bold;color:#153e32}
+.sign{margin-top:25px;padding:18px;background:#f0ecdf;border-radius:12px}
+.foot{text-align:center;padding:20px;color:#647568}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px auto;max-width:680px}
+.actions a,.actions button{display:inline-block;padding:13px 18px;background:#176b45;color:white;border:0;border-radius:9px;text-decoration:none;font-weight:bold;font-size:14px;cursor:pointer}
+.actions .wa{background:#168a4a}
+.notice{text-align:center;color:#647568;font-size:13px;margin:8px auto;max-width:680px}
+@media(max-width:520px){body{padding:10px}.body{padding:18px}.head{padding:22px}.row{font-size:14px}}
+@media print{body{background:white;padding:0}.actions,.notice{display:none}.receipt{box-shadow:none;margin:0}}
+</style>
+</head>
+<body>
+<div class="receipt">
+<div class="head">
+<h1>GetSmartQR</h1>
+<p>SMART DIGITAL CATALOGUE SOLUTIONS</p>
+<h2>PAYMENT RECEIPT</h2>
+<span>OFFICIAL PAYMENT ACKNOWLEDGEMENT</span>
+</div>
+<div class="body">
+<span class="paid">✓ PAYMENT RECEIVED</span>
+<p>Receipt No. ${esc(r.receipt_number)}</p>
+<div class="shop">${esc(r.shop_name)}</div>
+<p>चिंता मत कीजिए, अब अपने बिजनेस को डिजिटल पहचान देने की शुरुआत आपने हमारे साथ की है। हम इस सफर में हमेशा आपके साथ हैं!</p>
+<div class="row"><span>Selected Plan</span><b>${esc(r.plan_name)}</b></div>
+<div class="row"><span>Amount Received</span><span class="amount">₹${esc(r.amount_paid)}</span></div>
+<div class="row"><span>Payment Mode</span><b>${esc(r.payment_mode)}</b></div>
+<div class="row"><span>Product Limit</span><b>${esc(r.product_limit)} Products</b></div>
+<div class="row"><span>Validity</span><b>24 Months</b></div>
+<div class="row"><span>Activation Date</span><b>${esc(r.activation_date)}</b></div>
+<div class="row"><span>Expiry Date</span><b>${esc(r.expiry_date)}</b></div>
+<div class="sign">
+<small>PAYMENT RECEIVED & VERIFIED BY</small>
+<h2>Deepak Gangwani</h2>
+<b>Founder · GetSmartQR</b>
+<p>Authorized Signature</p>
+</div>
+</div>
+<div class="foot">Smart. Simple. Digital.<br>Thank you for your trust.</div>
+</div>
+<div class="actions">
+<button onclick="window.print()">Print / Save as PDF</button>
+${whatsappUrl ? `<a class="wa" href="${whatsappUrl}" target="_blank" rel="noopener">Send Welcome Message on WhatsApp</a>` : `<button disabled title="Customer mobile number is missing">WhatsApp Number Missing</button>`}
+</div>
+<div class="notice">WhatsApp will open with the message pre-filled. Review it and tap Send in WhatsApp.</div>
+</body>
+</html>`);
+
   w.document.close();
 }
 
@@ -441,15 +769,19 @@ function getCatalogURL(shop){
 async function loadShops(){
   const box = document.getElementById("shopList");
   const count = document.getElementById("shopSearchCount");
+
   box.textContent = "Loading shops...";
   if(count) count.textContent = "Loading shops...";
+
   try{
     const result = await callFunction({action:"list"});
     allShopsCache = result.shops || [];
     renderShops();
+
   }catch(error){
-    box.textContent = "Error loading shops: " + error.message;
+    box.textContent = "Error loading shops: "+friendlyError(error);
     if(count) count.textContent = "Could not load shops";
+    msg("Shops लोड नहीं हुए: "+friendlyError(error),"error");
   }
 }
 
@@ -460,25 +792,38 @@ function filterShops(){
 function renderShops(){
   const box = document.getElementById("shopList");
   const count = document.getElementById("shopSearchCount");
-  const query = (document.getElementById("shopSearch")?.value || "").trim().toLowerCase();
+
+  const query = (document.getElementById("shopSearch")?.value || "")
+    .trim().toLowerCase();
+
   const shops = allShopsCache.filter(shop=>{
     const searchable = [
-      shop.shop_name, shop.owner_email, shop.contact, shop.plan_name,
-      shop.payment_mode, shop.amount_paid, shop.expiry_date,
+      shop.shop_name,
+      shop.owner_email,
+      shop.contact,
+      shop.plan_name,
+      shop.payment_mode,
+      shop.amount_paid,
+      shop.expiry_date,
       shop.is_active ? "active" : "inactive"
     ].join(" ").toLowerCase();
+
     return searchable.includes(query);
   });
 
-  if(count) count.textContent = query
-    ? `${shops.length} of ${allShopsCache.length} shops`
-    : `${allShopsCache.length} shops`;
+  if(count){
+    count.textContent = query
+      ? `${shops.length} of ${allShopsCache.length} shops`
+      : `${allShopsCache.length} shops`;
+  }
 
   box.innerHTML = "";
+
   if(!allShopsCache.length){
     box.innerHTML = '<div class="shop-empty">No shops found.</div>';
     return;
   }
+
   if(!shops.length){
     box.innerHTML = '<div class="shop-empty">No matching shop found. Try another name, email or mobile number.</div>';
     return;
@@ -495,18 +840,23 @@ function renderShops(){
     const details = document.createElement("div");
     details.className = "small";
     details.textContent =
-      "Owner: " + (shop.owner_email || "-") +
-      " | Products: " + (shop.product_count ?? 0) +
-      " | Contact: " + (shop.contact || "-") +
-      " | Status: " + (active ? "Active" : "Inactive") +
-      " | Plan: " + (shop.plan_name || "Legacy / Not assigned") +
-      " | Expires: " + (shop.expiry_date || "Not assigned") +
-      " | Payment: " + (shop.payment_mode || "-") + " ₹" + (shop.amount_paid ?? "-");
+      "Owner: "+(shop.owner_email || "-")+
+      " | Products: "+(shop.product_count ?? 0)+
+      " | Contact: "+(shop.contact || "-")+
+      " | Status: "+(active ? "Active" : "Inactive")+
+      " | Plan: "+(shop.plan_name || "Legacy / Not assigned")+
+      " | Expires: "+(shop.expiry_date || "Not assigned")+
+      " | Payment: "+(shop.payment_mode || "-")+
+      " ₹"+(shop.amount_paid ?? "-");
 
     const url = document.createElement("div");
     url.className = "small";
-    try{ url.textContent = getCatalogURL(shop); }
-    catch(error){ url.textContent = error.message; }
+
+    try{
+      url.textContent = getCatalogURL(shop);
+    }catch(error){
+      url.textContent = error.message;
+    }
 
     const qrButton = document.createElement("button");
     qrButton.type = "button";
@@ -543,7 +893,11 @@ function renderShops(){
     ownerButton.textContent = "Owner Dashboard";
     ownerButton.onclick = ()=>window.open("owner.html","_blank");
 
-    div.append(title,details,url,qrButton,editButton,statusButton,renewButton,deleteButton,ownerButton);
+    div.append(
+      title,details,url,qrButton,editButton,statusButton,
+      renewButton,deleteButton,ownerButton
+    );
+
     box.appendChild(div);
   });
 }
@@ -560,37 +914,76 @@ async function toggleShop(shop){
       is_active:next
     });
 
-    msg("Shop status updated.");
+    msg("Shop status updated.","success");
     loadShops();
 
   }catch(error){
-    msg(error.message);
+    msg("Shop Status बदल नहीं पाया: "+friendlyError(error),"error");
   }
 }
 
-
 async function renewShop(shop){
-  const plan = prompt("Renewal plan: BASIC, STANDARD, or PREMIUM", shop.plan_name || "STANDARD");
+  const plan = prompt(
+    "Renewal plan: BASIC, STANDARD, or PREMIUM",
+    shop.plan_name || "STANDARD"
+  );
+
   if(plan===null) return;
-  const planName=plan.trim().toUpperCase();
-  const plans={BASIC:{amount:999,limit:40},STANDARD:{amount:1499,limit:60},PREMIUM:{amount:1999,limit:150}};
-  if(!plans[planName]){msg("Please enter BASIC, STANDARD or PREMIUM.");return;}
-  const mode=prompt("Payment mode: UPI or CASH","UPI");
-  if(mode===null)return;
-  const paymentMode=mode.trim().toUpperCase();
-  if(!["UPI","CASH"].includes(paymentMode)){msg("Payment mode must be UPI or CASH.");return;}
-  if(!confirm("Confirm ₹"+plans[planName].amount+" received by "+paymentMode+" and renew "+shop.shop_name+" for 24 months?"))return;
+
+  const planName = plan.trim().toUpperCase();
+
+  const plans = {
+    BASIC:{amount:999,limit:40},
+    STANDARD:{amount:1499,limit:60},
+    PREMIUM:{amount:1999,limit:150}
+  };
+
+  if(!plans[planName]){
+    msg("Please enter BASIC, STANDARD or PREMIUM.","error");
+    return;
+  }
+
+  const mode = prompt("Payment mode: UPI or CASH","UPI");
+  if(mode===null) return;
+
+  const paymentMode = mode.trim().toUpperCase();
+
+  if(!["UPI","CASH"].includes(paymentMode)){
+    msg("Payment mode must be UPI or CASH.","error");
+    return;
+  }
+
+  if(!confirm("Confirm ₹"+plans[planName].amount+" received by "+paymentMode+" and renew "+shop.shop_name+" for 24 months?")){
+    return;
+  }
+
   try{
-    msg("Renewing subscription...");
-    const result=await callFunction({action:"renew",shop_id:shop.id,plan_name:planName,payment_mode:paymentMode,payment_confirmed:true});
-    msg(result.message || "Subscription renewed.");
+    msg("Renewing subscription...","info");
+
+    const result = await callFunction({
+      action:"renew",
+      shop_id:shop.id,
+      plan_name:planName,
+      payment_mode:paymentMode,
+      payment_confirmed:true
+    });
+
+    msg(result.message || "Subscription renewed.","success");
     loadShops();
-  }catch(error){msg("Renewal failed: "+error.message);}
+
+  }catch(error){
+    msg("Renewal असफल: "+friendlyError(error),"error");
+  }
 }
 
 async function editShop(shop){
   const name = prompt("Shop Name:",shop.shop_name);
   if(name===null) return;
+
+  if(!name.trim()){
+    msg("Shop Name खाली नहीं हो सकता।","error");
+    return;
+  }
 
   const contact = prompt("Contact:",shop.contact || "");
   if(contact===null) return;
@@ -606,16 +999,16 @@ async function editShop(shop){
     await callFunction({
       action:"edit",
       shop_id:shop.id,
-      shop_name:name,
+      shop_name:name.trim(),
       contact,
       description
     });
 
-    msg("Shop updated successfully.");
+    msg("Shop updated successfully.","success");
     loadShops();
 
   }catch(error){
-    msg(error.message);
+    msg("Shop Update असफल: "+friendlyError(error),"error");
   }
 }
 
@@ -627,18 +1020,19 @@ async function deleteShop(shop){
   if(answer!=="DELETE") return;
 
   try{
-    msg("Deleting shop...");
+    msg("Deleting shop...","info");
 
     const result = await callFunction({
       action:"delete",
-      shop_id:shop.id
+      shop_id:shop.id,
+      confirmation:"DELETE"
     });
 
-    msg(result.message || result.warning || "Delete completed.");
+    msg(result.message || "Shop deleted successfully.","success");
     loadShops();
 
   }catch(error){
-    msg("Delete error: "+error.message);
+    msg("Delete नहीं हुआ: "+friendlyError(error),"error");
   }
 }
 
@@ -646,16 +1040,16 @@ function showQR(shop){
   let url;
 
   try{
-    url=getCatalogURL(shop);
+    url = getCatalogURL(shop);
   }catch(error){
-    msg(error.message);
+    msg(error.message,"error");
     return;
   }
 
   const w = window.open("","_blank");
 
   if(!w){
-    msg("Please allow pop-ups to open the QR code.");
+    msg("Please allow pop-ups to open the QR code.","error");
     return;
   }
 
@@ -685,72 +1079,294 @@ function escapeHTML(value){
   }[c]));
 }
 
-
 async function loadReviews(){
- const pending=document.getElementById('pendingReviews'),approved=document.getElementById('approvedReviews');
- pending.textContent='Loading...';approved.textContent='Loading...';
- const {data,error}=await db.from('customer_reviews').select('*').order('created_at',{ascending:false}).limit(200);
- if(error){pending.textContent='Could not load reviews: '+error.message;approved.textContent='';return;}
- const safe=v=>escapeHTML(v??'');
- const makeCard=r=>{const div=document.createElement('div');div.className='review-item';const heading=document.createElement('strong');heading.textContent=`${r.customer_name} · ${r.shop_name} · ${r.rating}/5`;const body=document.createElement('p');body.textContent=r.review_text;const date=document.createElement('div');date.className='small';date.textContent=new Date(r.created_at).toLocaleString();div.append(heading,body,date);const actions=document.createElement('div');actions.className='review-actions';if(r.status==='pending'){const ok=document.createElement('button');ok.className='green';ok.textContent='Approve';ok.onclick=()=>updateReview(r.id,'approved');actions.append(ok);}const del=document.createElement('button');del.className='red';del.textContent='Delete';del.onclick=()=>deleteReview(r.id);actions.append(del);div.append(actions);return div;};
- pending.innerHTML='';approved.innerHTML='';const p=data.filter(x=>x.status==='pending'),a=data.filter(x=>x.status==='approved');if(!p.length)pending.textContent='No pending reviews.';else p.forEach(r=>pending.append(makeCard(r)));if(!a.length)approved.textContent='No approved reviews yet.';else a.forEach(r=>approved.append(makeCard(r)));
-}
-async function updateReview(id,status){const {error}=await db.from('customer_reviews').update({status}).eq('id',id);if(error){msg('Review update failed: '+error.message);return;}msg('Review approved.');loadReviews();}
-async function deleteReview(id){if(!confirm('Delete this review permanently?'))return;const {error}=await db.from('customer_reviews').delete().eq('id',id);if(error){msg('Review delete failed: '+error.message);return;}msg('Review deleted.');loadReviews();}
-async function loadAnalytics(){
- const box=document.getElementById('trafficChart');box.textContent='Loading analytics...';
- const since=new Date();since.setDate(since.getDate()-6);since.setHours(0,0,0,0);
- const {data,error}=await db.from('homepage_analytics_events').select('visitor_id,session_id,event_type,created_at').order('created_at',{ascending:true}).limit(20000);
- if(error){box.textContent='Could not load analytics: '+error.message;return;}
- const rows=data||[],today=new Date().toLocaleDateString('en-CA');
- const todayRows=rows.filter(x=>new Date(x.created_at).toLocaleDateString('en-CA')===today);
- const visitors=new Set(todayRows.filter(x=>x.event_type==='page_view').map(x=>x.visitor_id));
- const views=rows.filter(x=>x.event_type==='page_view').length;const pings=rows.filter(x=>x.event_type==='active_ping').length;
- const latestBySession=new Map();rows.forEach(x=>{const prev=latestBySession.get(x.session_id);if(!prev||new Date(x.created_at)>new Date(prev.created_at))latestBySession.set(x.session_id,x);});const activeSessions=new Set([...latestBySession.values()].filter(x=>x.event_type!=='session_end'&&Date.now()-new Date(x.created_at).getTime()<60000).map(x=>x.session_id));
- const avg=views?Math.round((pings*15)/views):0;const fmt=n=>n<60?n+' sec':Math.floor(n/60)+' min '+(n%60)+' sec';
- document.getElementById('todayVisitors').textContent=visitors.size;document.getElementById('totalViews').textContent=views;document.getElementById('avgActive').textContent=fmt(avg);document.getElementById('currentlyActive').textContent=activeSessions.size;
- const graphRows=rows.filter(x=>new Date(x.created_at)>=since);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);d.setHours(0,0,0,0);const key=d.toLocaleDateString('en-CA');const count=graphRows.filter(x=>x.event_type==='page_view'&&new Date(x.created_at).toLocaleDateString('en-CA')===key).length;days.push({label:d.toLocaleDateString('en-IN',{weekday:'short'}),count});}
- const max=Math.max(1,...days.map(d=>d.count));box.innerHTML='';days.forEach(d=>{const item=document.createElement('div');item.className='traffic-day';const bar=document.createElement('div');bar.className='traffic-bar';const fill=document.createElement('i');fill.style.height=Math.max(3,Math.round(d.count/max*100))+'%';bar.append(fill);const value=document.createElement('b');value.textContent=d.count;const label=document.createElement('span');label.textContent=d.label;item.append(bar,value,label);box.append(item);});
+  const pending = document.getElementById("pendingReviews");
+  const approved = document.getElementById("approvedReviews");
+
+  pending.textContent = "Loading...";
+  approved.textContent = "Loading...";
+
+  try{
+    const {data,error} = await getDb()
+      .from("customer_reviews")
+      .select("*")
+      .order("created_at",{ascending:false})
+      .limit(200);
+
+    if(error) throw error;
+
+    const safe = v=>escapeHTML(v ?? "");
+
+    const makeCard = r=>{
+      const div = document.createElement("div");
+      div.className = "review-item";
+
+      const heading = document.createElement("strong");
+      heading.textContent =
+        `${r.customer_name} · ${r.shop_name} · ${r.rating}/5`;
+
+      const body = document.createElement("p");
+      body.textContent = r.review_text;
+
+      const date = document.createElement("div");
+      date.className = "small";
+      date.textContent = new Date(r.created_at).toLocaleString();
+
+      div.append(heading,body,date);
+
+      const actions = document.createElement("div");
+      actions.className = "review-actions";
+
+      if(r.status==="pending"){
+        const ok = document.createElement("button");
+        ok.className = "green";
+        ok.textContent = "Approve";
+        ok.onclick = ()=>updateReview(r.id,"approved");
+        actions.append(ok);
+      }
+
+      const del = document.createElement("button");
+      del.className = "red";
+      del.textContent = "Delete";
+      del.onclick = ()=>deleteReview(r.id);
+
+      actions.append(del);
+      div.append(actions);
+
+      return div;
+    };
+
+    pending.innerHTML = "";
+    approved.innerHTML = "";
+
+    const p = data.filter(x=>x.status==="pending");
+    const a = data.filter(x=>x.status==="approved");
+
+    if(!p.length) pending.textContent = "No pending reviews.";
+    else p.forEach(r=>pending.append(makeCard(r)));
+
+    if(!a.length) approved.textContent = "No approved reviews yet.";
+    else a.forEach(r=>approved.append(makeCard(r)));
+
+  }catch(error){
+    pending.textContent = "Reviews लोड नहीं हुए: "+friendlyError(error);
+    approved.textContent = "";
+    msg("Reviews लोड नहीं हुए: "+friendlyError(error),"error");
+  }
 }
 
+async function updateReview(id,status){
+  try{
+    const {error} = await getDb()
+      .from("customer_reviews")
+      .update({status})
+      .eq("id",id);
+
+    if(error) throw error;
+
+    msg("Review approved.","success");
+    loadReviews();
+
+  }catch(error){
+    msg("Review update असफल: "+friendlyError(error),"error");
+  }
+}
+
+async function deleteReview(id){
+  if(!confirm("Delete this review permanently?")) return;
+
+  try{
+    const {error} = await getDb()
+      .from("customer_reviews")
+      .delete()
+      .eq("id",id);
+
+    if(error) throw error;
+
+    msg("Review deleted.","success");
+    loadReviews();
+
+  }catch(error){
+    msg("Review delete असफल: "+friendlyError(error),"error");
+  }
+}
+
+async function loadAnalytics(){
+  const box = document.getElementById("trafficChart");
+  box.textContent = "Loading analytics...";
+
+  try{
+    const since = new Date();
+    since.setDate(since.getDate()-6);
+    since.setHours(0,0,0,0);
+
+    const {data,error} = await getDb()
+      .from("homepage_analytics_events")
+      .select("visitor_id,session_id,event_type,created_at")
+      .order("created_at",{ascending:true})
+      .limit(20000);
+
+    if(error) throw error;
+
+    const rows = data || [];
+    const today = new Date().toLocaleDateString("en-CA");
+
+    const todayRows = rows.filter(x=>
+      new Date(x.created_at).toLocaleDateString("en-CA")===today
+    );
+
+    const visitors = new Set(
+      todayRows
+        .filter(x=>x.event_type==="page_view")
+        .map(x=>x.visitor_id)
+    );
+
+    const views = rows.filter(x=>x.event_type==="page_view").length;
+    const pings = rows.filter(x=>x.event_type==="active_ping").length;
+
+    const latestBySession = new Map();
+
+    rows.forEach(x=>{
+      const prev = latestBySession.get(x.session_id);
+
+      if(!prev || new Date(x.created_at)>new Date(prev.created_at)){
+        latestBySession.set(x.session_id,x);
+      }
+    });
+
+    const activeSessions = new Set(
+      [...latestBySession.values()]
+        .filter(x=>
+          x.event_type!=="session_end" &&
+          Date.now()-new Date(x.created_at).getTime()<60000
+        )
+        .map(x=>x.session_id)
+    );
+
+    const avg = views ? Math.round((pings*15)/views) : 0;
+    const fmt = n=>n<60
+      ? n+" sec"
+      : Math.floor(n/60)+" min "+(n%60)+" sec";
+
+    document.getElementById("todayVisitors").textContent = visitors.size;
+    document.getElementById("totalViews").textContent = views;
+    document.getElementById("avgActive").textContent = fmt(avg);
+    document.getElementById("currentlyActive").textContent = activeSessions.size;
+
+    const graphRows = rows.filter(x=>new Date(x.created_at)>=since);
+    const days = [];
+
+    for(let i=6;i>=0;i--){
+      const d = new Date();
+      d.setDate(d.getDate()-i);
+      d.setHours(0,0,0,0);
+
+      const key = d.toLocaleDateString("en-CA");
+
+      const count = graphRows.filter(x=>
+        x.event_type==="page_view" &&
+        new Date(x.created_at).toLocaleDateString("en-CA")===key
+      ).length;
+
+      days.push({
+        label:d.toLocaleDateString("en-IN",{weekday:"short"}),
+        count
+      });
+    }
+
+    const max = Math.max(1,...days.map(d=>d.count));
+    box.innerHTML = "";
+
+    days.forEach(d=>{
+      const item = document.createElement("div");
+      item.className = "traffic-day";
+
+      const bar = document.createElement("div");
+      bar.className = "traffic-bar";
+
+      const fill = document.createElement("i");
+      fill.style.height = Math.max(3,Math.round(d.count/max*100))+"%";
+
+      bar.append(fill);
+
+      const value = document.createElement("b");
+      value.textContent = d.count;
+
+      const label = document.createElement("span");
+      label.textContent = d.label;
+
+      item.append(bar,value,label);
+      box.append(item);
+    });
+
+  }catch(error){
+    box.textContent = "Analytics लोड नहीं हुए: "+friendlyError(error);
+    msg("Analytics लोड नहीं हुए: "+friendlyError(error),"error");
+  }
+}
 
 function initPremiumAccordion(){
-  const dashboard=document.getElementById("dashboard");
+  const dashboard = document.getElementById("dashboard");
+
   if(!dashboard || dashboard.dataset.accordionReady==="1") return;
-  const cards=[...dashboard.querySelectorAll(":scope > .card")].slice(1);
-  const icons=["＋","＋","＋","＋"];
-  cards.forEach((card,index)=>{
-    const heading=card.querySelector(":scope > h2");
-    if(!heading)return;
-    const content=document.createElement("div");
-    content.className="accordion-content";
-    const children=[...card.children].filter(el=>el!==heading);
+
+  const cards = [...dashboard.querySelectorAll(":scope > .card")].slice(1);
+
+  cards.forEach(card=>{
+    const heading = card.querySelector(":scope > h2");
+    if(!heading) return;
+
+    const content = document.createElement("div");
+    content.className = "accordion-content";
+
+    const children = [...card.children].filter(el=>el!==heading);
     children.forEach(el=>content.appendChild(el));
-    const trigger=document.createElement("button");
-    trigger.type="button";
-    trigger.className="accordion-trigger";
-    trigger.innerHTML='<span>'+escapeHTML(heading.textContent)+'</span><span class="acc-chevron">⌄</span>';
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "accordion-trigger";
+
+    trigger.innerHTML =
+      '<span>'+escapeHTML(heading.textContent)+'</span>'+
+      '<span class="acc-chevron">⌄</span>';
+
     heading.remove();
+
     card.classList.add("accordion-card");
     card.append(trigger,content);
+
+    if(heading.textContent.trim()==="All Shops"){
+      card.classList.add("is-open");
+    }
+
     trigger.addEventListener("click",()=>{
-      const willOpen=!card.classList.contains("is-open");
+      const willOpen = !card.classList.contains("is-open");
+
       cards.forEach(other=>other.classList.remove("is-open"));
-      if(willOpen)card.classList.add("is-open");
-      if(willOpen && headingText(card)==="Customer Reviews")loadReviews();
-      if(willOpen && headingText(card)==="Homepage Analytics")loadAnalytics();
+
+      if(willOpen) card.classList.add("is-open");
+
+      if(willOpen && headingText(card)==="Customer Reviews"){
+        loadReviews();
+      }
+
+      if(willOpen && headingText(card)==="Homepage Analytics"){
+        loadAnalytics();
+      }
     });
   });
-  dashboard.dataset.accordionReady="1";
+
+  dashboard.dataset.accordionReady = "1";
 }
+
 function headingText(card){
-  const trigger=card.querySelector(".accordion-trigger span");
-  return trigger?trigger.textContent.trim():"";
+  const trigger = card.querySelector(".accordion-trigger span");
+  return trigger ? trigger.textContent.trim() : "";
 }
 
 checkAdmin();
 initPremiumAccordion();
-</script>
 
+</script>
 </body>
 </html>

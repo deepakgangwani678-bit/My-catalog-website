@@ -324,11 +324,21 @@ async function callFunction(actionData){
   );
 
   if(error){
-    throw new Error(error.message);
-  }
+  let details = error.message;
 
-  if(data && data.error){
-    throw new Error(data.error);
+  try {
+    const context = error.context;
+    if(context && typeof context.clone === "function"){
+      const response = context.clone();
+      const body = await response.json();
+      details = body.error || body.message || JSON.stringify(body);
+    }
+  } catch(e) {}
+
+  throw new Error(details);
+}
+
+if(data && data.error) throw new Error(data.error);
   }
 
   return data;

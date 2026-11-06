@@ -92,8 +92,7 @@ main{padding:10px}
 <button type="button" class="theme-toggle" id="themeToggle">Select Theme ▼</button>
 
 <div class="theme-menu" id="themeMenu">
-<button type="button" class="theme-choice" data-theme="cafe_classic">☕ Classic Café · Red &amp; Yellow</button>
-<button type="button" class="theme-choice" data-theme="cafe_premium">🤎 Premium Café · Chocolate &amp; Cream</button>
+<button type="button" class="theme-choice" data-theme="cafe">☕ Cafe</button>
 <button type="button" class="theme-choice" data-theme="restaurant">🍽️ Restaurant</button>
 <button type="button" class="theme-choice" data-theme="clothing">👕 Clothing</button>
 <button type="button" class="theme-choice" data-theme="hotel">🏨 Hotel</button>
@@ -170,9 +169,7 @@ let existingImageUrl = "";
 let previewObjectUrl = null;
 
 const themes = {
-  cafe:"Classic Café",
-  cafe_classic:"Classic Café",
-  cafe_premium:"Premium Café",
+  cafe:"Cafe",
   restaurant:"Restaurant",
   clothing:"Clothing",
   hotel:"Hotel",
@@ -226,12 +223,8 @@ async function initialiseSupabase(){
 /* THEME DROPDOWN */
 
 function showSavedTheme(theme){
-  // Backward compatibility: shops already saved as "cafe" keep the Classic Café design.
-  const normalizedTheme = String(theme || "").toLowerCase() === "cafe"
-    ? "cafe_classic"
-    : String(theme || "").toLowerCase();
-  const selected = Object.prototype.hasOwnProperty.call(themes,normalizedTheme)
-    ? normalizedTheme
+  const selected = Object.prototype.hasOwnProperty.call(themes,theme)
+    ? theme
     : "restaurant";
 
   document.getElementById("themeToggle").textContent =
